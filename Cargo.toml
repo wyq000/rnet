@@ -1,0 +1,13 @@
+[package]
+name = "rnet"
+version = "0.1.0"
+description = "Python HTTP Client with TLS, JA3/JA4, and HTTP2 fingerprints"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[lib]
+name = "rnet"
+crate-type = ["cdylib"]
+
+[dependencies]
+pyo3 = "0.23.1"
