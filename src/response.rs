@@ -83,8 +83,8 @@ impl Response {
 
     /// Returns the content length of the response.
     #[getter]
-    pub fn content_length(&self) -> Option<u64> {
-        self.content_length
+    pub fn content_length(&self) -> u64 {
+        self.content_length.unwrap_or_default()
     }
 
     /// Returns the remote address of the response.
