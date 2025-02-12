@@ -1,4 +1,4 @@
-use crate::types::{Impersonate, Json, Version};
+use crate::types::{Impersonate, Json, Proxy, Version};
 use indexmap::IndexMap;
 use pyo3::prelude::*;
 use pyo3_stub_gen::derive::gen_stub_pyclass;
@@ -51,6 +51,9 @@ pub struct RequestParams {
 
     /// Whether to disable the proxy for the request.
     pub no_proxy: Option<bool>,
+
+    /// The proxy to use for the request.
+    pub proxies: Option<Vec<Proxy>>,
 
     /// Whether to use the HTTP/1 protocol only.
     pub http1_only: Option<bool>,
@@ -117,6 +120,7 @@ impl<'py> FromPyObject<'py> for RequestParams {
         extract_option!(ob, params, http2_only);
         extract_option!(ob, params, referer);
         extract_option!(ob, params, danger_accept_invalid_certs);
+        extract_option!(ob, params, proxies);
 
         extract_option!(ob, params, version);
         extract_option!(ob, params, user_agent);

@@ -98,6 +98,13 @@ macro_rules! apply_option {
 fn build_client_from_params(params: &mut RequestParams) -> Result<rquest::Client> {
     let mut builder = rquest::Client::builder();
 
+    // Proxy options.
+    if let Some(proxies) = params.proxies.take() {
+        for proxy in proxies {
+            builder = builder.proxy(proxy.into_inner());
+        }
+    }
+
     // Impersonation options.
     apply_option!(
         apply_transformed_option,

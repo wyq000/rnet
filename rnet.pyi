@@ -77,6 +77,80 @@ class Method:
     """
     ...
 
+class Proxy:
+    r"""
+    A proxy server for a request.
+    """
+    @staticmethod
+    def http(url:builtins.str) -> Proxy:
+        r"""
+        Creates a new HTTP proxy.
+        
+        # Arguments
+        
+        * `url` - The URL of the proxy server.
+        
+        # Returns
+        
+        A new `Proxy` instance.
+        
+        # Examples
+        
+        ```python
+        import rnet
+        
+        proxy = rnet.Proxy.http("http://proxy.example.com")
+        ```
+        """
+        ...
+
+    @staticmethod
+    def https(url:builtins.str) -> Proxy:
+        r"""
+        Creates a new HTTPS proxy.
+        
+        # Arguments
+        
+        * `url` - The URL of the proxy server.
+        
+        # Returns
+        
+        A new `Proxy` instance.
+        
+        # Examples
+        
+        ```python
+        import rnet
+        
+        proxy = rnet.Proxy.https("https://proxy.example.com")
+        ```
+        """
+        ...
+
+    @staticmethod
+    def all(url:builtins.str) -> Proxy:
+        r"""
+        Creates a new HTTPS proxy.
+        
+        # Arguments
+        
+        * `url` - The URL of the proxy server.
+        
+        # Returns
+        
+        A new `Proxy` instance.
+        
+        # Examples
+        
+        ```python
+        import rnet
+        
+        proxy = rnet.Proxy.all("https://proxy.example.com")
+        ```
+        """
+        ...
+
+
 class RequestParams:
     r"""
     The parameters for a request.
@@ -347,7 +421,7 @@ def delete(url:builtins.str, **kwds) -> typing.Any:
     import asyncio
     
     async def run():
-        response = await rnet.delete("https://www.rust-lang.org")
+        response = await rnet.delete("https://httpbin.org/anything")
         body = await response.text()
         print(body)
     
@@ -374,7 +448,7 @@ def get(url:builtins.str, **kwds) -> typing.Any:
     import asyncio
     
     async def run():
-        response = await rnet.get("https://www.rust-lang.org")
+        response = await rnet.get("https://httpbin.org/anything")
         body = await response.text()
         print(body)
     
@@ -403,7 +477,7 @@ def head(url:builtins.str, **kwds) -> typing.Any:
     import asyncio
     
     async def run():
-        response = await rnet.head("https://www.rust-lang.org")
+        response = await rnet.head("https://httpbin.org/anything")
         print(response.headers)
     
     asyncio.run(run())
@@ -422,7 +496,7 @@ def options(url:builtins.str, **kwds) -> typing.Any:
     import asyncio
     
     async def run():
-        response = await rnet.options("https://www.rust-lang.org")
+        response = await rnet.options("https://httpbin.org/anything")
         print(response.headers)
     
     asyncio.run(run())
@@ -441,7 +515,7 @@ def patch(url:builtins.str, **kwds) -> typing.Any:
     import asyncio
     
     async def run():
-        response = await rnet.patch("https://www.rust-lang.org", data={"key": "value"})
+        response = await rnet.patch("https://httpbin.org/anything", json={"key": "value"})
         body = await response.text()
         print(body)
     
@@ -461,7 +535,7 @@ def post(url:builtins.str, **kwds) -> typing.Any:
     import asyncio
     
     async def run():
-        response = await rnet.post("https://www.rust-lang.org", data={"key": "value"})
+        response = await rnet.post("https://httpbin.org/anything", json={"key": "value"})
         body = await response.text()
         print(body)
     
@@ -481,7 +555,7 @@ def put(url:builtins.str, **kwds) -> typing.Any:
     import asyncio
     
     async def run():
-        response = await rnet.put("https://www.rust-lang.org", data={"key": "value"})
+        response = await rnet.put("https://httpbin.org/anything", json={"key": "value"})
         body = await response.text()
         print(body)
     

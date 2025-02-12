@@ -7,7 +7,7 @@ mod types;
 use pyo3::prelude::*;
 use pyo3_stub_gen::{define_stub_info_gatherer, derive::*};
 use req::RequestParams;
-use types::{HeaderMap, Impersonate, Method, SocketAddr, Version};
+use types::{HeaderMap, Impersonate, Method, Proxy, SocketAddr, Version};
 
 #[macro_export]
 macro_rules! define_constants {
@@ -42,7 +42,7 @@ type Result<T> = std::result::Result<T, PyErr>;
 /// import asyncio
 ///
 /// async def run():
-///     response = await rnet.get("https://www.rust-lang.org")
+///     response = await rnet.get("https://httpbin.org/anything")
 ///     body = await response.text()
 ///     print(body)
 ///
@@ -77,7 +77,7 @@ fn get<'rt>(
 /// import asyncio
 ///
 /// async def run():
-///     response = await rnet.post("https://www.rust-lang.org", data={"key": "value"})
+///     response = await rnet.post("https://httpbin.org/anything", json={"key": "value"})
 ///     body = await response.text()
 ///     print(body)
 ///
@@ -103,7 +103,7 @@ fn post<'rt>(
 /// import asyncio
 ///
 /// async def run():
-///     response = await rnet.put("https://www.rust-lang.org", data={"key": "value"})
+///     response = await rnet.put("https://httpbin.org/anything", json={"key": "value"})
 ///     body = await response.text()
 ///     print(body)
 ///
@@ -129,7 +129,7 @@ fn put<'rt>(
 /// import asyncio
 ///
 /// async def run():
-///     response = await rnet.patch("https://www.rust-lang.org", data={"key": "value"})
+///     response = await rnet.patch("https://httpbin.org/anything", json={"key": "value"})
 ///     body = await response.text()
 ///     print(body)
 ///
@@ -155,7 +155,7 @@ fn patch<'rt>(
 /// import asyncio
 ///
 /// async def run():
-///     response = await rnet.delete("https://www.rust-lang.org")
+///     response = await rnet.delete("https://httpbin.org/anything")
 ///     body = await response.text()
 ///     print(body)
 ///
@@ -181,7 +181,7 @@ fn delete<'rt>(
 /// import asyncio
 ///
 /// async def run():
-///     response = await rnet.head("https://www.rust-lang.org")
+///     response = await rnet.head("https://httpbin.org/anything")
 ///     print(response.headers)
 ///
 /// asyncio.run(run())
@@ -206,7 +206,7 @@ fn head<'rt>(
 /// import asyncio
 ///
 /// async def run():
-///     response = await rnet.options("https://www.rust-lang.org")
+///     response = await rnet.options("https://httpbin.org/anything")
 ///     print(response.headers)
 ///
 /// asyncio.run(run())
@@ -286,6 +286,7 @@ fn rnet(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<HeaderMap>()?;
     m.add_class::<Impersonate>()?;
     m.add_class::<SocketAddr>()?;
+    m.add_class::<Proxy>()?;
     m.add_class::<resp::Response>()?;
     m.add_function(wrap_pyfunction!(request, m)?)?;
     m.add_function(wrap_pyfunction!(get, m)?)?;

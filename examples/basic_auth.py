@@ -3,7 +3,7 @@ import rnet
 
 import asyncio
 import rnet
-from rnet import Impersonate, Version
+from rnet import Impersonate
 
 
 async def main():
