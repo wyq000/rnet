@@ -2,6 +2,7 @@ import asyncio
 import rnet
 from rnet import Method, Impersonate
 
+
 async def main():
     resp = await rnet.get("https://httpbin.org/stream/20")
     print("Status Code: ", resp.status_code)
@@ -16,6 +17,7 @@ async def main():
     async for chunk in streamer:
         print("Chunk: ", chunk)
         await asyncio.sleep(0.1)
+
 
 if __name__ == "__main__":
     asyncio.run(main())

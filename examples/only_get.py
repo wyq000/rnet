@@ -2,8 +2,15 @@ import asyncio
 import rnet
 from rnet import Method, Impersonate, Version
 
+
 async def main():
-    resp = await rnet.get("https://tls.peet.ws/api/all", impersonate=Impersonate.Chrome100)
+    resp = await rnet.get(
+        "https://tls.peet.ws/api/all",
+        impersonate=Impersonate.Chrome104,
+        user_agent="Mozilla/5.0",
+        version=Version.HTTP_2,
+        timeout=10,
+    )
     print("Status Code: ", resp.status_code)
     print("Version: ", resp.version)
     print("Response URL: ", resp.url)
@@ -34,6 +41,7 @@ async def main():
 
     # Close the response connection
     # await resp.close()
+
 
 if __name__ == "__main__":
     asyncio.run(main())

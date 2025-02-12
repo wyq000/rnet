@@ -2,6 +2,7 @@ import asyncio
 import rnet
 from rnet import Method, Impersonate
 
+
 async def main():
     resp = await rnet.request(Method.GET, "https://www.google.com/")
     print("Status Code: ", resp.status_code)
@@ -34,6 +35,7 @@ async def main():
 
     # json_value =  await resp.json_str_pretty()
     # print("JSON String Pretty: ", json_value)
+
 
 if __name__ == "__main__":
     asyncio.run(main())

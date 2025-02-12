@@ -9,7 +9,7 @@ mod resp;
 mod version;
 
 use method::Method;
-use pyo3::{prelude::*, types::PyDict};
+use pyo3::prelude::*;
 use req::RequestParams;
 
 #[macro_export]
@@ -64,10 +64,9 @@ type Result<T> = std::result::Result<T, PyErr>;
 fn get<'rt>(
     py: Python<'rt>,
     url: String,
-    kwds: Option<&Bound<'_, PyDict>>,
+    kwds: Option<RequestParams>,
 ) -> PyResult<Bound<'rt, PyAny>> {
-    let params = RequestParams::from(kwds);
-    pyo3_async_runtimes::tokio::future_into_py(py, async move { client::get(url, params).await })
+    pyo3_async_runtimes::tokio::future_into_py(py, async move { client::get(url, kwds).await })
 }
 
 /// Shortcut method to quickly make a `POST` request.
@@ -76,10 +75,9 @@ fn get<'rt>(
 fn post<'rt>(
     py: Python<'rt>,
     url: String,
-    kwds: Option<&Bound<'_, PyDict>>,
+    kwds: Option<RequestParams>,
 ) -> PyResult<Bound<'rt, PyAny>> {
-    let params = RequestParams::from(kwds);
-    pyo3_async_runtimes::tokio::future_into_py(py, async move { client::post(url, params).await })
+    pyo3_async_runtimes::tokio::future_into_py(py, async move { client::post(url, kwds).await })
 }
 
 /// Shortcut method to quickly make a `PUT` request.
@@ -88,10 +86,9 @@ fn post<'rt>(
 fn put<'rt>(
     py: Python<'rt>,
     url: String,
-    kwds: Option<&Bound<'_, PyDict>>,
+    kwds: Option<RequestParams>,
 ) -> PyResult<Bound<'rt, PyAny>> {
-    let params = RequestParams::from(kwds);
-    pyo3_async_runtimes::tokio::future_into_py(py, async move { client::put(url, params).await })
+    pyo3_async_runtimes::tokio::future_into_py(py, async move { client::put(url, kwds).await })
 }
 
 /// Shortcut method to quickly make a `PATCH` request.
@@ -100,10 +97,9 @@ fn put<'rt>(
 fn patch<'rt>(
     py: Python<'rt>,
     url: String,
-    kwds: Option<&Bound<'_, PyDict>>,
+    kwds: Option<RequestParams>,
 ) -> PyResult<Bound<'rt, PyAny>> {
-    let params = RequestParams::from(kwds);
-    pyo3_async_runtimes::tokio::future_into_py(py, async move { client::patch(url, params).await })
+    pyo3_async_runtimes::tokio::future_into_py(py, async move { client::patch(url, kwds).await })
 }
 
 /// Shortcut method to quickly make a `DELETE` request.
@@ -112,10 +108,9 @@ fn patch<'rt>(
 fn delete<'rt>(
     py: Python<'rt>,
     url: String,
-    kwds: Option<&Bound<'_, PyDict>>,
+    kwds: Option<RequestParams>,
 ) -> PyResult<Bound<'rt, PyAny>> {
-    let params = RequestParams::from(kwds);
-    pyo3_async_runtimes::tokio::future_into_py(py, async move { client::delete(url, params).await })
+    pyo3_async_runtimes::tokio::future_into_py(py, async move { client::delete(url, kwds).await })
 }
 
 /// Shortcut method to quickly make a `HEAD` request.
@@ -124,10 +119,9 @@ fn delete<'rt>(
 fn head<'rt>(
     py: Python<'rt>,
     url: String,
-    kwds: Option<&Bound<'_, PyDict>>,
+    kwds: Option<RequestParams>,
 ) -> PyResult<Bound<'rt, PyAny>> {
-    let params = RequestParams::from(kwds);
-    pyo3_async_runtimes::tokio::future_into_py(py, async move { client::head(url, params).await })
+    pyo3_async_runtimes::tokio::future_into_py(py, async move { client::head(url, kwds).await })
 }
 
 /// Shortcut method to quickly make a `OPTIONS` request.
@@ -136,10 +130,9 @@ fn head<'rt>(
 fn options<'rt>(
     py: Python<'rt>,
     url: String,
-    kwds: Option<&Bound<'_, PyDict>>,
+    kwds: Option<RequestParams>,
 ) -> PyResult<Bound<'rt, PyAny>> {
-    let params = RequestParams::from(kwds);
-    pyo3_async_runtimes::tokio::future_into_py(py, async move { client::options(url, params).await })
+    pyo3_async_runtimes::tokio::future_into_py(py, async move { client::options(url, kwds).await })
 }
 
 /// Shortcut method to quickly make a `TRACE` request.
@@ -148,10 +141,9 @@ fn options<'rt>(
 fn trace<'rt>(
     py: Python<'rt>,
     url: String,
-    kwds: Option<&Bound<'_, PyDict>>,
+    kwds: Option<RequestParams>,
 ) -> PyResult<Bound<'rt, PyAny>> {
-    let params = RequestParams::from(kwds);
-    pyo3_async_runtimes::tokio::future_into_py(py, async move { client::trace(url, params).await })
+    pyo3_async_runtimes::tokio::future_into_py(py, async move { client::trace(url, kwds).await })
 }
 
 /// Make a request with the given parameters.
@@ -163,11 +155,10 @@ fn request<'rt>(
     py: Python<'rt>,
     method: Method,
     url: String,
-    kwds: Option<&Bound<'_, PyDict>>,
+    kwds: Option<RequestParams>,
 ) -> PyResult<Bound<'rt, PyAny>> {
-    let params = RequestParams::from(kwds);
     pyo3_async_runtimes::tokio::future_into_py(py, async move {
-        client::request(method, url, params).await
+        client::request(method, url, kwds).await
     })
 }
 

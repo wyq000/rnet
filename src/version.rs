@@ -2,7 +2,7 @@ use crate::define_constants;
 use pyo3::prelude::*;
 
 #[pyclass(eq)]
-#[derive(Clone, Copy, PartialEq, Eq, Hash)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, Debug)]
 pub struct Version(rquest::Version);
 
 impl Version {

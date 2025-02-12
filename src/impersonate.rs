@@ -3,7 +3,7 @@ use pyo3::prelude::*;
 
 #[allow(dead_code)]
 #[pyclass]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy, Default, Debug)]
 pub struct Impersonate(rquest::Impersonate);
 
 impl Impersonate {

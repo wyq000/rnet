@@ -19,46 +19,51 @@ impl Deref for Client {
 }
 
 #[inline]
-pub async fn get(url: String, params: RequestParams) -> Result<Response> {
+pub async fn get(url: String, params: Option<RequestParams>) -> Result<Response> {
     request(Method::GET, url, params).await
 }
 
 #[inline]
-pub async fn post(url: String, params: RequestParams) -> Result<Response> {
+pub async fn post(url: String, params: Option<RequestParams>) -> Result<Response> {
     request(Method::POST, url, params).await
 }
 
 #[inline]
-pub async fn put(url: String, params: RequestParams) -> Result<Response> {
+pub async fn put(url: String, params: Option<RequestParams>) -> Result<Response> {
     request(Method::PUT, url, params).await
 }
 
 #[inline]
-pub async fn patch(url: String, params: RequestParams) -> Result<Response> {
+pub async fn patch(url: String, params: Option<RequestParams>) -> Result<Response> {
     request(Method::PATCH, url, params).await
 }
 
 #[inline]
-pub async fn delete(url: String, params: RequestParams) -> Result<Response> {
+pub async fn delete(url: String, params: Option<RequestParams>) -> Result<Response> {
     request(Method::DELETE, url, params).await
 }
 
 #[inline]
-pub async fn head(url: String, params: RequestParams) -> Result<Response> {
+pub async fn head(url: String, params: Option<RequestParams>) -> Result<Response> {
     request(Method::HEAD, url, params).await
 }
 
 #[inline]
-pub async fn options(url: String, params: RequestParams) -> Result<Response> {
+pub async fn options(url: String, params: Option<RequestParams>) -> Result<Response> {
     request(Method::OPTIONS, url, params).await
 }
 
 #[inline]
-pub async fn trace(url: String, params: RequestParams) -> Result<Response> {
+pub async fn trace(url: String, params: Option<RequestParams>) -> Result<Response> {
     request(Method::TRACE, url, params).await
 }
 
-pub async fn request(method: Method, url: String, mut params: RequestParams) -> Result<Response> {
+pub async fn request(
+    method: Method,
+    url: String,
+    mut params: Option<RequestParams>,
+) -> Result<Response> {
+    let mut params = params.get_or_insert_default();
     let client = build_client_from_params(&mut params)?;
     let builder = client.request(method.into_inner(), url);
     apply_params_to_request(builder, params)
@@ -69,17 +74,17 @@ pub async fn request(method: Method, url: String, mut params: RequestParams) -> 
 }
 
 macro_rules! apply_option {
-    ($builder:expr, $option:expr, $method:ident) => {
+    (apply_if_some, $builder:expr, $option:expr, $method:ident) => {
         if let Some(value) = $option.take() {
             $builder = $builder.$method(value);
         }
     };
-    ($builder:expr, $option:expr, $method:ident, $transform:expr) => {
+    (apply_transformed_option, $builder:expr, $option:expr, $method:ident, $transform:expr) => {
         if let Some(value) = $option.take() {
             $builder = $builder.$method($transform(value));
         }
     };
-    (empty, $builder:expr, $option:expr, $method:ident, $default:expr) => {
+    (apply_option_or_default, $builder:expr, $option:expr, $method:ident, $default:expr) => {
         if $option.unwrap_or($default) {
             $builder = $builder.$method();
         }
@@ -89,36 +94,70 @@ macro_rules! apply_option {
 /// Build a client from the parameters.
 fn build_client_from_params(params: &mut RequestParams) -> Result<rquest::Client> {
     let mut builder = rquest::Client::builder();
+
     // Impersonation options.
     apply_option!(
+        apply_transformed_option,
         builder,
         params.impersonate,
         impersonate,
         |v: Impersonate| v.into_inner()
     );
-    apply_option!(builder, params.user_agent, user_agent);
+    apply_option!(apply_if_some, builder, params.user_agent, user_agent);
 
     // Timeout options.
-    apply_option!(builder, params.timeout, timeout, Duration::from_secs);
     apply_option!(
+        apply_transformed_option,
+        builder,
+        params.timeout,
+        timeout,
+        Duration::from_secs
+    );
+    apply_option!(
+        apply_transformed_option,
         builder,
         params.connect_timeout,
         connect_timeout,
         Duration::from_secs
     );
     apply_option!(
+        apply_transformed_option,
         builder,
         params.read_timeout,
         read_timeout,
         Duration::from_secs
     );
-    apply_option!(empty, builder, params.no_keepalive, no_keepalive, false);
+    apply_option!(
+        apply_option_or_default,
+        builder,
+        params.no_keepalive,
+        no_keepalive,
+        false
+    );
 
     // Other options.
-    apply_option!(empty, builder, params.no_proxy, no_proxy, false);
-    apply_option!(empty, builder, params.http1_only, http1_only, false);
-    apply_option!(empty, builder, params.http2_only, http2_only, false);
-    apply_option!(builder, params.referer, referer);
+    apply_option!(
+        apply_option_or_default,
+        builder,
+        params.no_proxy,
+        no_proxy,
+        false
+    );
+    apply_option!(
+        apply_option_or_default,
+        builder,
+        params.http1_only,
+        http1_only,
+        false
+    );
+    apply_option!(
+        apply_option_or_default,
+        builder,
+        params.http2_only,
+        http2_only,
+        false
+    );
+    apply_option!(apply_if_some, builder, params.referer, referer);
 
     builder.build().map_err(wrap_rquest_error)
 }
@@ -126,7 +165,7 @@ fn build_client_from_params(params: &mut RequestParams) -> Result<rquest::Client
 /// Apply the parameters to the request builder.
 fn apply_params_to_request(
     mut builder: RequestBuilder,
-    mut params: RequestParams,
+    params: &mut RequestParams,
 ) -> RequestBuilder {
     // Apply the version setting to the request.
     if let Some(version) = params.version.take() {

@@ -4,10 +4,9 @@ use crate::{
     json::PyJson,
     version::Version,
 };
-use arc_swap::ArcSwapOption;
 use mime::Mime;
 use pyo3::{exceptions::PyStopAsyncIteration, prelude::*, types::PyDict, IntoPyObjectExt};
-use rquest::{header, StatusCode, Url};
+use rquest::{header, StatusCode};
 use serde_json::Value;
 use std::{
     net::{IpAddr, SocketAddr},
@@ -17,25 +16,21 @@ use tokio::sync::Mutex;
 
 #[pyclass]
 pub struct Response {
-    url: Url,
     version: Version,
     status_code: StatusCode,
     remote_addr: Option<SocketAddr>,
     content_length: Option<u64>,
-    encoding: Option<String>,
-    response: ArcSwapOption<rquest::Response>,
+    response: Option<rquest::Response>,
 }
 
 impl From<rquest::Response> for Response {
     fn from(response: rquest::Response) -> Self {
         Response {
-            url: response.url().clone(),
             version: Version::from(response.version()),
             status_code: response.status(),
             remote_addr: response.remote_addr(),
             content_length: response.content_length(),
-            encoding: None,
-            response: ArcSwapOption::from_pointee(response),
+            response: Some(response),
         }
     }
 }
@@ -44,8 +39,8 @@ impl From<rquest::Response> for Response {
 impl Response {
     /// Returns the URL of the response.
     #[getter]
-    pub fn url(&self) -> &str {
-        self.url.as_str()
+    pub fn url(&self) -> PyResult<&str> {
+        self.inner().map(|resp| resp.url().as_str())
     }
 
     /// Returns whether the response is successful.
@@ -97,21 +92,19 @@ impl Response {
 
     /// Encoding to decode with when accessing text.
     #[getter]
-    pub fn encoding(&mut self) -> PyResult<&str> {
+    pub fn encoding(&mut self) -> PyResult<String> {
         let resp = self.inner()?;
-        let encoding = self.encoding.get_or_insert_with(|| {
-            let content_type = resp
-                .headers()
-                .get(header::CONTENT_TYPE)
-                .and_then(|value| value.to_str().ok())
-                .and_then(|value| value.parse::<Mime>().ok());
+        let content_type = resp
+            .headers()
+            .get(header::CONTENT_TYPE)
+            .and_then(|value| value.to_str().ok())
+            .and_then(|value| value.parse::<Mime>().ok());
 
-            content_type
-                .as_ref()
-                .and_then(|mime| mime.get_param("charset").map(|charset| charset.as_str()))
-                .unwrap_or("utf-8")
-                .to_owned()
-        });
+        let encoding = content_type
+            .as_ref()
+            .and_then(|mime| mime.get_param("charset").map(|charset| charset.as_str()))
+            .unwrap_or("utf-8")
+            .to_owned();
 
         Ok(encoding)
     }
@@ -146,7 +139,7 @@ impl Response {
     /// # Returns
     ///
     /// A Python object representing the text content of the response.
-    pub fn text<'rt>(&self, py: Python<'rt>) -> PyResult<Bound<'rt, PyAny>> {
+    pub fn text<'rt>(&mut self, py: Python<'rt>) -> PyResult<Bound<'rt, PyAny>> {
         let resp = self.into_inner()?;
         pyo3_async_runtimes::tokio::future_into_py(py, async move {
             resp.text().await.map_err(wrap_rquest_error)
@@ -164,7 +157,7 @@ impl Response {
     ///
     /// A Python object representing the text content of the response.
     pub fn text_with_charset<'rt>(
-        &self,
+        &mut self,
         py: Python<'rt>,
         encoding: String,
     ) -> PyResult<Bound<'rt, PyAny>> {
@@ -185,7 +178,7 @@ impl Response {
     /// # Returns
     ///
     /// A Python object representing the JSON content of the response.
-    pub fn json<'rt>(&self, py: Python<'rt>) -> PyResult<Bound<'rt, PyAny>> {
+    pub fn json<'rt>(&mut self, py: Python<'rt>) -> PyResult<Bound<'rt, PyAny>> {
         let resp = self.into_inner()?;
         pyo3_async_runtimes::tokio::future_into_py(py, async move {
             let json = resp.json::<PyJson>().await.map_err(wrap_rquest_error)?;
@@ -202,7 +195,7 @@ impl Response {
     /// # Returns
     ///
     /// A Python object representing the JSON content of the response.
-    pub fn json_str<'rt>(&self, py: Python<'rt>) -> PyResult<Bound<'rt, PyAny>> {
+    pub fn json_str<'rt>(&mut self, py: Python<'rt>) -> PyResult<Bound<'rt, PyAny>> {
         let resp = self.into_inner()?;
         pyo3_async_runtimes::tokio::future_into_py(py, async move {
             let json = resp.json::<Value>().await.map_err(wrap_rquest_error)?;
@@ -219,7 +212,7 @@ impl Response {
     /// # Returns
     ///
     /// A Python object representing the JSON content of the response.
-    pub fn json_str_pretty<'rt>(&self, py: Python<'rt>) -> PyResult<Bound<'rt, PyAny>> {
+    pub fn json_str_pretty<'rt>(&mut self, py: Python<'rt>) -> PyResult<Bound<'rt, PyAny>> {
         let resp = self.into_inner()?;
         pyo3_async_runtimes::tokio::future_into_py(py, async move {
             let json = resp.json::<Value>().await.map_err(wrap_rquest_error)?;
@@ -236,7 +229,7 @@ impl Response {
     /// # Returns
     ///
     /// A Python object representing the bytes content of the response.
-    pub fn bytes<'rt>(&self, py: Python<'rt>) -> PyResult<Bound<'rt, PyAny>> {
+    pub fn bytes<'rt>(&mut self, py: Python<'rt>) -> PyResult<Bound<'rt, PyAny>> {
         let resp = self.into_inner()?;
         pyo3_async_runtimes::tokio::future_into_py(py, async move {
             let bytes = resp.bytes().await.map_err(wrap_rquest_error)?;
@@ -253,7 +246,7 @@ impl Response {
     /// # Returns
     ///
     /// A Python object representing the stream content of the response.
-    pub fn stream<'rt>(&self, py: Python<'rt>) -> PyResult<Bound<'rt, PyAny>> {
+    pub fn stream<'rt>(&mut self, py: Python<'rt>) -> PyResult<Bound<'rt, PyAny>> {
         let streamer = Streamer::new(self.into_inner()?);
         streamer.into_bound_py_any(py)
     }
@@ -263,7 +256,7 @@ impl Response {
     /// # Arguments
     ///
     /// * `py` - The Python interpreter.
-    pub fn close<'rt>(&self, py: Python<'rt>) -> PyResult<Bound<'rt, PyAny>> {
+    pub fn close<'rt>(&mut self, py: Python<'rt>) -> PyResult<Bound<'rt, PyAny>> {
         let resp = self.into_inner()?;
         pyo3_async_runtimes::tokio::future_into_py(py, async move {
             drop(resp);
@@ -282,8 +275,8 @@ impl Response {
     /// This method provides access to the inner `rquest::Response` wrapped in an `Arc`. It can be
     /// useful for cases where you need to access the original response object directly.
     #[inline(always)]
-    fn inner(&self) -> PyResult<Arc<rquest::Response>> {
-        self.response.load_full().ok_or_else(memory_error)
+    fn inner(&self) -> PyResult<&rquest::Response> {
+        self.response.as_ref().ok_or_else(memory_error)
     }
 
     /// Consumes the `Response` and returns the inner `rquest::Response`.
@@ -297,12 +290,8 @@ impl Response {
     ///
     /// Returns a memory error if the response has already been taken or if the `Arc` cannot be unwrapped.
     #[inline(always)]
-    fn into_inner(&self) -> PyResult<rquest::Response> {
-        self.response
-            .swap(None)
-            .take()
-            .ok_or_else(memory_error)
-            .and_then(|arc| Arc::try_unwrap(arc).map_err(|_| memory_error()))
+    fn into_inner(&mut self) -> PyResult<rquest::Response> {
+        self.response.take().ok_or_else(memory_error)
     }
 }
 
