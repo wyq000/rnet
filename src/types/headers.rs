@@ -7,6 +7,22 @@ use pyo3::{
 use pyo3_stub_gen::derive::gen_stub_pyclass;
 use rquest::header;
 
+/// A HTTP header map.
+///
+/// # Examples
+///
+/// ```python
+/// import rnet
+/// from rnet import Method
+///
+/// async def main():
+///     resp = await rnet.request(Method.GET, "https://www.google.com/")
+///     print("Headers: ", resp.headers.to_dict())
+///
+/// if __name__ == "__main__":
+///     import asyncio
+///     asyncio.run(main())
+/// ```
 #[gen_stub_pyclass]
 #[pyclass]
 #[derive(Clone)]
@@ -14,6 +30,11 @@ pub struct HeaderMap(header::HeaderMap);
 
 #[pymethods]
 impl HeaderMap {
+    /// Converts the header map to a Python dictionary.
+    ///
+    /// # Returns
+    ///
+    /// A Python dictionary representing the headers.
     pub fn to_dict<'rt>(&self, py: Python<'rt>) -> PyResult<Bound<'rt, PyDict>> {
         let new_dict = PyDict::new(py);
         for (header, value) in &self.0 {
@@ -22,6 +43,15 @@ impl HeaderMap {
         Ok(new_dict)
     }
 
+    /// Gets the value of the specified header.
+    ///
+    /// # Arguments
+    ///
+    /// * `key` - The name of the header.
+    ///
+    /// # Returns
+    ///
+    /// An optional byte slice representing the value of the header.
     fn __getitem__<'rt>(&'rt self, key: &str) -> PyResult<Option<&'rt [u8]>> {
         Ok(self.0.get(key).and_then(|v| Some(v.as_ref())))
     }
