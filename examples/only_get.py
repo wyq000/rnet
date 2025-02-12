@@ -1,6 +1,6 @@
 import asyncio
 import rnet
-from rnet import Method, Impersonate, Version
+from rnet import Impersonate, Version
 
 
 async def main():
@@ -8,7 +8,7 @@ async def main():
         "https://tls.peet.ws/api/all",
         impersonate=Impersonate.Chrome100,
         user_agent="Mozilla/5.0",
-        version=Version.HTTP_2,
+        version=Version.HTTP_11,
         timeout=10,
     )
     print("Status Code: ", resp.status_code)

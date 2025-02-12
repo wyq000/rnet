@@ -13,6 +13,7 @@ use types::{HeaderMap, Impersonate, Method, Version};
 macro_rules! define_constants {
     ($type:tt, $inner_type:ty, $($name:ident),*) => {
         #[allow(non_upper_case_globals)]
+        #[gen_stub_pymethods]
         #[pymethods]
         impl $type {
             $(

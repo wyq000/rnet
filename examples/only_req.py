@@ -1,6 +1,6 @@
 import asyncio
 import rnet
-from rnet import Method, Impersonate
+from rnet import Method
 
 
 async def main():

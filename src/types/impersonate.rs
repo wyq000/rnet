@@ -1,6 +1,9 @@
 use crate::define_constants;
 use pyo3::prelude::*;
+use pyo3_stub_gen::derive::{gen_stub_pyclass, gen_stub_pymethods};
 
+/// A impersonate.
+#[gen_stub_pyclass]
 #[pyclass]
 #[derive(Clone, Copy, Default, Debug)]
 pub struct Impersonate(rquest::Impersonate);
@@ -11,12 +14,15 @@ impl Impersonate {
     }
 }
 
+#[gen_stub_pymethods]
 #[pymethods]
 impl Impersonate {
+    /// Returns a string representation of the impersonate.
     fn __str__(&self) -> String {
         format!("{:?}", self.0)
     }
 
+    /// Returns a string representation of the impersonate.
     fn __repr__(&self) -> String {
         self.__str__()
     }
