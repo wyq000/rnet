@@ -6,6 +6,6 @@ mod method;
 mod version;
 
 pub use self::{
-    headers::HeaderMap, impersonate::Impersonate, ipaddr::IpAddr, json::Json, method::Method,
+    headers::HeaderMap, impersonate::Impersonate, ipaddr::SocketAddr, json::Json, method::Method,
     version::Version,
 };

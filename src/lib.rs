@@ -7,7 +7,7 @@ mod types;
 use pyo3::prelude::*;
 use pyo3_stub_gen::{define_stub_info_gatherer, derive::*};
 use req::RequestParams;
-use types::{HeaderMap, Impersonate, Method, Version};
+use types::{HeaderMap, Impersonate, Method, SocketAddr, Version};
 
 #[macro_export]
 macro_rules! define_constants {
@@ -285,6 +285,7 @@ fn rnet(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<Version>()?;
     m.add_class::<HeaderMap>()?;
     m.add_class::<Impersonate>()?;
+    m.add_class::<SocketAddr>()?;
     m.add_class::<resp::Response>()?;
     m.add_function(wrap_pyfunction!(request, m)?)?;
     m.add_function(wrap_pyfunction!(get, m)?)?;

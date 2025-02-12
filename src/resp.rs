@@ -1,6 +1,6 @@
 use crate::{
     error::{memory_error, wrap_rquest_error, wrap_serde_error},
-    types::{HeaderMap, IpAddr, Json, Version},
+    types::{HeaderMap, Json, SocketAddr, Version},
 };
 use arc_swap::ArcSwapOption;
 use mime::Mime;
@@ -8,7 +8,7 @@ use pyo3::{exceptions::PyStopAsyncIteration, prelude::*, types::PyDict, IntoPyOb
 use pyo3_stub_gen::derive::{gen_stub_pyclass, gen_stub_pymethods};
 use rquest::{header, StatusCode, Url};
 use serde_json::Value;
-use std::{net::SocketAddr, sync::Arc};
+use std::sync::Arc;
 use tokio::sync::Mutex;
 
 /// A response from a request.
@@ -41,7 +41,7 @@ pub struct Response {
     url: Url,
     version: Version,
     status_code: StatusCode,
-    remote_addr: Option<SocketAddr>,
+    remote_addr: Option<std::net::SocketAddr>,
     content_length: Option<u64>,
     headers: HeaderMap,
     response: ArcSwapOption<rquest::Response>,
@@ -132,8 +132,8 @@ impl Response {
     ///
     /// An `IpAddr` object representing the remote address of the response.
     #[getter]
-    pub fn remote_addr(&self) -> Option<IpAddr> {
-        self.remote_addr.map(|addr| IpAddr::from(addr.ip()))
+    pub fn remote_addr(&self) -> Option<SocketAddr> {
+        self.remote_addr.map(SocketAddr::from)
     }
 
     /// Encoding to decode with when accessing text.
