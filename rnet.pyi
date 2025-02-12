@@ -23,7 +23,36 @@ class HeaderMap:
         asyncio.run(main())
     ```
     """
-    ...
+    def to_dict(self) -> dict:
+        r"""
+        Converts the header map to a Python dictionary.
+        
+        # Returns
+        
+        A Python dictionary representing the headers.
+        """
+        ...
+
+    def __getitem__(self, key:builtins.str) -> typing.Optional[typing.Any]:
+        r"""
+        Gets the value of the specified header.
+        
+        # Arguments
+        
+        * `key` - The name of the header.
+        
+        # Returns
+        
+        An optional byte slice representing the value of the header.
+        """
+        ...
+
+    def __str__(self) -> builtins.str:
+        r"""
+        Returns a string representation of the header map.
+        """
+        ...
+
 
 class Impersonate:
     r"""

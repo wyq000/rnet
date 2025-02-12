@@ -3,8 +3,9 @@ use std::ops::Deref;
 use pyo3::{
     prelude::*,
     types::{PyBytes, PyDict},
+    IntoPyObjectExt,
 };
-use pyo3_stub_gen::derive::gen_stub_pyclass;
+use pyo3_stub_gen::derive::{gen_stub_pyclass, gen_stub_pymethods};
 use rquest::header;
 
 /// A HTTP header map.
@@ -28,6 +29,7 @@ use rquest::header;
 #[derive(Clone)]
 pub struct HeaderMap(header::HeaderMap);
 
+#[gen_stub_pymethods]
 #[pymethods]
 impl HeaderMap {
     /// Converts the header map to a Python dictionary.
@@ -52,8 +54,18 @@ impl HeaderMap {
     /// # Returns
     ///
     /// An optional byte slice representing the value of the header.
-    fn __getitem__<'rt>(&'rt self, key: &str) -> PyResult<Option<&'rt [u8]>> {
-        Ok(self.0.get(key).and_then(|v| Some(v.as_ref())))
+    fn __getitem__(&self, key: &str) -> PyResult<Option<PyObject>> {
+        if let Some(value) = self.0.get(key) {
+            return Python::with_gil(|py| {
+                Ok(value
+                    .as_bytes()
+                    .into_bound_py_any(py)
+                    .map(|b| b.unbind())
+                    .ok())
+            });
+        }
+
+        Ok(None)
     }
 
     /// Returns a string representation of the header map.
