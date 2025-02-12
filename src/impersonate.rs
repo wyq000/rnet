@@ -11,6 +11,17 @@ impl Impersonate {
     }
 }
 
+#[pymethods]
+impl Impersonate {
+    fn __str__(&self) -> String {
+        format!("{:?}", self.0)
+    }
+
+    fn __repr__(&self) -> String {
+        self.__str__()
+    }
+}
+
 define_constants!(
     Impersonate,
     rquest::Impersonate,
