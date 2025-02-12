@@ -1,6 +1,9 @@
 use crate::{
-    error::wrap_rquest_error, impersonate::Impersonate, method::Method, req::RequestParams,
-    resp::Response, Result,
+    error::wrap_rquest_error,
+    req::RequestParams,
+    resp::Response,
+    types::{Impersonate, Method},
+    Result,
 };
 use pyo3::prelude::*;
 use rquest::RequestBuilder;

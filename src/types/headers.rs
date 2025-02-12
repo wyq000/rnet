@@ -4,10 +4,12 @@ use pyo3::{
     prelude::*,
     types::{PyBytes, PyDict},
 };
+use pyo3_stub_gen::derive::gen_stub_pyclass;
 use rquest::header;
 
-#[derive(Clone)]
+#[gen_stub_pyclass]
 #[pyclass]
+#[derive(Clone)]
 pub struct HeaderMap(header::HeaderMap);
 
 #[pymethods]

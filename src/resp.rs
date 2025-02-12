@@ -1,20 +1,41 @@
 use crate::{
     error::{memory_error, wrap_rquest_error, wrap_serde_error},
-    headers::HeaderMap,
-    json::PyJson,
-    version::Version,
+    types::{HeaderMap, IpAddr, Json, Version},
 };
 use arc_swap::ArcSwapOption;
 use mime::Mime;
 use pyo3::{exceptions::PyStopAsyncIteration, prelude::*, types::PyDict, IntoPyObjectExt};
+use pyo3_stub_gen::derive::{gen_stub_pyclass, gen_stub_pymethods};
 use rquest::{header, StatusCode, Url};
 use serde_json::Value;
-use std::{
-    net::{IpAddr, SocketAddr},
-    sync::Arc,
-};
+use std::{net::SocketAddr, sync::Arc};
 use tokio::sync::Mutex;
 
+/// A response from a request.
+///
+/// # Examples
+///
+/// ```python
+/// import asyncio
+/// import rnet
+///
+/// async def main():
+///     response = await rnet.get("https://www.rust-lang.org")
+///     print("Status Code: ", response.status_code)
+///     print("Version: ", response.version)
+///     print("Response URL: ", response.url)
+///     print("Headers: ", response.headers.to_dict())
+///     print("Content-Length: ", response.content_length)
+///     print("Encoding: ", response.encoding)
+///     print("Remote Address: ", response.remote_addr)
+///
+///     text_content = await response.text()
+///     print("Text: ", text_content)
+///
+/// if __name__ == "__main__":
+///     asyncio.run(main())
+/// ```
+#[gen_stub_pyclass]
 #[pyclass]
 pub struct Response {
     url: Url,
@@ -40,25 +61,30 @@ impl From<rquest::Response> for Response {
     }
 }
 
+#[gen_stub_pymethods]
 #[pymethods]
 impl Response {
     /// Returns the URL of the response.
+    ///
+    /// # Returns
+    ///
+    /// A string representing the URL of the response.
     #[getter]
     pub fn url(&self) -> &str {
         self.url.as_str()
     }
 
     /// Returns whether the response is successful.
+    ///
+    /// # Returns
+    ///
+    /// A boolean indicating whether the response is successful.
     #[getter]
     pub fn ok(&self) -> bool {
         self.status_code.is_success()
     }
 
     /// Returns the status code of the response.
-    ///
-    /// # Arguments
-    ///
-    /// * `py` - The Python interpreter.
     ///
     /// # Returns
     ///
@@ -71,30 +97,50 @@ impl Response {
     }
 
     /// Returns the HTTP version of the response.
+    ///
+    /// # Returns
+    ///
+    /// A `Version` object representing the HTTP version of the response.
     #[getter]
     pub fn version(&self) -> Version {
         self.version
     }
 
     /// Returns the headers of the response.
+    ///
+    /// # Returns
+    ///
+    /// A `HeaderMap` object representing the headers of the response.
     #[getter]
     pub fn headers(&self) -> HeaderMap {
         self.headers.clone()
     }
 
     /// Returns the content length of the response.
+    ///
+    /// # Returns
+    ///
+    /// An integer representing the content length of the response.
     #[getter]
     pub fn content_length(&self) -> u64 {
         self.content_length.unwrap_or_default()
     }
 
     /// Returns the remote address of the response.
+    ///
+    /// # Returns
+    ///
+    /// An `IpAddr` object representing the remote address of the response.
     #[getter]
     pub fn remote_addr(&self) -> Option<IpAddr> {
-        self.remote_addr.map(|addr| addr.ip())
+        self.remote_addr.map(|addr| IpAddr::from(addr.ip()))
     }
 
     /// Encoding to decode with when accessing text.
+    ///
+    /// # Returns
+    ///
+    /// A string representing the encoding to decode with when accessing text.
     #[getter]
     pub fn encoding(&self) -> PyResult<String> {
         let content_type = self
@@ -114,10 +160,6 @@ impl Response {
 
     /// Returns the cookies of the response.
     ///
-    /// # Arguments
-    ///
-    /// * `py` - The Python interpreter.
-    ///
     /// # Returns
     ///
     /// A Python dictionary representing the cookies of the response.
@@ -136,10 +178,6 @@ impl Response {
 
     /// Returns the text content of the response.
     ///
-    /// # Arguments
-    ///
-    /// * `py` - The Python interpreter.
-    ///
     /// # Returns
     ///
     /// A Python object representing the text content of the response.
@@ -154,7 +192,6 @@ impl Response {
     ///
     /// # Arguments
     ///
-    /// * `py` - The Python interpreter.
     /// * `default_encoding` - The default encoding to use if the charset is not specified.
     ///
     /// # Returns
@@ -175,26 +212,18 @@ impl Response {
 
     /// Returns the JSON content of the response.
     ///
-    /// # Arguments
-    ///
-    /// * `py` - The Python interpreter.
-    ///
     /// # Returns
     ///
     /// A Python object representing the JSON content of the response.
     pub fn json<'rt>(&self, py: Python<'rt>) -> PyResult<Bound<'rt, PyAny>> {
         let resp = self.into_inner()?;
         pyo3_async_runtimes::tokio::future_into_py(py, async move {
-            let json = resp.json::<PyJson>().await.map_err(wrap_rquest_error)?;
+            let json = resp.json::<Json>().await.map_err(wrap_rquest_error)?;
             Python::with_gil(|py| json.into_bound_py_any(py).map(|obj| obj.unbind()))
         })
     }
 
     /// Returns the JSON string content of the response.
-    ///
-    /// # Arguments
-    ///
-    /// * `py` - The Python interpreter.
     ///
     /// # Returns
     ///
@@ -209,10 +238,6 @@ impl Response {
 
     /// Returns the JSON pretty string content of the response.
     ///
-    /// # Arguments
-    ///
-    /// * `py` - The Python interpreter.
-    ///
     /// # Returns
     ///
     /// A Python object representing the JSON content of the response.
@@ -225,10 +250,6 @@ impl Response {
     }
 
     /// Returns the bytes content of the response.
-    ///
-    /// # Arguments
-    ///
-    /// * `py` - The Python interpreter.
     ///
     /// # Returns
     ///
@@ -243,10 +264,6 @@ impl Response {
 
     /// Returns the stream content of the response.
     ///
-    /// # Arguments
-    ///
-    /// * `py` - The Python interpreter.
-    ///
     /// # Returns
     ///
     /// A Python object representing the stream content of the response.
@@ -256,10 +273,6 @@ impl Response {
     }
 
     /// Closes the response connection.
-    ///
-    /// # Arguments
-    ///
-    /// * `py` - The Python interpreter.
     pub fn close(&self) {
         let _ = self.into_inner().map(drop);
     }
@@ -316,15 +329,12 @@ impl Response {
 /// if __name__ == "__main__":
 ///     asyncio.run(main())
 /// ```
+#[gen_stub_pyclass]
 #[pyclass]
 struct Streamer(Arc<Mutex<rquest::Response>>);
 
 impl Streamer {
     /// Creates a new `Streamer` instance.
-    ///
-    /// # Arguments
-    ///
-    /// * `response` - The `rquest::Response` to be streamed.
     ///
     /// # Returns
     ///
@@ -334,15 +344,12 @@ impl Streamer {
     }
 }
 
+#[gen_stub_pymethods]
 #[pymethods]
 impl Streamer {
     /// Returns the `Streamer` instance itself to be used as an asynchronous iterator.
     ///
     /// This method allows the `Streamer` to be used in an asynchronous for loop in Python.
-    ///
-    /// # Arguments
-    ///
-    /// * `slf` - A reference to the `Streamer` instance.
     ///
     /// # Returns
     ///
@@ -357,10 +364,6 @@ impl Streamer {
     /// This method implements the `__anext__` method for the `Streamer` class, allowing it to be
     /// used as an asynchronous iterator in Python. It returns the next chunk of the response or
     /// raises `PyStopAsyncIteration` if the iterator is exhausted.
-    ///
-    /// # Arguments
-    ///
-    /// * `py` - The Python interpreter.
     ///
     /// # Returns
     ///

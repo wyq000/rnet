@@ -11,12 +11,14 @@ authors = ["0x676e67 <gngppz@gmail.com>"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [lib]
 name = "rnet"
-crate-type = ["cdylib"]
+crate-type = ["cdylib", "rlib"]
+doctest = false
 
 [dependencies]
 tokio = { version = "1.0", features = ["sync"] }
-pyo3 = { version = "0.23.0", features = ["anyhow", "indexmap", "multiple-pymethods", "generate-import-lib"] }
+pyo3 = { version = "0.23.0", features = ["anyhow", "indexmap", "multiple-pymethods", "generate-import-lib", "experimental-inspect"] }
 pyo3-async-runtimes = { version = "0.23.0", features = ["tokio-runtime"] }
+pyo3-stub-gen = "0.7.0"
 anyhow = "1.0"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"

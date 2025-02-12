@@ -1,7 +1,36 @@
-use crate::{impersonate::Impersonate, version::Version};
+use crate::types::{Impersonate, Version};
 use indexmap::IndexMap;
 use pyo3::prelude::*;
+use pyo3_stub_gen::derive::gen_stub_pyclass;
 
+/// The parameters for a request.
+///
+/// # Examples
+///
+/// ```python
+/// import rnet
+/// from rnet import Impersonate, Version
+///
+/// params = rnet.RequestParams(
+///     impersonate=Impersonate.Chrome100,
+///     version=Version.HTTP_2,
+///     user_agent="Mozilla/5.0",
+///     headers={"Content-Type": "application/json"},
+///     timeout=10,
+///     connect_timeout=5,
+///     read_timeout=15,
+///     no_keepalive=True,
+///     no_proxy=False,
+///     http1_only=False,
+///     http2_only=True,
+///     referer=True
+/// )
+///
+/// response = await rnet.get("https://www.rust-lang.org", **params)
+/// body = await response.text()
+/// print(body)
+/// ```
+#[gen_stub_pyclass]
 #[derive(Default, Debug)]
 pub struct RequestParams {
     /// The impersonation settings for the request.

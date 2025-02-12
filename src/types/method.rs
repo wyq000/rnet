@@ -1,6 +1,9 @@
 use crate::define_constants;
 use pyo3::prelude::*;
+use pyo3_stub_gen::derive::gen_stub_pyclass;
 
+/// A HTTP method.
+#[gen_stub_pyclass]
 #[pyclass(eq)]
 #[derive(Clone, PartialEq, Eq, Hash)]
 pub struct Method(rquest::Method);

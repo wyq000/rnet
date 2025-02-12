@@ -1,16 +1,13 @@
 mod client;
 mod error;
-mod headers;
-mod impersonate;
-mod json;
-mod method;
 mod req;
 mod resp;
-mod version;
+mod types;
 
-use method::Method;
 use pyo3::prelude::*;
+use pyo3_stub_gen::{define_stub_info_gatherer, derive::*};
 use req::RequestParams;
+use types::{HeaderMap, Impersonate, Method, Version};
 
 #[macro_export]
 macro_rules! define_constants {
@@ -59,6 +56,7 @@ type Result<T> = std::result::Result<T, PyErr>;
 /// - supplied `Url` cannot be parsed
 /// - there was an error while sending request
 /// - redirect limit was exhausted
+#[gen_stub_pyfunction]
 #[pyfunction]
 #[pyo3(signature = (url, **kwds))]
 fn get<'rt>(
@@ -70,6 +68,21 @@ fn get<'rt>(
 }
 
 /// Shortcut method to quickly make a `POST` request.
+///
+/// # Examples
+///
+/// ```python
+/// import rnet
+/// import asyncio
+///
+/// async def run():
+///     response = await rnet.post("https://www.rust-lang.org", data={"key": "value"})
+///     body = await response.text()
+///     print(body)
+///
+/// asyncio.run(run())
+/// ```
+#[gen_stub_pyfunction]
 #[pyfunction]
 #[pyo3(signature = (url, **kwds))]
 fn post<'rt>(
@@ -81,6 +94,21 @@ fn post<'rt>(
 }
 
 /// Shortcut method to quickly make a `PUT` request.
+///
+/// # Examples
+///
+/// ```python
+/// import rnet
+/// import asyncio
+///
+/// async def run():
+///     response = await rnet.put("https://www.rust-lang.org", data={"key": "value"})
+///     body = await response.text()
+///     print(body)
+///
+/// asyncio.run(run())
+/// ```
+#[gen_stub_pyfunction]
 #[pyfunction]
 #[pyo3(signature = (url, **kwds))]
 fn put<'rt>(
@@ -92,6 +120,21 @@ fn put<'rt>(
 }
 
 /// Shortcut method to quickly make a `PATCH` request.
+///
+/// # Examples
+///
+/// ```python
+/// import rnet
+/// import asyncio
+///
+/// async def run():
+///     response = await rnet.patch("https://www.rust-lang.org", data={"key": "value"})
+///     body = await response.text()
+///     print(body)
+///
+/// asyncio.run(run())
+/// ```
+#[gen_stub_pyfunction]
 #[pyfunction]
 #[pyo3(signature = (url, **kwds))]
 fn patch<'rt>(
@@ -103,6 +146,21 @@ fn patch<'rt>(
 }
 
 /// Shortcut method to quickly make a `DELETE` request.
+///
+/// # Examples
+///
+/// ```python
+/// import rnet
+/// import asyncio
+///
+/// async def run():
+///     response = await rnet.delete("https://www.rust-lang.org")
+///     body = await response.text()
+///     print(body)
+///
+/// asyncio.run(run())
+/// ```
+#[gen_stub_pyfunction]
 #[pyfunction]
 #[pyo3(signature = (url, **kwds))]
 fn delete<'rt>(
@@ -114,6 +172,20 @@ fn delete<'rt>(
 }
 
 /// Shortcut method to quickly make a `HEAD` request.
+///
+/// # Examples
+///
+/// ```python
+/// import rnet
+/// import asyncio
+///
+/// async def run():
+///     response = await rnet.head("https://www.rust-lang.org")
+///     print(response.headers)
+///
+/// asyncio.run(run())
+/// ```
+#[gen_stub_pyfunction]
 #[pyfunction]
 #[pyo3(signature = (url, **kwds))]
 fn head<'rt>(
@@ -124,7 +196,21 @@ fn head<'rt>(
     pyo3_async_runtimes::tokio::future_into_py(py, async move { client::head(url, kwds).await })
 }
 
-/// Shortcut method to quickly make a `OPTIONS` request.
+/// Shortcut method to quickly make an `OPTIONS` request.
+///
+/// # Examples
+///
+/// ```python
+/// import rnet
+/// import asyncio
+///
+/// async def run():
+///     response = await rnet.options("https://www.rust-lang.org")
+///     print(response.headers)
+///
+/// asyncio.run(run())
+/// ```
+#[gen_stub_pyfunction]
 #[pyfunction]
 #[pyo3(signature = (url, **kwds))]
 fn options<'rt>(
@@ -136,6 +222,20 @@ fn options<'rt>(
 }
 
 /// Shortcut method to quickly make a `TRACE` request.
+///
+/// # Examples
+///
+/// ```python
+/// import rnet
+/// import asyncio
+///
+/// async def run():
+///     response = await rnet.trace("https://www.rust-lang.org")
+///     print(response.headers)
+///
+/// asyncio.run(run())
+/// ```
+#[gen_stub_pyfunction]
 #[pyfunction]
 #[pyo3(signature = (url, **kwds))]
 fn trace<'rt>(
@@ -149,6 +249,22 @@ fn trace<'rt>(
 /// Make a request with the given parameters.
 ///
 /// This function allows you to make a request with the specified parameters encapsulated in a `Request` object.
+///
+/// # Examples
+///
+/// ```python
+/// import rnet
+/// import asyncio
+/// from rnet import Method
+///
+/// async def run():
+///     response = await rnet.request(Method.GET, "https://www.rust-lang.org")
+///     body = await response.text()
+///     print(body)
+///
+/// asyncio.run(run())
+/// ```
+#[gen_stub_pyfunction]
 #[pyfunction]
 #[pyo3(signature = (method, url, **kwds))]
 fn request<'rt>(
@@ -164,11 +280,11 @@ fn request<'rt>(
 
 #[pymodule]
 fn rnet(m: &Bound<'_, PyModule>) -> PyResult<()> {
-    m.add_class::<method::Method>()?;
-    m.add_class::<version::Version>()?;
-    m.add_class::<impersonate::Impersonate>()?;
+    m.add_class::<Method>()?;
+    m.add_class::<Version>()?;
+    m.add_class::<HeaderMap>()?;
+    m.add_class::<Impersonate>()?;
     m.add_class::<resp::Response>()?;
-    m.add_class::<headers::HeaderMap>()?;
     m.add_function(wrap_pyfunction!(request, m)?)?;
     m.add_function(wrap_pyfunction!(get, m)?)?;
     m.add_function(wrap_pyfunction!(post, m)?)?;
@@ -180,3 +296,5 @@ fn rnet(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(trace, m)?)?;
     Ok(())
 }
+
+define_stub_info_gatherer!(stub_info);

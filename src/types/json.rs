@@ -4,17 +4,17 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, FromPyObject, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum PyJson {
-    Object(IndexMap<String, PyJson>),
+pub enum Json {
+    Object(IndexMap<String, Json>),
     Boolean(bool),
     Number(isize),
     Float(f64),
     String(String),
     Null(Option<isize>),
-    Array(Vec<PyJson>),
+    Array(Vec<Json>),
 }
 
-impl<'py> IntoPyObject<'py> for PyJson {
+impl<'py> IntoPyObject<'py> for Json {
     type Target = PyAny;
     type Output = Bound<'py, Self::Target>;
     type Error = anyhow::Error;

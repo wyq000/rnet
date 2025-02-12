@@ -1,6 +1,9 @@
 use crate::define_constants;
 use pyo3::prelude::*;
+use pyo3_stub_gen::derive::{gen_stub_pyclass, gen_stub_pymethods};
 
+/// A HTTP version.
+#[gen_stub_pyclass]
 #[pyclass(eq)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, Debug)]
 pub struct Version(rquest::Version);
@@ -11,12 +14,15 @@ impl Version {
     }
 }
 
+#[gen_stub_pymethods]
 #[pymethods]
 impl Version {
+    /// Returns a string representation of the version.
     fn __str__(&self) -> String {
         format!("{:?}", self.0)
     }
 
+    /// Returns a string representation of the version.
     fn __repr__(&self) -> String {
         self.__str__()
     }
