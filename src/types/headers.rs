@@ -55,6 +55,11 @@ impl HeaderMap {
     fn __getitem__<'rt>(&'rt self, key: &str) -> PyResult<Option<&'rt [u8]>> {
         Ok(self.0.get(key).and_then(|v| Some(v.as_ref())))
     }
+
+    /// Returns a string representation of the header map.
+    pub fn __str__(&self) -> String {
+        format!("{:?}", self.0)
+    }
 }
 
 impl From<header::HeaderMap> for HeaderMap {
