@@ -1,5 +1,6 @@
 # rnet
 
+[![CI](https://github.com/0x676e67/rnet/actions/workflows/style.yml/badge.svg)](https://github.com/0x676e67/rnet/actions/workflows/style.yml)
 [![GitHub License](https://img.shields.io/github/license/0x676e67/rnet)](https://github.com/0x676e67/rnet/blob/main/LICENSE)
 
 > 🚀 Help me work seamlessly with open source sharing by [sponsoring me on GitHub](https://github.com/0x676e67/0x676e67/blob/main/SPONSOR.md)
