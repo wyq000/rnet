@@ -1,7 +1,8 @@
 # rnet
 
-[![CI](https://github.com/0x676e67/rnet/actions/workflows/style.yml/badge.svg)](https://github.com/0x676e67/rnet/actions/workflows/style.yml)
+[![CI](https://github.com/0x676e67/rnet/actions/workflows/ci.yml/badge.svg)](https://github.com/0x676e67/rnet/actions/workflows/style.yml)
 [![GitHub License](https://img.shields.io/github/license/0x676e67/rnet)](https://github.com/0x676e67/rnet/blob/main/LICENSE)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/rnet)
 
 > 🚀 Help me work seamlessly with open source sharing by [sponsoring me on GitHub](https://github.com/0x676e67/0x676e67/blob/main/SPONSOR.md)
 
@@ -14,6 +15,12 @@ Python HTTP Client with Black Magic, powered by FFI from [rquest](https://github
 * macOS: `x86_64`,`aarch64`
 
 * Windows: `x86_64`,`i686`
+
+## Installation
+
+```bash
+pip install rnet
+```
 
 ## Example
 
