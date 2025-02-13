@@ -1,3 +1,7 @@
+/*
+ *   Copyright (c) 2025 
+ *   All rights reserved.
+ */
 use crate::{
     error::{wrap_invali_header_name_error, wrap_rquest_error},
     param::{ClientParams, RequestParams},
@@ -55,13 +59,14 @@ impl Client {
     /// # Examples
     ///
     /// ```python
+    /// import asyncio
     /// import rnet
     ///
     /// client = rnet.Client(
     ///     user_agent="my-app/0.0.1",
     ///     timeout=10,
     /// )
-    /// response = client.get('https://httpbin.org/get')
+    /// response = await client.get('https://httpbin.org/get')
     /// print(response.text)
     /// ```
     #[new]

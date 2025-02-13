@@ -1,13 +1,12 @@
 import asyncio
 import rnet
-from rnet import Impersonate, Version
+from rnet import Impersonate
 
 
 async def main():
     resp = await rnet.get(
         "https://tls.peet.ws/api/all",
-        impersonate=Impersonate.Chrome100,
-        version=Version.HTTP_11,
+        impersonate=Impersonate.Firefox133,
         timeout=10,
     )
     print("Status Code: ", resp.status_code)

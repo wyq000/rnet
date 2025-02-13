@@ -1,3 +1,7 @@
+/*
+ *   Copyright (c) 2025 
+ *   All rights reserved.
+ */
 use pyo3::{
     create_exception,
     exceptions::{PyException, PyRuntimeError},

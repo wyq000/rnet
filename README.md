@@ -96,4 +96,3 @@ Your question might already be answered on the [issues](https://github.com/0x676
 ## License
 
 **rnet** © [0x676e67](https://github.com/0x676e67), Released under the [GPL-3.0](./LICENSE) License.
-🥵

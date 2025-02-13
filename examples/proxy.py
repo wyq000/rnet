@@ -1,8 +1,5 @@
 import asyncio
 import rnet
-
-import asyncio
-import rnet
 from rnet import Impersonate, Proxy
 
 
