@@ -4,6 +4,330 @@
 import builtins
 import typing
 
+class Client:
+    r"""
+    A client for making HTTP requests.
+    """
+    def __new__(cls,**kwds): ...
+    def get(self, url:builtins.str, **kwds) -> typing.Any:
+        r"""
+        Sends a GET request.
+        
+        # Arguments
+        
+        * `url` - The URL to send the request to.
+        * `**kwds` - Additional request parameters.
+        
+        # Returns
+        
+        A `Response` object.
+        
+        # Examples
+        
+        ```python
+        import rnet
+        import asyncio
+        
+        async def main():
+            client = rnet.Client()
+            response = await client.get("https://httpbin.org/get")
+            print(await response.text())
+        
+        asyncio.run(main())
+        ```
+        """
+        ...
+
+    def post(self, url:builtins.str, **kwds) -> typing.Any:
+        r"""
+        Sends a POST request.
+        
+        # Arguments
+        
+        * `url` - The URL to send the request to.
+        * `**kwds` - Additional request parameters.
+        
+        # Returns
+        
+        A `Response` object.
+        
+        # Examples
+        
+        ```python
+        import rnet
+        import asyncio
+        
+        async def main():
+            client = rnet.Client()
+            response = await client.post("://httpbin.org/post", json={"key": "value"})
+            print(await response.text())
+        
+        asyncio.run(main())
+        ```
+        """
+        ...
+
+    def put(self, url:builtins.str, **kwds) -> typing.Any:
+        r"""
+        Sends a PUT request.
+        
+        # Arguments
+        
+        * `url` - The URL to send the request to.
+        * `**kwds` - Additional request parameters.
+        
+        # Returns
+        
+        A `Response` object.
+        
+        # Examples
+        
+        ```python
+        import rnet
+        import asyncio
+        
+        async def main():
+            client = rnet.Client()
+            response = await client.put("https://httpbin.org/put", json={"key": "value"})
+            print(await response.text())
+        
+        asyncio.run(main())
+        ```
+        """
+        ...
+
+    def patch(self, url:builtins.str, **kwds) -> typing.Any:
+        r"""
+        Sends a PATCH request.
+        
+        # Arguments
+        
+        * `url` - The URL to send the request to.
+        * `**kwds` - Additional request parameters.
+        
+        # Returns
+        
+        A `Response` object.
+        
+        # Examples
+        
+        ```python
+        import rnet
+        import asyncio
+        
+        async def main():
+            client = rnet.Client()
+            response = await client.patch("https://httpbin.org/patch", json={"key": "value"})
+            print(await response.text())
+        
+        asyncio.run(main())
+        ```
+        """
+        ...
+
+    def delete(self, url:builtins.str, **kwds) -> typing.Any:
+        r"""
+        Sends a DELETE request.
+        
+        # Arguments
+        
+        * `url` - The URL to send the request to.
+        * `**kwds` - Additional request parameters.
+        
+        # Returns
+        
+        A `Response` object.
+        
+        # Examples
+        
+        ```python
+        import rnet
+        import asyncio
+        
+        async def main():
+            client = rnet.Client()
+            response = await client.delete("https://httpbin.org/delete")
+            print(await response.text())
+        
+        asyncio.run(main())
+        ```
+        """
+        ...
+
+    def head(self, url:builtins.str, **kwds) -> typing.Any:
+        r"""
+        Sends a HEAD request.
+        
+        # Arguments
+        
+        * `url` - The URL to send the request to.
+        * `**kwds` - Additional request parameters.
+        
+        # Returns
+        
+        A `Response` object.
+        
+        # Examples
+        
+        ```python
+        import rnet
+        import asyncio
+        
+        async def main():
+            client = rnet.Client()
+            response = await client.head("https://httpbin.org/head")
+            print(response.status_code)
+        
+        asyncio.run(main())
+        ```
+        """
+        ...
+
+    def options(self, url:builtins.str, **kwds) -> typing.Any:
+        r"""
+        Sends an OPTIONS request.
+        
+        # Arguments
+        
+        * `url` - The URL to send the request to.
+        * `**kwds` - Additional request parameters.
+        
+        # Returns
+        
+        A `Response` object.
+        
+        # Examples
+        
+        ```python
+        import rnet
+        import asyncio
+        
+        async def main():
+            client = rnet.Client()
+            response = await client.options("https://httpbin.org/options")
+            print(response.headers)
+        
+        asyncio.run(main())
+        ```
+        """
+        ...
+
+    def trace(self, url:builtins.str, **kwds) -> typing.Any:
+        r"""
+        Sends a TRACE request.
+        
+        # Arguments
+        
+        * `url` - The URL to send the request to.
+        * `**kwds` - Additional request parameters.
+        
+        # Returns
+        
+        A `Response` object.
+        
+        # Examples
+        
+        ```python
+        import rnet
+        import asyncio
+        
+        async def main():
+            client = rnet.Client()
+            response = await client.trace("https://httpbin.org/trace")
+            print(response.headers)
+        
+        asyncio.run(main())
+        ```
+        """
+        ...
+
+    def request(self, method:Method, url:builtins.str, **kwds) -> typing.Any:
+        r"""
+        Sends a request with the given method and URL.
+        
+        # Arguments
+        
+        * `method` - The HTTP method to use.
+        * `url` - The URL to send the request to.
+        * `**kwds` - Additional request parameters.
+        
+        # Returns
+        
+        A `Response` object.
+        
+        # Examples
+        
+        ```python
+        import rnet
+        import asyncio
+        from rnet import Method
+        
+        async def main():
+            client = rnet.Client()
+            response = await client.request(Method.GET, "https://httpbin.org/get")
+            print(await response.text())
+        
+        asyncio.run(main())
+        ```
+        """
+        ...
+
+
+class ClientParams:
+    r"""
+    The parameters for a request.
+    
+    # Examples
+    
+    ```python
+    import rnet
+    from rnet import Impersonate, Version
+    
+    params = rnet.RequestParams(
+        impersonate=Impersonate.Chrome100,
+        default_headers={"Content-Type": "application/json"},
+        user_agent="Mozilla/5.0",
+        timeout=10,
+        connect_timeout=5,
+        read_timeout=15,
+        no_keepalive=True,
+        no_proxy=False,
+        http1_only=False,
+        http2_only=True,
+        referer=True
+    )
+    
+    response = await rnet.get("https://www.rust-lang.org", **params)
+    body = await response.text()
+    print(body)
+    ```
+    """
+    impersonate: typing.Optional[Impersonate]
+    user_agent: typing.Optional[builtins.str]
+    headers_order: typing.Optional[builtins.list[builtins.str]]
+    referer: typing.Optional[builtins.bool]
+    timeout: typing.Optional[builtins.int]
+    connect_timeout: typing.Optional[builtins.int]
+    read_timeout: typing.Optional[builtins.int]
+    no_keepalive: typing.Optional[builtins.bool]
+    tcp_keepalive: typing.Optional[builtins.int]
+    pool_idle_timeout: typing.Optional[builtins.int]
+    pool_max_idle_per_host: typing.Optional[builtins.int]
+    http1_only: typing.Optional[builtins.bool]
+    http2_only: typing.Optional[builtins.bool]
+    https_only: typing.Optional[builtins.bool]
+    tcp_nodelay: typing.Optional[builtins.bool]
+    danger_accept_invalid_certs: typing.Optional[builtins.bool]
+    http2_max_retry_count: typing.Optional[builtins.int]
+    tls_info: typing.Optional[builtins.bool]
+    no_proxy: typing.Optional[builtins.bool]
+    proxies: typing.Optional[builtins.list[Proxy]]
+    interface: typing.Optional[builtins.str]
+    gzip: typing.Optional[builtins.bool]
+    brotli: typing.Optional[builtins.bool]
+    deflate: typing.Optional[builtins.bool]
+    zstd: typing.Optional[builtins.bool]
+
 class HeaderMap:
     r"""
     A HTTP header map.
@@ -181,7 +505,17 @@ class RequestParams:
     print(body)
     ```
     """
-    ...
+    proxy: typing.Optional[builtins.str]
+    interface: typing.Optional[builtins.str]
+    timeout: typing.Optional[builtins.int]
+    read_timeout: typing.Optional[builtins.int]
+    version: typing.Optional[Version]
+    auth: typing.Optional[builtins.str]
+    bearer_auth: typing.Optional[builtins.str]
+    basic_auth: typing.Optional[tuple[builtins.str, typing.Optional[builtins.str]]]
+    query: typing.Optional[builtins.list[tuple[builtins.str, builtins.str]]]
+    form: typing.Optional[builtins.list[tuple[builtins.str, builtins.str]]]
+    body: typing.Optional[builtins.list[builtins.int]]
 
 class Response:
     r"""
@@ -219,6 +553,16 @@ class Response:
     remote_addr: typing.Optional[SocketAddr]
     encoding: builtins.str
     cookies: dict
+    def peer_certificate(self) -> typing.Optional[typing.Any]:
+        r"""
+        Returns the TLS peer certificate of the response.
+        
+        # Returns
+        
+        A Python object representing the TLS peer certificate of the response.
+        """
+        ...
+
     def text(self) -> typing.Any:
         r"""
         Returns the text content of the response.

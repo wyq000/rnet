@@ -3,25 +3,26 @@ import rnet
 
 import asyncio
 import rnet
-from rnet import Impersonate
+from rnet import Impersonate, Client
 
 
 async def main():
-    resp = await rnet.get(
-        "https://mozilla-modern.badssl.com/",
+    client = Client(
         impersonate=Impersonate.Firefox133,
-        danger_accept_invalid_certs=True,
+        user_agent="rnet/0.0.1",
     )
+    resp = await client.get("https://httpbin.org/stream/20")
     print("Status Code: ", resp.status_code)
     print("Version: ", resp.version)
     print("Response URL: ", resp.url)
     print("Headers: ", resp.headers.to_dict())
-    print("Cookies: ", resp.cookies)
     print("Content-Length: ", resp.content_length)
     print("Encoding: ", resp.encoding)
     print("Remote Address: ", resp.remote_addr)
-    print("Text: ", await resp.text())
-
+    streamer = resp.stream()
+    async for chunk in streamer:
+        print("Chunk: ", chunk)
+        await asyncio.sleep(0.1)
 
 if __name__ == "__main__":
     asyncio.run(main())
