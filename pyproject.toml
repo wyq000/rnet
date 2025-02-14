@@ -9,10 +9,22 @@ classifiers = [
     "Programming Language :: Rust",
     "Programming Language :: Python :: Implementation :: CPython",
     "Programming Language :: Python :: Implementation :: PyPy",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries :: Python Modules",
 ]
 description = "Asynchronous Python HTTP Client with Black Magic"
 readme = "README.md"
 dynamic = ["version"]
+license = { text = "GPL-3.0" }
+authors = [
+    { name = "0x676e67", email = "gngppz@gmail.com" }
+]
+keywords = ["http", "client", "async", "ffi", "rust"]
 
 [tool.maturin]
 features = ["pyo3/extension-module"]
