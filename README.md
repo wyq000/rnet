@@ -2,11 +2,23 @@
 
 [![CI](https://github.com/0x676e67/rnet/actions/workflows/ci.yml/badge.svg)](https://github.com/0x676e67/rnet/actions/workflows/style.yml)
 [![GitHub License](https://img.shields.io/github/license/0x676e67/rnet)](https://github.com/0x676e67/rnet/blob/main/LICENSE)
-![PyPI - Python Version](https://img.shields.io/pypi/pyversions/rnet)
+![Python Version from PEP 621 TOML](https://img.shields.io/python/required-version-toml?tomlFilePath=https%3A%2F%2Fraw.githubusercontent.com%2F0x676e67%2Frnet%2Fmain%2Fpyproject.toml)
+[![PyPI](https://img.shields.io/pypi/v/rnet)](https://pypi.org/project/rnet/)
+
 
 > 🚀 Help me work seamlessly with open source sharing by [sponsoring me on GitHub](https://github.com/0x676e67/0x676e67/blob/main/SPONSOR.md)
 
 Python HTTP Client with Black Magic, powered by FFI from [rquest](https://github.com/0x676e67/rquest).
+
+## Features
+
+- Plain, JSON, urlencoded
+- Header Order
+- Redirect Policy
+- Cookie Store
+- HTTP Proxies
+- HTTPS via BoringSSL
+- Perfectly Chrome, Safari, and Firefox
 
 ## Wheels
 
@@ -16,15 +28,15 @@ Python HTTP Client with Black Magic, powered by FFI from [rquest](https://github
 
 * Windows: `x86_64`,`i686`
 
-## Installation
+## Example
+
+This asynchronous example demonstrates how to make a simple GET request using the `rnet` library. So you need install `rnet` and run the following code:
 
 ```bash
 pip install rnet
 ```
 
-## Example
-
-This asynchronous example demonstrates how to make a simple GET request using the `rnet` library.
+And then the code:
 
 ```python
 import asyncio
