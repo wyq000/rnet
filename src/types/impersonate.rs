@@ -8,15 +8,40 @@ use pyo3_stub_gen::derive::{gen_stub_pyclass, gen_stub_pymethods};
 #[derive(Clone, Copy, Default, Debug)]
 pub struct Impersonate(rquest::Impersonate);
 
-impl Impersonate {
-    pub fn into_inner(self) -> rquest::Impersonate {
-        self.0
+#[gen_stub_pyclass]
+#[pyclass]
+#[derive(Clone, Copy, Default, Debug)]
+pub struct ImpersonateOS(rquest::ImpersonateOS);
+
+impl From<Impersonate> for rquest::Impersonate {
+    fn from(impersonate: Impersonate) -> rquest::Impersonate {
+        impersonate.0
+    }
+}
+
+impl From<ImpersonateOS> for rquest::ImpersonateOS {
+    fn from(impersonate: ImpersonateOS) -> rquest::ImpersonateOS {
+        impersonate.0
     }
 }
 
 #[gen_stub_pymethods]
 #[pymethods]
 impl Impersonate {
+    /// Returns a string representation of the impersonate.
+    fn __str__(&self) -> String {
+        format!("{:?}", self.0)
+    }
+
+    /// Returns a string representation of the impersonate.
+    fn __repr__(&self) -> String {
+        self.__str__()
+    }
+}
+
+#[gen_stub_pymethods]
+#[pymethods]
+impl ImpersonateOS {
     /// Returns a string representation of the impersonate.
     fn __str__(&self) -> String {
         format!("{:?}", self.0)
@@ -84,4 +109,14 @@ define_constants!(
     OkHttp4_9,
     OkHttp4_10,
     OkHttp5
+);
+
+define_constants!(
+    ImpersonateOS,
+    rquest::ImpersonateOS,
+    Windows,
+    MacOS,
+    Linux,
+    Android,
+    IOS
 );

@@ -2,7 +2,7 @@ use crate::{
     error::{wrap_invali_header_name_error, wrap_rquest_error},
     param::{ClientParams, RequestParams},
     resp::Response,
-    types::{Impersonate, Method, Version},
+    types::Method,
     Result,
 };
 use pyo3::prelude::*;
@@ -80,13 +80,16 @@ impl Client {
         let mut builder = rquest::Client::builder();
 
         // Impersonation options.
-        apply_option!(
-            apply_transformed_option,
-            builder,
-            params.impersonate,
-            impersonate,
-            |v: Impersonate| v.into_inner()
-        );
+        if let Some(impersonate) = params.impersonate.take() {
+            builder = builder.impersonate(
+                rquest::Impersonate::builder()
+                    .impersonate(impersonate.into())
+                    .impersonate_os(params.impersonate_os.unwrap_or_default().into())
+                    .skip_http2(params.impersonate_skip_http2.unwrap_or(false))
+                    .skip_headers(params.impersonate_skip_headers.unwrap_or(false))
+                    .build(),
+            );
+        }
 
         // User agent options.
         apply_option!(apply_if_some, builder, params.user_agent, user_agent);
@@ -213,7 +216,7 @@ impl Client {
         // Network options.
         if let Some(proxies) = params.proxies.take() {
             for proxy in proxies {
-                builder = builder.proxy(proxy.into_inner());
+                builder = builder.proxy(proxy.into());
             }
         }
         apply_option!(
@@ -588,7 +591,7 @@ async fn execute_request(
     mut params: Option<RequestParams>,
 ) -> Result<Response> {
     let params = params.get_or_insert_default();
-    let mut builder = client.request(method.into_inner(), url);
+    let mut builder = client.request(method.into(), url);
 
     // Version options.
     apply_option!(
@@ -596,7 +599,7 @@ async fn execute_request(
         builder,
         params.version,
         version,
-        |v: Version| v.into_inner()
+        Into::into
     );
 
     // Allow redirects options.
