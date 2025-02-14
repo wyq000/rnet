@@ -3,10 +3,11 @@ use crate::{
     types::{HeaderMap, Json, SocketAddr, StatusCode, Version},
 };
 use arc_swap::ArcSwapOption;
+use indexmap::IndexMap;
 use mime::Mime;
-use pyo3::{exceptions::PyStopAsyncIteration, prelude::*, types::PyDict, IntoPyObjectExt};
+use pyo3::{exceptions::PyStopAsyncIteration, prelude::*, IntoPyObjectExt};
 use pyo3_stub_gen::derive::{gen_stub_pyclass, gen_stub_pymethods};
-use rquest::{header, Url};
+use rquest::{header, TlsInfo, Url};
 use serde_json::Value;
 use std::sync::Arc;
 use tokio::sync::Mutex;
@@ -163,41 +164,19 @@ impl Response {
         Ok(encoding)
     }
 
-    /// Returns the cookies of the response.
-    ///
-    /// # Returns
-    ///
-    /// A Python dictionary representing the cookies of the response.
-    #[getter]
-    pub fn cookies<'rt>(&'rt self, py: Python<'rt>) -> PyResult<Bound<'rt, PyDict>> {
-        if let Some(resp) = self.response.load().as_ref() {
-            let py_dict = PyDict::new(py);
-            for cookie in resp.cookies() {
-                py_dict.set_item(cookie.name(), cookie.value())?;
-            }
-            Ok(py_dict)
-        } else {
-            Err(memory_error())
-        }
-    }
-
     /// Returns the TLS peer certificate of the response.
     ///
     /// # Returns
     ///
     /// A Python object representing the TLS peer certificate of the response.
-    pub fn peer_certificate(&self, py: Python<'_>) -> PyResult<Option<PyObject>> {
-        if let Some(resp) = self.response.load().as_ref() {
-            if let Some(val) = resp.extensions().get::<rquest::TlsInfo>() {
-                if let Some(peer_cert_der) = val.peer_certificate() {
-                    return Ok(Some(peer_cert_der.into_bound_py_any(py)?.unbind()));
-                }
-            }
-
-            Ok(None)
-        } else {
-            Err(memory_error())
+    pub fn peer_certificate(&self) -> PyResult<Option<Vec<u8>>> {
+        let resp_ref = self.response.load();
+        let resp = resp_ref.as_ref().ok_or_else(memory_error)?;
+        if let Some(val) = resp.extensions().get::<TlsInfo>() {
+            return Ok(val.peer_certificate().map(ToOwned::to_owned));
         }
+
+        Ok(None)
     }
 
     /// Returns the text content of the response.
@@ -298,6 +277,25 @@ impl Response {
     /// Closes the response connection.
     pub fn close(&self) {
         let _ = self.into_inner().map(drop);
+    }
+}
+
+#[pymethods]
+impl Response {
+    /// Returns the cookies of the response.
+    ///
+    /// # Returns
+    ///
+    /// A Python dictionary representing the cookies of the response.
+    #[getter]
+    pub fn cookies(&self) -> PyResult<IndexMap<String, String>> {
+        let resp_ref = self.response.load();
+        let resp = resp_ref.as_ref().ok_or_else(memory_error)?;
+        let mut py_dict = IndexMap::new();
+        resp.cookies().for_each(|cookie| {
+            py_dict.insert(cookie.name().to_owned(), cookie.value().to_owned());
+        });
+        Ok(py_dict)
     }
 }
 
