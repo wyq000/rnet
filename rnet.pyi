@@ -304,6 +304,9 @@ class ClientParams:
     """
 
     impersonate: typing.Optional[Impersonate]
+    impersonate_os: typing.Optional[ImpersonateOS]
+    impersonate_skip_http2: typing.Optional[builtins.bool]
+    impersonate_skip_headers: typing.Optional[builtins.bool]
     user_agent: typing.Optional[builtins.str]
     headers_order: typing.Optional[builtins.list[builtins.str]]
     referer: typing.Optional[builtins.bool]
@@ -385,6 +388,19 @@ class Impersonate:
     A impersonate.
     """
 
+    def __str__(self) -> builtins.str:
+        r"""
+        Returns a string representation of the impersonate.
+        """
+        ...
+
+    def __repr__(self) -> builtins.str:
+        r"""
+        Returns a string representation of the impersonate.
+        """
+        ...
+
+class ImpersonateOS:
     def __str__(self) -> builtins.str:
         r"""
         Returns a string representation of the impersonate.
@@ -557,8 +573,7 @@ class Response:
     content_length: builtins.int
     remote_addr: typing.Optional[SocketAddr]
     encoding: builtins.str
-    cookies: dict
-    def peer_certificate(self) -> typing.Optional[typing.Any]:
+    def peer_certificate(self) -> typing.Optional[builtins.list[builtins.int]]:
         r"""
         Returns the TLS peer certificate of the response.
 

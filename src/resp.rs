@@ -221,8 +221,7 @@ impl Response {
     pub fn json<'rt>(&self, py: Python<'rt>) -> PyResult<Bound<'rt, PyAny>> {
         let resp = self.into_inner()?;
         pyo3_async_runtimes::tokio::future_into_py(py, async move {
-            let json = resp.json::<Json>().await.map_err(wrap_rquest_error)?;
-            Python::with_gil(|py| json.into_bound_py_any(py).map(|obj| obj.unbind()))
+            resp.json::<Json>().await.map_err(wrap_rquest_error)
         })
     }
 
@@ -271,7 +270,10 @@ impl Response {
     ///
     /// A Python object representing the stream content of the response.
     pub fn stream(&self) -> PyResult<Streamer> {
-        self.into_inner().map(Streamer::new)
+        self.into_inner()
+            .map(Mutex::new)
+            .map(Arc::new)
+            .map(Streamer)
     }
 
     /// Closes the response connection.
@@ -354,17 +356,6 @@ impl Response {
 #[gen_stub_pyclass]
 #[pyclass]
 pub struct Streamer(Arc<Mutex<rquest::Response>>);
-
-impl Streamer {
-    /// Creates a new `Streamer` instance.
-    ///
-    /// # Returns
-    ///
-    /// A new `Streamer` instance.
-    fn new(response: rquest::Response) -> Self {
-        Streamer(Arc::new(Mutex::new(response)))
-    }
-}
 
 #[gen_stub_pymethods]
 #[pymethods]
