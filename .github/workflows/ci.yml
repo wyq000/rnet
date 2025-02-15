@@ -16,6 +16,32 @@ permissions:
   contents: read
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: 3.x
+          architecture: ${{ matrix.platform.target }}
+      - name: Install the latest version of uv
+        uses: astral-sh/setup-uv@v5
+      - name: Set up virtual environment
+        run: |
+          uv venv
+          source .venv/bin/activate
+      - name: Install dependencies
+        run: |
+          uv pip install maturin pytest pytest-asyncio
+      - name: Build wheels
+        run: |
+          source .venv/bin/activate
+          maturin develop --uv
+      - name: Run tests
+        run: |
+          source .venv/bin/activate
+          pytest
+
   linux:
     runs-on: ${{ matrix.platform.runner }}
     environment: ManyLinux
