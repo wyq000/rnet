@@ -24,7 +24,7 @@ Asynchronous Python HTTP Client with Black Magic, powered by FFI from [rquest](h
 
 ## Wheels
 
-* Linux (Musl/GNU-GLIBC-2.34): `x86_64`,`aarch64`,`armv7`,`i686`
+* Linux (MUSL/GNU-GLIBC-2.34): `x86_64`,`aarch64`,`armv7`,`i686`
 
 * macOS: `x86_64`,`aarch64`
 
@@ -47,24 +47,23 @@ from rnet import Impersonate, Client
 
 async def main():
     client = Client(
-        impersonate=Impersonate.Firefox133,
+        impersonate=Impersonate.Chrome131,
         user_agent="rnet",
     )
-    resp = await client.get("https://httpbin.org/stream/20")
+    resp = await client.get("https://tls.peet.ws/api/all")
     print("Status Code: ", resp.status_code)
     print("Version: ", resp.version)
     print("Response URL: ", resp.url)
-    print("Headers: ", resp.headers.to_dict())
-    print("Content-Length: ", resp.content_length)
+    print("Headers: ", resp.headers)
     print("Encoding: ", resp.encoding)
+    print("Content-Length: ", resp.content_length)
     print("Remote Address: ", resp.remote_addr)
-    async for chunk in resp.stream():
-        print("Chunk: ", chunk)
-        await asyncio.sleep(0.1)
+    print(await resp.text())
 
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 ```
 
 Additional learning resources include:
