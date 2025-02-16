@@ -11,7 +11,8 @@ async def test_gzip():
     text = await response.text()
     assert text is not None
     assert "gzipped" in text
-    
+
+
 @pytest.mark.asyncio
 async def test_deflate():
     url = "https://httpbin.org/deflate"
@@ -19,7 +20,8 @@ async def test_deflate():
     text = await response.text()
     assert text is not None
     assert "deflated" in text
-    
+
+
 @pytest.mark.asyncio
 async def test_brotli():
     url = "https://httpbin.org/brotli"
