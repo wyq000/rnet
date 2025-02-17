@@ -6,7 +6,6 @@
 ![Python Version from PEP 621 TOML](https://img.shields.io/python/required-version-toml?tomlFilePath=https%3A%2F%2Fraw.githubusercontent.com%2F0x676e67%2Frnet%2Fmain%2Fpyproject.toml)
 ![PyPI - Format](https://img.shields.io/pypi/format/rnet)
 
-
 > 🚀 Help me work seamlessly with open source sharing by [sponsoring me on GitHub](https://github.com/0x676e67/0x676e67/blob/main/SPONSOR.md)
 
 Asynchronous Python HTTP Client with Black Magic, powered by FFI from [rquest](https://github.com/0x676e67/rquest).
@@ -23,11 +22,11 @@ Asynchronous Python HTTP Client with Black Magic, powered by FFI from [rquest](h
 
 ## Wheels
 
-* Linux (MUSL/GNU-GLIBC-2.34): `x86_64`,`aarch64`,`armv7`,`i686`
+- Linux (MUSL/GNU-GLIBC-2.34): `x86_64`,`aarch64`,`armv7`,`i686`
 
-* macOS: `x86_64`,`aarch64`
+- macOS: `x86_64`,`aarch64`
 
-* Windows: `x86_64`,`i686`
+- Windows: `x86_64`,`i686`
 
 ## Example
 
@@ -70,13 +69,9 @@ Additional learning resources include:
 - [API Documentation](https://github.com/0x676e67/rnet/blob/main/rnet.pyi)
 - [Repository Examples](https://github.com/0x676e67/rnet/tree/main/examples)
 
-## Documentation
-
-The python documentation is automatically supported by [pyo3-stub-gen](https://github.com/Jij-Inc/pyo3-stub-gen). It is not perfect. If you have any suggestions, you can submit a PR to improve it.
-
 ## Building
 
-- Install environment
+1. Install environment
 
 ```bash
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
@@ -87,20 +82,41 @@ uv venv
 source .venv/bin/activate
 ```
 
-- Development
+2. Development
 
 ```bash
 maturin develop --uv
 python3 examples/client.py
 ```
 
-- Release wheels
+1. Compile wheels
+
+- Local Compilation
+
+You need to install the BoringSSL build environment. You can refer to [boring-ci](https://github.com/cloudflare/boring/blob/master/.github/workflows/ci.yml) and [boringssl](https://github.com/google/boringssl/blob/master/BUILDING.md#build-prerequisites).
 
 ```bash
 maturin build --release
-# Or musl linux targets (x86_64-unknown-linux-musl/aarch64-unknown-linux-musl/armv7-unknown-linux-musl/i686-unknown-linux-musl)
-bash .github/musl_build.sh x86_64-unknown-linux-musl
 ```
+
+- Musllinux
+
+You also need to install the Docker environment. The image might be outdated, so if you need to build the image yourself, refer to [rust-cross-musl](https://github.com/0x676e67/toolchain/blob/master/rust-musl-cross/Dockerfile) and the upstream [rust-cross-musl](https://github.com/rust-cross/rust-musl-cross). The upstream [rust-cross-musl](https://github.com/rust-cross/rust-musl-cross) lacks the relevant platform linker environment variables, which you need to add yourself.
+  
+```bash
+bash .github/musl_build.sh x86_64-unknown-linux-musl
+bash .github/musl_build.sh aarch64-unknown-linux-musl
+bash .github/musl_build.sh armv7-unknown-linux-musleabihf
+bash .github/musl_build.sh i686-unknown-linux-musl
+```
+
+- Manylinux
+
+For Manylinux compilation, refer to [manylinux](https://github.com/PyO3/maturin?tab=readme-ov-file#manylinux-and-auditwheel).
+
+## Documentation
+
+The python documentation is automatically supported by [pyo3-stub-gen](https://github.com/Jij-Inc/pyo3-stub-gen). It is not perfect. If you have any suggestions, you can submit a PR to improve it.
 
 ## Contributing
 
