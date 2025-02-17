@@ -424,12 +424,4 @@ impl Streamer {
         });
         Ok(Some(future?.into()))
     }
-
-    /// This is a helper method to get the next chunk from the stream.
-    /// It is used to get the next chunk from the stream.
-    /// This method is used in __anext__ method.
-    #[inline(always)]
-    pub fn chunk(&self, py: Python<'_>) -> PyResult<Option<PyObject>> {
-        self.__anext__(py)
-    }
 }
