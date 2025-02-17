@@ -1,7 +1,7 @@
 use crate::{
     error::{wrap_invali_header_name_error, wrap_rquest_error},
     param::{ClientParams, RequestParams, WebSocketParams},
-    response::{Response, WebSocketResponse},
+    response::{Response, WebSocket},
     types::Method,
     Result,
 };
@@ -690,7 +690,7 @@ async fn execute_websocket_request(
     client: rquest::Client,
     url: String,
     mut params: Option<WebSocketParams>,
-) -> Result<WebSocketResponse> {
+) -> Result<WebSocket> {
     let params = params.get_or_insert_default();
     let mut builder = client.websocket(url);
 
@@ -730,9 +730,5 @@ async fn execute_websocket_request(
         builder
     });
 
-    builder
-        .send()
-        .await
-        .map(WebSocketResponse::from)
-        .map_err(wrap_rquest_error)
+    WebSocket::new(builder).await
 }

@@ -1,45 +1,60 @@
 use std::sync::Arc;
 
 use crate::{
-    error::{memory_error, wrap_rquest_error},
+    error::wrap_rquest_error,
     types::{HeaderMap, Json, SocketAddr, StatusCode, Version},
 };
-use arc_swap::ArcSwapOption;
 use futures_util::{
     stream::{SplitSink, SplitStream},
     SinkExt, StreamExt, TryStreamExt,
 };
 use pyo3::{prelude::*, IntoPyObjectExt};
 use pyo3_stub_gen::derive::{gen_stub_pyclass, gen_stub_pymethods};
-use rquest::TlsInfo;
 use tokio::sync::Mutex;
+
+type Sender = Arc<Mutex<SplitSink<rquest::WebSocket, rquest::Message>>>;
+type Receiver = Arc<Mutex<SplitStream<rquest::WebSocket>>>;
 
 /// A WebSocket response.
 #[gen_stub_pyclass]
 #[pyclass]
-pub struct WebSocketResponse {
+pub struct WebSocket {
     version: Version,
     status_code: StatusCode,
     remote_addr: Option<SocketAddr>,
     headers: HeaderMap,
-    response: ArcSwapOption<rquest::WebSocketResponse>,
+    protocol: Option<String>,
+    sender: Sender,
+    receiver: Receiver,
 }
 
-impl From<rquest::WebSocketResponse> for WebSocketResponse {
-    fn from(response: rquest::WebSocketResponse) -> Self {
-        WebSocketResponse {
-            version: Version::from(response.version()),
-            status_code: StatusCode::from(response.status()),
-            remote_addr: response.remote_addr().map(SocketAddr::from),
-            headers: HeaderMap::from(response.headers().clone()),
-            response: ArcSwapOption::from_pointee(response),
-        }
+impl WebSocket {
+    pub async fn new(builder: rquest::WebSocketRequestBuilder) -> crate::Result<WebSocket> {
+        let response = builder.send().await.map_err(wrap_rquest_error)?;
+
+        let version = Version::from(response.version());
+        let status_code = StatusCode::from(response.status());
+        let remote_addr = response.remote_addr().map(SocketAddr::from);
+        let headers = HeaderMap::from(response.headers().clone());
+        let websocket = response.into_websocket().await.map_err(wrap_rquest_error)?;
+        let protocol = websocket.protocol().map(ToOwned::to_owned);
+        let (sender, receiver) = websocket.split();
+
+        Ok(WebSocket {
+            version,
+            status_code,
+            remote_addr,
+            headers,
+            protocol,
+            sender: Arc::new(Mutex::new(sender)),
+            receiver: Arc::new(Mutex::new(receiver)),
+        })
     }
 }
 
 #[gen_stub_pymethods]
 #[pymethods]
-impl WebSocketResponse {
+impl WebSocket {
     /// Returns whether the response is successful.
     ///
     /// # Returns
@@ -95,86 +110,6 @@ impl WebSocketResponse {
         self.remote_addr
     }
 
-    /// Returns the TLS peer certificate of the response.
-    ///
-    /// # Returns
-    ///
-    /// A Python object representing the TLS peer certificate of the response.
-    pub fn peer_certificate(&self) -> PyResult<Option<Vec<u8>>> {
-        let resp_ref = self.response.load();
-        let resp = resp_ref.as_ref().ok_or_else(memory_error)?;
-        if let Some(val) = resp.extensions().get::<TlsInfo>() {
-            return Ok(val.peer_certificate().map(ToOwned::to_owned));
-        }
-
-        Ok(None)
-    }
-
-    /// Returns the WebSocket of the response.
-    pub fn into_websocket<'rt>(&self, py: Python<'rt>) -> PyResult<Bound<'rt, PyAny>> {
-        let response = self.into_inner()?;
-        pyo3_async_runtimes::tokio::future_into_py(py, async move {
-            response
-                .into_websocket()
-                .await
-                .map(WebSocket::from)
-                .map_err(wrap_rquest_error)
-        })
-    }
-
-    /// Closes the response connection.
-    pub fn close(&self) {
-        let _ = self.into_inner().map(drop);
-    }
-}
-
-impl WebSocketResponse {
-    /// Consumes the `WebSocketResponse` and returns the inner `rquest::RespWebSocketResponseonse`.
-    ///
-    /// # Returns
-    ///
-    /// A `PyResult` containing the inner `rquest::WebSocketResponse` if successful, or an error if the
-    /// response has already been taken or cannot be unwrapped.
-    ///
-    /// # Errors
-    ///
-    /// Returns a memory error if the response has already been taken or if the `Arc` cannot be unwrapped.
-    #[inline(always)]
-    #[allow(clippy::wrong_self_convention)]
-    fn into_inner(&self) -> PyResult<rquest::WebSocketResponse> {
-        self.response
-            .swap(None)
-            .and_then(Arc::into_inner)
-            .ok_or_else(memory_error)
-    }
-}
-
-type Sender = Arc<Mutex<SplitSink<rquest::WebSocket, rquest::Message>>>;
-type Receiver = Arc<Mutex<SplitStream<rquest::WebSocket>>>;
-
-/// A WebSocket connection.
-#[gen_stub_pyclass]
-#[pyclass]
-pub struct WebSocket {
-    protocol: Option<String>,
-    sender: Sender,
-    receiver: Receiver,
-}
-
-impl From<rquest::WebSocket> for WebSocket {
-    fn from(ws: rquest::WebSocket) -> Self {
-        let protocol = ws.protocol().map(ToOwned::to_owned);
-        let (sender, receiver) = ws.split();
-        WebSocket {
-            protocol,
-            sender: Arc::new(Mutex::new(sender)),
-            receiver: Arc::new(Mutex::new(receiver)),
-        }
-    }
-}
-
-#[pymethods]
-impl WebSocket {
     /// Returns the WebSocket protocol.
     ///
     /// # Returns

@@ -905,14 +905,6 @@ class Streamer:
         """
         ...
 
-    def chunk(self) -> typing.Optional[typing.Any]:
-        r"""
-        This is a helper method to get the next chunk from the stream.
-        It is used to get the next chunk from the stream.
-        This method is used in __anext__ method.
-        """
-        ...
-
 
 class Version:
     r"""
@@ -933,9 +925,68 @@ class Version:
 
 class WebSocket:
     r"""
-    A WebSocket connection.
+    A WebSocket response.
     """
-    ...
+    ok: builtins.bool
+    status: builtins.int
+    version: Version
+    headers: HeaderMap
+    remote_addr: typing.Optional[SocketAddr]
+    def protocol(self) -> typing.Optional[builtins.str]:
+        r"""
+        Returns the WebSocket protocol.
+        
+        # Returns
+        
+        An optional string representing the WebSocket protocol.
+        """
+        ...
+
+    def recv(self) -> typing.Any:
+        r"""
+        Receives a message from the WebSocket.
+        
+        # Arguments
+        
+        * `py` - The Python runtime.
+        
+        # Returns
+        
+        A `PyResult` containing a `Bound` object with the received message, or `None` if no message is received.
+        """
+        ...
+
+    def send(self, message:Message) -> typing.Any:
+        r"""
+        Sends a message to the WebSocket.
+        
+        # Arguments
+        
+        * `py` - The Python runtime.
+        * `message` - The message to send.
+        
+        # Returns
+        
+        A `PyResult` containing a `Bound` object.
+        """
+        ...
+
+    def close(self, code:typing.Optional[builtins.int]=None, reason:typing.Optional[builtins.str]=None) -> typing.Any:
+        r"""
+        Closes the WebSocket connection.
+        
+        # Arguments
+        
+        * `py` - The Python runtime.
+        * `code` - An optional close code.
+        * `reason` - An optional reason for closing.
+        
+        # Returns
+        
+        A `PyResult` containing a `Bound` object.
+        """
+        ...
+
 
 class WebSocketParams:
     r"""
@@ -972,38 +1023,6 @@ class WebSocketParams:
     bearer_auth: typing.Optional[builtins.str]
     basic_auth: typing.Optional[tuple[builtins.str, typing.Optional[builtins.str]]]
     query: typing.Optional[builtins.list[tuple[builtins.str, builtins.str]]]
-
-class WebSocketResponse:
-    r"""
-    A WebSocket response.
-    """
-    ok: builtins.bool
-    status: builtins.int
-    version: Version
-    headers: HeaderMap
-    remote_addr: typing.Optional[SocketAddr]
-    def peer_certificate(self) -> typing.Optional[builtins.list[builtins.int]]:
-        r"""
-        Returns the TLS peer certificate of the response.
-        
-        # Returns
-        
-        A Python object representing the TLS peer certificate of the response.
-        """
-        ...
-
-    def into_websocket(self) -> typing.Any:
-        r"""
-        Returns the WebSocket of the response.
-        """
-        ...
-
-    def close(self) -> None:
-        r"""
-        Closes the response connection.
-        """
-        ...
-
 
 def delete(url:builtins.str, **kwds) -> typing.Any:
     r"""
