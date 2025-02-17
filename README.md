@@ -70,6 +70,10 @@ Additional learning resources include:
 - [API Documentation](https://github.com/0x676e67/rnet/blob/main/rnet.pyi)
 - [Repository Examples](https://github.com/0x676e67/rnet/tree/main/examples)
 
+## Documentation
+
+The python documentation is automatically supported by [pyo3-stub-gen](https://github.com/Jij-Inc/pyo3-stub-gen). It is not perfect. If you have any suggestions, you can submit a PR to improve it.
+
 ## Building
 
 - Install environment
@@ -94,6 +98,8 @@ python3 examples/client.py
 
 ```bash
 maturin build --release
+# Or musl linux targets (x86_64-unknown-linux-musl/aarch64-unknown-linux-musl/armv7-unknown-linux-musl/i686-unknown-linux-musl)
+bash .github/musl_build.sh x86_64-unknown-linux-musl
 ```
 
 ## Contributing
