@@ -46,7 +46,7 @@ from rnet import Impersonate, Client
 
 async def main():
     client = Client(
-        impersonate=Impersonate.Chrome131,
+        impersonate=Impersonate.Firefox135,
         user_agent="rnet",
     )
     resp = await client.get("https://tls.peet.ws/api/all")
