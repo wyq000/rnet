@@ -272,6 +272,12 @@ class Client:
         """
         ...
 
+    def websocket(self, url:builtins.str, **kwds) -> typing.Any:
+        r"""
+        Sends a WebSocket request.
+        """
+        ...
+
 
 class ClientParams:
     r"""
@@ -409,6 +415,109 @@ class ImpersonateOS:
     def __repr__(self) -> builtins.str:
         r"""
         Returns a string representation of the impersonate.
+        """
+        ...
+
+
+class Message:
+    r"""
+    A WebSocket message.
+    """
+    text: typing.Optional[builtins.str]
+    close: typing.Optional[tuple[builtins.int, typing.Optional[builtins.str]]]
+    def __str__(self) -> builtins.str:
+        r"""
+        Returns a string representation of the message.
+        
+        # Returns
+        
+        A string representing the message.
+        """
+        ...
+
+    def __repr__(self) -> builtins.str:
+        r"""
+        Returns a string representation of the message.
+        
+        # Returns
+        
+        A string representing the message.
+        """
+        ...
+
+    @staticmethod
+    def from_text(text:builtins.str) -> Message:
+        r"""
+        Creates a new text message.
+        
+        # Arguments
+        
+        * `text` - The text content of the message.
+        
+        # Returns
+        
+        A new `Message` instance containing the text message.
+        """
+        ...
+
+    @staticmethod
+    def from_binary(data:typing.Sequence[builtins.int]) -> Message:
+        r"""
+        Creates a new binary message.
+        
+        # Arguments
+        
+        * `data` - The binary data of the message.
+        
+        # Returns
+        
+        A new `Message` instance containing the binary message.
+        """
+        ...
+
+    @staticmethod
+    def from_ping(data:typing.Sequence[builtins.int]) -> Message:
+        r"""
+        Creates a new ping message.
+        
+        # Arguments
+        
+        * `data` - The ping data of the message.
+        
+        # Returns
+        
+        A new `Message` instance containing the ping message.
+        """
+        ...
+
+    @staticmethod
+    def from_pong(data:typing.Sequence[builtins.int]) -> Message:
+        r"""
+        Creates a new pong message.
+        
+        # Arguments
+        
+        * `data` - The pong data of the message.
+        
+        # Returns
+        
+        A new `Message` instance containing the pong message.
+        """
+        ...
+
+    @staticmethod
+    def from_close(code:builtins.int, reason:typing.Optional[builtins.str]=None) -> Message:
+        r"""
+        Creates a new close message.
+        
+        # Arguments
+        
+        * `code` - The close code.
+        * `reason` - An optional reason for closing.
+        
+        # Returns
+        
+        A new `Message` instance containing the close message.
         """
         ...
 
@@ -822,6 +931,80 @@ class Version:
         ...
 
 
+class WebSocket:
+    r"""
+    A WebSocket connection.
+    """
+    ...
+
+class WebSocketParams:
+    r"""
+    The parameters for a WebSocket request.
+    
+    # Examples
+    
+    ```python
+    import rnet
+    from rnet import Impersonate, Version
+    
+    params = rnet.WebSocketParams(
+        proxy="http://proxy.example.com",
+        local_address="192.168.1.1",
+        interface="eth0",
+        headers={"Content-Type": "application/json"},
+        auth="Basic dXNlcjpwYXNzd29yZA==",
+        bearer_auth="Bearer token",
+        basic_auth=("user", "password"),
+        query=[("key1", "value1"), ("key2", "value2")]
+    )
+    
+    async with rnet.websocket("wss://echo.websocket.org") as ws:
+       await ws.send("Hello, World!")
+       message = await ws.recv()
+       print(message)
+    
+    asyncio.run(run())
+    ```
+    """
+    proxy: typing.Optional[builtins.str]
+    interface: typing.Optional[builtins.str]
+    auth: typing.Optional[builtins.str]
+    bearer_auth: typing.Optional[builtins.str]
+    basic_auth: typing.Optional[tuple[builtins.str, typing.Optional[builtins.str]]]
+    query: typing.Optional[builtins.list[tuple[builtins.str, builtins.str]]]
+
+class WebSocketResponse:
+    r"""
+    A WebSocket response.
+    """
+    ok: builtins.bool
+    status: builtins.int
+    version: Version
+    headers: HeaderMap
+    remote_addr: typing.Optional[SocketAddr]
+    def peer_certificate(self) -> typing.Optional[builtins.list[builtins.int]]:
+        r"""
+        Returns the TLS peer certificate of the response.
+        
+        # Returns
+        
+        A Python object representing the TLS peer certificate of the response.
+        """
+        ...
+
+    def into_websocket(self) -> typing.Any:
+        r"""
+        Returns the WebSocket of the response.
+        """
+        ...
+
+    def close(self) -> None:
+        r"""
+        Closes the response connection.
+        """
+        ...
+
+
 def delete(url:builtins.str, **kwds) -> typing.Any:
     r"""
     Shortcut method to quickly make a `DELETE` request.
@@ -1012,6 +1195,29 @@ def trace(url:builtins.str, **kwds) -> typing.Any:
     async def run():
         response = await rnet.trace("https://www.rust-lang.org")
         print(response.headers)
+    
+    asyncio.run(run())
+    ```
+    """
+    ...
+
+def websocket(url:builtins.str, **kwds) -> typing.Any:
+    r"""
+    Make a WebSocket connection with the given parameters.
+    
+    This function allows you to make a WebSocket connection with the specified parameters encapsulated in a `WebSocket` object.
+    
+    # Examples
+    
+    ```python
+    import rnet
+    import asyncio
+    
+    async def run():
+       async with rnet.websocket("wss://echo.websocket.org") as ws:
+          await ws.send("Hello, World!")
+         message = await ws.recv()
+        print(message)
     
     asyncio.run(run())
     ```
