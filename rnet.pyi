@@ -1007,6 +1007,29 @@ class Streamer:
 
 
 class UpdateClientParams:
+    r"""
+    The parameters for updating a client.
+    
+    This struct allows you to update various settings for an existing client instance.
+    
+    # Examples
+    
+    ```python
+    import rnet
+    from rnet import Impersonate, UpdateClientParams
+    
+    params = UpdateClientParams(
+        impersonate=Impersonate.Chrome100,
+        headers={"Content-Type": "application/json"},
+        proxies=[rnet.Proxy.all("http://proxy.example.com:8080")]
+    )
+    
+    client = rnet.Client()
+    client.update(**params)
+    ```
+    
+    This will update the client with the specified impersonation settings, headers, and proxies.
+    """
     impersonate: typing.Optional[Impersonate]
     impersonate_os: typing.Optional[ImpersonateOS]
     impersonate_skip_http2: typing.Optional[builtins.bool]
