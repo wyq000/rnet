@@ -8,7 +8,7 @@
 
 > 🚀 Help me work seamlessly with open source sharing by [sponsoring me on GitHub](https://github.com/0x676e67/0x676e67/blob/main/SPONSOR.md)
 
-Asynchronous Python HTTP Client with Black Magic, powered by FFI from [rquest](https://github.com/0x676e67/rquest).
+Asynchronous Python HTTP client with Black Magic, powered by FFI from [rquest](https://github.com/0x676e67/rquest). This library can mimic the TLS and HTTP2 configurations of popular browsers like Chrome, Safari, Firefox, and OkHttp.
 
 ## Features
 
@@ -20,14 +20,6 @@ Asynchronous Python HTTP Client with Black Magic, powered by FFI from [rquest](h
 - WebSocket Upgrade
 - HTTPS via BoringSSL
 - Perfectly Chrome, Safari, and Firefox
-
-## Wheels
-
-- Linux (MUSL/GNU-GLIBC-2.34): `x86_64`,`aarch64`,`armv7`,`i686`
-
-- macOS: `x86_64`,`aarch64`
-
-- Windows: `x86_64`,`i686`
 
 ## Example
 
@@ -69,6 +61,39 @@ Additional learning resources include:
 
 - [API Documentation](https://github.com/0x676e67/rnet/blob/main/rnet.pyi)
 - [Repository Examples](https://github.com/0x676e67/rnet/tree/main/examples)
+
+## Platforms
+
+- Linux (MUSL/GNU-GLIBC>=`2.34`): `x86_64`,`aarch64`,`armv7`,`i686`
+
+- macOS: `x86_64`,`aarch64`
+
+- Windows: `x86_64`,`i686`
+
+## Impersonate
+
+In fact, most device models have the same `TLS`/`HTTP2` configuration, except that the `User-Agent` is changed.
+
+- **Chrome**
+
+`Chrome100`, `Chrome101`, `Chrome104`, `Chrome105`, `Chrome106`, `Chrome107`, `Chrome108`, `Chrome109`, `Chrome114`, `Chrome116`, `Chrome117`, `Chrome118`, `Chrome119`, `Chrome120`, `Chrome123`, `Chrome124`, `Chrome126`, `Chrome127`, `Chrome128`, `Chrome129`, `Chrome130`, `Chrome131`, `Chrome133`
+
+- **Edge**
+
+`Edge101`, `Edge122`, `Edge127`, `Edge131`
+
+- **Safari**
+
+`SafariIos17_2`, `SafariIos17_4_1`, `SafariIos16_5`, `Safari15_3`, `Safari15_5`, `Safari15_6_1`, `Safari16`, `Safari16_5`, `Safari17_0`, `Safari17_2_1`, `Safari17_4_1`, `Safari17_5`, `Safari18`, `SafariIPad18`, `Safari18_2`, `Safari18_1_1`
+
+- **OkHttp**
+
+`OkHttp3_9`, `OkHttp3_11`, `OkHttp3_13`, `OkHttp3_14`, `OkHttp4_9`, `OkHttp4_10`, `OkHttp5`
+
+- **Firefox**
+
+`Firefox109`, `Firefox117`, `Firefox128`, `Firefox133`, `Firefox135`, `FirefoxPrivate135`, `FirefoxAndroid135`
+
 
 ## Building
 
