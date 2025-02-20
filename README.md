@@ -68,9 +68,9 @@ Additional learning resources include:
 - **glibc >= 2.17**: `x86_64`
 - **glibc >= 2.31**: `aarch64`, `armv7`, `i686`
 
-3. macOS: `x86_64`,`aarch64`
+2. macOS: `x86_64`,`aarch64`
 
-4. Windows: `x86_64`,`i686`
+3. Windows: `x86_64`,`i686`
 
 ## Impersonate
 
