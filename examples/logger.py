@@ -27,11 +27,7 @@ logger.setLevel(logging.DEBUG)
 
 
 async def main():
-    client = Client(
-        impersonate=Impersonate.Firefox133,
-        user_agent="rnet",
-        async_dns=True,
-    )
+    client = Client(impersonate=Impersonate.Firefox133, user_agent="rnet")
     resp = await client.get("https://httpbin.org/stream/20")
     print("Status Code: ", resp.status_code)
     print("Version: ", resp.version)

@@ -16,9 +16,9 @@ An asynchronous Python HTTP client with Black Magic, powered by FFI from [rquest
 - Redirect Policy
 - Cookie Store
 - HTTP Proxies
+- Async DNS Resolver
 - WebSocket Upgrade
 - HTTPS via BoringSSL
-- Perfectly Chrome, Safari, and Firefox
 
 ## Example
 
