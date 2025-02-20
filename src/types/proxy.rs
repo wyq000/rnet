@@ -42,7 +42,14 @@ impl Proxy {
     /// proxy = rnet.Proxy.http("http://proxy.example.com")
     /// ```
     #[staticmethod]
-    #[pyo3(signature = (url, username = None, password = None, custom_http_auth = None, exclusion = None))]
+    #[pyo3(signature = (
+        url,
+        username = None,
+        password = None,
+        custom_http_auth = None,
+        exclusion = None,
+    ))]
+    #[inline]
     fn http(
         url: &str,
         username: Option<&str>,
@@ -50,9 +57,14 @@ impl Proxy {
         custom_http_auth: Option<&str>,
         exclusion: Option<&str>,
     ) -> PyResult<Self> {
-        rquest::Proxy::http(url)
-            .map(|proxy| Proxy::apply_proxy(proxy, username, password, custom_http_auth, exclusion))
-            .map_err(wrap_rquest_error)
+        Self::create_proxy(
+            rquest::Proxy::http,
+            url,
+            username,
+            password,
+            custom_http_auth,
+            exclusion,
+        )
     }
 
     /// Creates a new HTTPS proxy.
@@ -79,7 +91,14 @@ impl Proxy {
     /// proxy = rnet.Proxy.https("https://proxy.example.com")
     /// ```
     #[staticmethod]
-    #[pyo3(signature = (url, username = None, password = None, custom_http_auth = None, exclusion = None))]
+    #[pyo3(signature = (
+        url,
+        username = None,
+        password = None,
+        custom_http_auth = None,
+        exclusion = None,
+    ))]
+    #[inline]
     fn https(
         url: &str,
         username: Option<&str>,
@@ -87,9 +106,14 @@ impl Proxy {
         custom_http_auth: Option<&str>,
         exclusion: Option<&str>,
     ) -> PyResult<Self> {
-        rquest::Proxy::https(url)
-            .map(|proxy| Proxy::apply_proxy(proxy, username, password, custom_http_auth, exclusion))
-            .map_err(wrap_rquest_error)
+        Self::create_proxy(
+            rquest::Proxy::https,
+            url,
+            username,
+            password,
+            custom_http_auth,
+            exclusion,
+        )
     }
 
     /// Creates a new proxy for all protocols.
@@ -116,7 +140,14 @@ impl Proxy {
     /// proxy = rnet.Proxy.all("https://proxy.example.com")
     /// ```
     #[staticmethod]
-    #[pyo3(signature = (url, username = None, password = None, custom_http_auth = None, exclusion = None))]
+    #[pyo3(signature = (
+        url,
+        username = None,
+        password = None,
+        custom_http_auth = None,
+        exclusion = None,
+    ))]
+    #[inline]
     fn all(
         url: &str,
         username: Option<&str>,
@@ -124,35 +155,42 @@ impl Proxy {
         custom_http_auth: Option<&str>,
         exclusion: Option<&str>,
     ) -> PyResult<Self> {
-        rquest::Proxy::all(url)
-            .map(|proxy| Proxy::apply_proxy(proxy, username, password, custom_http_auth, exclusion))
-            .map_err(wrap_rquest_error)
+        Self::create_proxy(
+            rquest::Proxy::all,
+            url,
+            username,
+            password,
+            custom_http_auth,
+            exclusion,
+        )
     }
 }
 
 impl Proxy {
-    fn apply_proxy(
-        mut proxy: rquest::Proxy,
-        username: Option<&str>,
+    fn create_proxy<'a>(
+        proxy_fn: impl Fn(&'a str) -> Result<rquest::Proxy, rquest::Error>,
+        url: &'a str,
+        username: Option<&'a str>,
         password: Option<&str>,
-        custom_http_auth: Option<&str>,
-        exclusion: Option<&str>,
-    ) -> Self {
+        custom_http_auth: Option<&'a str>,
+        exclusion: Option<&'a str>,
+    ) -> PyResult<Self> {
+        let mut proxy = proxy_fn(url).map_err(wrap_rquest_error)?;
         // Convert the username and password to a basic auth header value.
         if let (Some(username), Some(password)) = (username, password) {
-            proxy = proxy.basic_auth(username, password);
+            proxy = proxy.basic_auth(username, password)
         }
 
         // Convert the custom HTTP auth string to a header value.
         if let Some(Ok(custom_http_auth)) = custom_http_auth.map(HeaderValue::from_str) {
-            proxy = proxy.custom_http_auth(custom_http_auth);
+            proxy = proxy.custom_http_auth(custom_http_auth)
         }
 
         // Convert the exclusion list to a NoProxy instance.
         if let Some(exclusion) = exclusion {
-            proxy = proxy.no_proxy(rquest::NoProxy::from_string(exclusion));
+            proxy = proxy.no_proxy(rquest::NoProxy::from_string(exclusion))
         }
 
-        Proxy(proxy)
+        Ok(Proxy(proxy))
     }
 }
