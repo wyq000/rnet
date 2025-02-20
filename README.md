@@ -63,11 +63,14 @@ Additional learning resources include:
 
 ## Platforms
 
-- Linux (MUSL/GNU-GLIBC>=`2.34`): `x86_64`,`aarch64`,`armv7`,`i686`
+1. Linux
+- **musl**: `x86_64`, `aarch64`, `armv7`, `i686`
+- **glibc >= 2.17**: `x86_64`
+- **glibc >= 2.31**: `aarch64`, `armv7`, `i686`
 
-- macOS: `x86_64`,`aarch64`
+3. macOS: `x86_64`,`aarch64`
 
-- Windows: `x86_64`,`i686`
+4. Windows: `x86_64`,`i686`
 
 ## Impersonate
 
