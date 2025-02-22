@@ -73,6 +73,7 @@ docs/_build/
 venv
 .venv
 Cargo.lock
+uv.lock
 
 # wheel package
 dist
