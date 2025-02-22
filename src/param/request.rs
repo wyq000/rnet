@@ -1,9 +1,8 @@
-use std::net::IpAddr;
-
-use crate::types::{Json, Version};
+use crate::types::{Json, Multipart, Version};
 use indexmap::IndexMap;
 use pyo3::prelude::*;
 use pyo3_stub_gen::derive::gen_stub_pyclass;
+use std::net::IpAddr;
 
 /// The parameters for a request.
 ///
@@ -63,6 +62,7 @@ pub struct RequestParams {
     pub headers: Option<IndexMap<String, String>>,
 
     /// Whether to allow redirects.
+    #[pyo3(get)]
     pub allow_redirects: Option<bool>,
 
     /// The authentication to use for the request.
@@ -86,11 +86,16 @@ pub struct RequestParams {
     pub form: Option<Vec<(String, String)>>,
 
     /// The JSON body to use for the request.
+    #[pyo3(get)]
     pub json: Option<Json>,
 
     /// The body to use for the request.
     #[pyo3(get)]
     pub body: Option<Vec<u8>>,
+
+    /// The multipart form to use for the request.
+    #[pyo3(get)]
+    pub multipart: Option<Py<Multipart>>,
 }
 
 macro_rules! extract_option {
@@ -102,7 +107,7 @@ macro_rules! extract_option {
 }
 
 impl<'py> FromPyObject<'py> for RequestParams {
-    fn extract_bound(ob: &Bound<'py, PyAny>) -> PyResult<Self> {
+    fn extract_bound(ob: &Bound<'py, PyAny>) -> PyResult<RequestParams> {
         let mut params = Self::default();
         extract_option!(ob, params, proxy);
         extract_option!(ob, params, local_address);
@@ -120,6 +125,8 @@ impl<'py> FromPyObject<'py> for RequestParams {
         extract_option!(ob, params, form);
         extract_option!(ob, params, json);
         extract_option!(ob, params, body);
+        extract_option!(ob, params, multipart);
+
         Ok(params)
     }
 }
