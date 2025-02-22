@@ -7,11 +7,11 @@
 
 > 🚀 Help me work seamlessly with open source sharing by [sponsoring me on GitHub](https://github.com/0x676e67/0x676e67/blob/main/SPONSOR.md)
 
-An asynchronous Python HTTP client with Black Magic, powered by FFI from [rquest](https://github.com/0x676e67/rquest), capable of mimicking `TLS` and `HTTP2` fingerprints of popular browsers like `Chrome`, `Safari`, `Firefox`, and `OkHttp`.
+An asynchronous Python HTTP client with Black Magic, capable of mimicking `TLS` and `HTTP2` fingerprints of popular browsers like `Chrome`, `Safari`, `Firefox`, and `OkHttp`.
 
 ## Features
 
-- Plain, Form, JSON, urlencoded
+- Plain, JSON, urlencoded, multipart bodies
 - Header Order
 - Redirect Policy
 - Cookie Store
