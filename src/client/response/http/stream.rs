@@ -1,5 +1,4 @@
 use crate::error::{py_stop_async_iteration_error, wrap_rquest_error};
-use bytes::Bytes;
 use futures_util::{Stream, StreamExt};
 use pyo3::{prelude::*, IntoPyObjectExt};
 use pyo3_async_runtimes::tokio::future_into_py;
@@ -30,10 +29,10 @@ use tokio::sync::Mutex;
 ///     print("Encoding: ", resp.encoding)
 ///     print("Remote Address: ", resp.remote_addr)
 ///
-///     streamer = resp.stream()
-///     async for chunk in streamer:
-///         print("Chunk: ", chunk)
-///         await asyncio.sleep(0.1)
+///     async with resp.stream() as streamer:
+///         async for chunk in streamer:
+///             print("Chunk: ", chunk)
+///             await asyncio.sleep(0.1)
 ///
 /// if __name__ == "__main__":
 ///     asyncio.run(main())
@@ -61,7 +60,7 @@ impl Streamer {
     ///
     /// A new `Streamer` instance.
     pub fn new(
-        stream: impl Stream<Item = Result<Bytes, rquest::Error>> + Send + 'static,
+        stream: impl Stream<Item = Result<bytes::Bytes, rquest::Error>> + Send + 'static,
     ) -> Streamer {
         Streamer(Arc::new(Mutex::new(Some(Box::pin(stream)))))
     }
