@@ -2,10 +2,13 @@ mod client;
 mod dns;
 mod error;
 mod param;
-mod response;
+
 mod types;
 
-use client::Client;
+use client::{
+    response::{Message, Response, Streamer, WebSocket},
+    Client,
+};
 #[cfg(feature = "logging")]
 use log::LevelFilter;
 use param::{ClientParams, RequestParams, UpdateClientParams, WebSocketParams};
@@ -13,7 +16,6 @@ use pyo3::prelude::*;
 #[cfg(feature = "logging")]
 use pyo3_log::{Caching, Logger};
 use pyo3_stub_gen::{define_stub_info_gatherer, derive::*};
-use response::{Message, Response, Streamer, WebSocket};
 use types::{
     HeaderMap, Impersonate, ImpersonateOS, Method, Multipart, Part, Proxy, SocketAddr, StatusCode,
     Version,
