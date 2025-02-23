@@ -1,6 +1,6 @@
 use pyo3::{
     create_exception,
-    exceptions::{PyException, PyRuntimeError},
+    exceptions::{PyException, PyRuntimeError, PyStopAsyncIteration},
 };
 use rquest::header;
 
@@ -38,6 +38,10 @@ create_exception!(exceptions, MIMEParseError, PyException);
 
 pub fn memory_error() -> pyo3::PyErr {
     PyRuntimeError::new_err(RACE_CONDITION_ERROR_MSG)
+}
+
+pub fn py_stop_async_iteration_error() -> pyo3::PyErr {
+    PyStopAsyncIteration::new_err("The iterator is exhausted")
 }
 
 pub fn wrap_serde_error(error: serde_json::Error) -> pyo3::PyErr {
