@@ -17,6 +17,7 @@ An asynchronous Python HTTP client with Black Magic, capable of mimicking `TLS` 
 - Cookie Store
 - HTTP Proxies
 - Async DNS Resolver
+- Thread safety
 - WebSocket Upgrade
 - HTTPS via BoringSSL
 
@@ -25,7 +26,7 @@ An asynchronous Python HTTP client with Black Magic, capable of mimicking `TLS` 
 This asynchronous example demonstrates how to make a simple GET request using the `rnet` library. So you need install `rnet` and run the following code:
 
 ```bash
-pip install rnet
+pip install asyncio rnet
 ```
 
 And then the code:
@@ -121,7 +122,7 @@ python3 examples/client.py
 
 - Local Compilation
 
-You need to install the BoringSSL build environment. You can refer to [boring-ci](https://github.com/cloudflare/boring/blob/master/.github/workflows/ci.yml) and [boringssl](https://github.com/google/boringssl/blob/master/BUILDING.md#build-prerequisites).
+Install the BoringSSL build environment by referring to [boring](https://github.com/cloudflare/boring/blob/master/.github/workflows/ci.yml) and [boringssl](https://github.com/google/boringssl/blob/master/BUILDING.md#build-prerequisites).
 
 ```bash
 maturin build --release
@@ -129,7 +130,7 @@ maturin build --release
 
 - Musllinux
 
-You also need to install the Docker environment. The image might be outdated, so if you need to build the image yourself, refer to [rust-cross-musl](https://github.com/0x676e67/toolchain/blob/master/rust-musl-cross/Dockerfile) and the upstream [rust-cross-musl](https://github.com/rust-cross/rust-musl-cross). The upstream [rust-cross-musl](https://github.com/rust-cross/rust-musl-cross) lacks the relevant platform linker environment variables, which you need to add yourself.
+Also install the Docker environment. The image might be outdated, so if building the image yourself is required, refer to [rust-cross-musl](https://github.com/0x676e67/toolchain/blob/master/rust-musl-cross/Dockerfile) and the upstream [rust-cross-musl](https://github.com/rust-cross/rust-musl-cross). The upstream [rust-cross-musl](https://github.com/rust-cross/rust-musl-cross) lacks the relevant platform linker environment variables, which must be added manually.
   
 ```bash
 bash .github/musl_build.sh x86_64-unknown-linux-musl
