@@ -99,6 +99,5 @@ async def test_get_stream():
 
 @pytest.mark.asyncio
 async def test_peer_certificate():
-    client = rnet.Client(tls_info=True)
     resp = await client.get("https://httpbin.org/anything")
     assert resp.peer_certificate() is not None
