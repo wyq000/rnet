@@ -22,7 +22,7 @@ pub use self::{
 
 #[macro_export]
 macro_rules! define_enum_with_conversion {
-    ($(#[$meta:meta])* $enum_type:ident, $ffi_type:ty, { $($variant:ident),* $(,)? }) => {
+    ($(#[$meta:meta])* $enum_type:ident, $ffi_type:ty, $($variant:ident),* $(,)?) => {
         $(#[$meta])*
         #[gen_stub_pyclass_enum]
         #[pyclass(eq, eq_int)]
@@ -50,7 +50,7 @@ macro_rules! define_enum_with_conversion {
 
     };
 
-    (const, $(#[$meta:meta])* $enum_type:ident, $ffi_type:ty, { $($variant:ident),* $(,)? }) => {
+    (const, $(#[$meta:meta])* $enum_type:ident, $ffi_type:ty, $($variant:ident),* $(,)?) => {
         $(#[$meta])*
         #[gen_stub_pyclass_enum]
         #[pyclass(eq, eq_int)]

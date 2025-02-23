@@ -6,7 +6,7 @@ define_enum_with_conversion!(
     const,
     /// A impersonate.
     Impersonate,
-    rquest::Impersonate, {
+    rquest::Impersonate,
     Chrome100,
     Chrome101,
     Chrome104,
@@ -64,16 +64,16 @@ define_enum_with_conversion!(
     OkHttp4_9,
     OkHttp4_10,
     OkHttp5
-});
+);
 
 define_enum_with_conversion!(
     const,
     /// A impersonate operating system.
     ImpersonateOS,
-    rquest::ImpersonateOS, {
+    rquest::ImpersonateOS,
     Windows,
     MacOS,
     Linux,
     Android,
     IOS,
-});
+);

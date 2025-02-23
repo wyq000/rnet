@@ -162,20 +162,18 @@ impl Response {
     ///
     /// A string representing the encoding to decode with when accessing text.
     #[getter]
-    pub fn encoding(&self) -> PyResult<String> {
+    pub fn encoding(&self) -> String {
         let content_type = self
             .headers
             .get(header::CONTENT_TYPE)
             .and_then(|value| value.to_str().ok())
             .and_then(|value| value.parse::<Mime>().ok());
 
-        let encoding = content_type
+        content_type
             .as_ref()
             .and_then(|mime| mime.get_param("charset").map(|charset| charset.as_str()))
             .unwrap_or("utf-8")
-            .to_owned();
-
-        Ok(encoding)
+            .to_owned()
     }
 
     /// Returns the TLS peer certificate of the response.

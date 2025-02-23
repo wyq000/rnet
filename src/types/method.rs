@@ -6,7 +6,6 @@ define_enum_with_conversion!(
     /// A HTTP method.
     Method,
     rquest::Method,
-    {
     GET,
     HEAD,
     POST,
@@ -16,4 +15,4 @@ define_enum_with_conversion!(
     OPTIONS,
     TRACE,
     PATCH,
-});
+);
