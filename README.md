@@ -11,6 +11,7 @@ An easy and powerful Python HTTP Client with Black Magic, capable of mimicking `
 
 ## Features
 
+- Async and Blocking `Client`s
 - Plain, JSON, urlencoded, multipart bodies
 - Header Order
 - Redirect Policy
