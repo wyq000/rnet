@@ -318,7 +318,6 @@ fn rnet(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<WebSocketParams>()?;
     m.add_class::<Message>()?;
     m.add_class::<StatusCode>()?;
-
     m.add_class::<Part>()?;
     m.add_class::<Multipart>()?;
 
