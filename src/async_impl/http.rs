@@ -11,7 +11,7 @@ use pyo3_async_runtimes::tokio::future_into_py;
 use pyo3_stub_gen::derive::{gen_stub_pyclass, gen_stub_pymethods};
 use rquest::{header, TlsInfo, Url};
 use serde_json::Value;
-use std::{pin::Pin, sync::Arc};
+use std::{ops::Deref, pin::Pin, sync::Arc};
 use tokio::sync::Mutex;
 
 /// A response from a request.
@@ -378,6 +378,21 @@ pub struct Streamer(
     >,
 );
 
+impl Deref for Streamer {
+    type Target = Arc<
+        Mutex<
+            Option<
+                Pin<Box<dyn Stream<Item = Result<bytes::Bytes, rquest::Error>> + Send + 'static>>,
+            >,
+        >,
+    >;
+
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+
 impl Streamer {
     /// Create a new `Streamer` instance.
     #[inline(always)]
@@ -385,20 +400,6 @@ impl Streamer {
         stream: impl Stream<Item = Result<bytes::Bytes, rquest::Error>> + Send + 'static,
     ) -> Streamer {
         Streamer(Arc::new(Mutex::new(Some(Box::pin(stream)))))
-    }
-
-    /// Returns the inner field of the `Streamer`.
-    #[inline(always)]
-    pub fn inner(
-        &self,
-    ) -> Arc<
-        Mutex<
-            Option<
-                Pin<Box<dyn Stream<Item = Result<bytes::Bytes, rquest::Error>> + Send + 'static>>,
-            >,
-        >,
-    > {
-        self.0.clone()
     }
 }
 

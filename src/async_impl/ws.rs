@@ -280,7 +280,7 @@ impl WebSocket {
 #[gen_stub_pyclass]
 #[pyclass]
 #[derive(Clone)]
-pub struct Message(pub(crate) rquest::Message);
+pub struct Message(pub rquest::Message);
 
 #[pymethods]
 impl Message {

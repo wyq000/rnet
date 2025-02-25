@@ -169,7 +169,7 @@ impl BlockingClient {
         url: String,
         kwds: Option<RequestParams>,
     ) -> PyResult<BlockingResponse> {
-        let client = self.inner.0.load();
+        let client = self.inner.load();
         pyo3_async_runtimes::tokio::get_runtime()
             .block_on(execute_request2(client, method, url, kwds))
             .map(Into::into)
@@ -192,7 +192,7 @@ impl BlockingClient {
         url: String,
         kwds: Option<WebSocketParams>,
     ) -> PyResult<BlockingWebSocket> {
-        let client = self.inner.0.load();
+        let client = self.inner.load();
         pyo3_async_runtimes::tokio::get_runtime()
             .block_on(execute_websocket_request2(client, url, kwds))
             .map(Into::into)

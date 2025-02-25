@@ -277,7 +277,7 @@ impl BlockingStreamer {
     fn __next__(&self) -> PyResult<Option<PyObject>> {
         // Here we clone the inner field, so we can use it
         // in our future.
-        let streamer = self.0.inner();
+        let streamer = self.0.clone();
         pyo3_async_runtimes::tokio::get_runtime().block_on(async move {
             // Here we lock the mutex to access the data inside
             // and call next() method to get the next value.
@@ -315,7 +315,7 @@ impl BlockingStreamer {
         _exc_value: &Bound<'a, PyAny>,
         _traceback: &Bound<'a, PyAny>,
     ) -> PyResult<()> {
-        let streamer = self.0.inner();
+        let streamer = self.0.clone();
         pyo3_async_runtimes::tokio::get_runtime().block_on(async move {
             let mut lock = streamer.lock().await;
             Ok(drop(lock.take()))

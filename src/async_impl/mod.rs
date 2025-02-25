@@ -28,6 +28,7 @@ use rquest::{
     redirect::Policy,
     Url,
 };
+use std::ops::Deref;
 use std::{
     sync::{Arc, LazyLock},
     time::Duration,
@@ -76,7 +77,16 @@ where
 /// A client for making HTTP requests.
 #[gen_stub_pyclass]
 #[pyclass]
-pub struct Client(pub(crate) ArcSwap<rquest::Client>);
+pub struct Client(ArcSwap<rquest::Client>);
+
+impl Deref for Client {
+    type Target = ArcSwap<rquest::Client>;
+
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
 
 #[gen_stub_pymethods]
 #[pymethods]
