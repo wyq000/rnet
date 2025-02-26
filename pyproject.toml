@@ -21,7 +21,7 @@ classifiers = [
     "Intended Audience :: Developers",
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
-description = "Asynchronous Python HTTP Client with Black Magic"
+description = "An easy and powerful Python HTTP Client with Black Magic"
 readme = "README.md"
 dynamic = ["version"]
 license = { text = "GPL-3.0" }
