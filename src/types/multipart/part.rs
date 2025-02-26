@@ -111,18 +111,16 @@ impl FromPyObject<'_> for PartData {
         } else if let Ok(path) = ob.extract::<PathBuf>() {
             Ok(Self::File(path))
         } else {
-            match pyo3_async_runtimes::tokio::into_stream_v2(ob.to_owned()) {
-                Ok(stream) => {
-                    let stream = ArcSwapOption::from_pointee(Box::pin(stream)
+            pyo3_async_runtimes::tokio::into_stream_v2(ob.to_owned())
+                .map(|s| {
+                    Box::pin(s)
                         as Pin<
                             Box<dyn futures_util::Stream<Item = PyObject> + Send + Sync + 'static>,
-                        >);
-                    Ok(Self::Stream(Arc::new(stream)))
-                }
-                Err(_) => Err(pyo3::exceptions::PyTypeError::new_err(
-                    "Expected str or bytes or file path or bytes stream",
-                )),
-            }
+                        >
+                })
+                .map(ArcSwapOption::from_pointee)
+                .map(Arc::new)
+                .map(Self::Stream)
         }
     }
 }
