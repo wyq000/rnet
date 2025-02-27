@@ -221,7 +221,7 @@ class BlockingResponse:
     def __exit__(self, _exc_type:typing.Any, _exc_value:typing.Any, _traceback:typing.Any) -> None:
         ...
 
-    def peer_certificate(self) -> typing.Optional[builtins.list[builtins.int]]:
+    def peer_certificate(self) -> typing.Optional[typing.Any]:
         r"""
         Returns the TLS peer certificate of the response.
         
@@ -323,7 +323,7 @@ class BlockingStreamer:
     def __iter__(self) -> BlockingStreamer:
         ...
 
-    def __next__(self) -> typing.Optional[typing.Any]:
+    def __next__(self) -> typing.Any:
         ...
 
     def __enter__(self) -> BlockingStreamer:
@@ -1188,7 +1188,7 @@ class Response:
     def __aexit__(self, _exc_type:typing.Any, _exc_value:typing.Any, _traceback:typing.Any) -> typing.Any:
         ...
 
-    def peer_certificate(self) -> typing.Optional[builtins.list[builtins.int]]:
+    def peer_certificate(self) -> typing.Optional[typing.Any]:
         r"""
         Returns the TLS peer certificate of the response.
         
