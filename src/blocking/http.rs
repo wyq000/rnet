@@ -2,12 +2,13 @@ use std::ops::Deref;
 
 use crate::{
     async_impl,
+    buffer::{BytesBuffer, PyBufferProtocol},
     error::{py_stop_iteration_error, wrap_rquest_error, wrap_serde_error},
     types::{HeaderMap, Json, SocketAddr, StatusCode, Version},
 };
 use futures_util::StreamExt;
 use indexmap::IndexMap;
-use pyo3::{prelude::*, IntoPyObjectExt};
+use pyo3::prelude::*;
 use pyo3_stub_gen::derive::{gen_stub_pyclass, gen_stub_pymethods};
 use serde_json::Value;
 
@@ -138,7 +139,10 @@ impl BlockingResponse {
     ///
     /// A Python object representing the TLS peer certificate of the response.
     #[inline(always)]
-    pub fn peer_certificate(&self, py: Python) -> PyResult<Option<Vec<u8>>> {
+    pub fn peer_certificate<'rt>(
+        &'rt self,
+        py: Python<'rt>,
+    ) -> PyResult<Option<Bound<'rt, PyAny>>> {
         self.0.peer_certificate(py)
     }
 
@@ -223,13 +227,14 @@ impl BlockingResponse {
     /// # Returns
     ///
     /// A Python object representing the bytes content of the response.
-    pub fn bytes(&self, py: Python) -> PyResult<PyObject> {
+    pub fn bytes(&self, py: Python) -> PyResult<Py<PyAny>> {
         py.allow_threads(|| {
             let resp = self.inner()?;
             let bytes = pyo3_async_runtimes::tokio::get_runtime()
                 .block_on(resp.bytes())
                 .map_err(wrap_rquest_error)?;
-            Python::with_gil(|py| bytes.into_bound_py_any(py).map(|obj| obj.unbind()))
+            let buffer = BytesBuffer::new(bytes);
+            Python::with_gil(|py| buffer.into_bytes(py))
         })
     }
 
@@ -300,7 +305,7 @@ impl BlockingStreamer {
         slf
     }
 
-    fn __next__(&self, py: Python) -> PyResult<Option<PyObject>> {
+    fn __next__(&self, py: Python) -> PyResult<Py<PyAny>> {
         py.allow_threads(|| {
             let streamer = self.0.clone();
             pyo3_async_runtimes::tokio::get_runtime().block_on(async move {
@@ -315,17 +320,13 @@ impl BlockingStreamer {
 
                 drop(lock);
 
-                match val {
-                    Some(Ok(val)) => {
-                        // If we have a value, we return it as a PyObject.
-                        Python::with_gil(|py| Ok(Some(val.into_bound_py_any(py)?.unbind())))
-                    }
-                    Some(Err(err)) => Err(wrap_rquest_error(err)),
-                    // Here we return PyStopAsyncIteration error,
-                    // because python needs exceptions to tell that iterator
-                    // has ended.
-                    None => Err(py_stop_iteration_error()),
-                }
+                let val = val
+                    .ok_or_else(py_stop_iteration_error)?
+                    .map_err(wrap_rquest_error)?;
+
+                // If we have a value, we return it as a PyObject.
+                let buffer = BytesBuffer::new(val);
+                Python::with_gil(|py| buffer.into_bytes(py))
             })
         })
     }
