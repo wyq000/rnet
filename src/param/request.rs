@@ -31,75 +31,58 @@ use pyo3_stub_gen::derive::gen_stub_pyclass;
 /// print(body)
 /// ```
 #[gen_stub_pyclass]
-#[pyclass]
+#[pyclass(get_all, set_all)]
 #[derive(Default, Debug)]
 pub struct RequestParams {
     /// The proxy to use for the request.
-    #[pyo3(get)]
     pub proxy: Option<String>,
 
     /// Bind to a local IP Address.
-    #[pyo3(get)]
     pub local_address: Option<IpAddr>,
 
     /// Bind to an interface by `SO_BINDTODEVICE`.
-    #[pyo3(get)]
     pub interface: Option<String>,
 
     /// The timeout to use for the request.
-    #[pyo3(get)]
     pub timeout: Option<u64>,
 
     /// The read timeout to use for the request.
-    #[pyo3(get)]
     pub read_timeout: Option<u64>,
 
     /// The HTTP version to use for the request.
-    #[pyo3(get)]
     pub version: Option<Version>,
 
     /// The headers to use for the request.
-    #[pyo3(get)]
     pub headers: Option<HeaderMap>,
 
     /// Whether to allow redirects.
-    #[pyo3(get)]
     pub allow_redirects: Option<bool>,
 
     /// The maximum number of redirects to follow.
-    #[pyo3(get)]
     pub max_redirects: Option<usize>,
 
     /// The authentication to use for the request.
-    #[pyo3(get)]
     pub auth: Option<String>,
 
     /// The bearer authentication to use for the request.
-    #[pyo3(get)]
     pub bearer_auth: Option<String>,
 
     /// The basic authentication to use for the request.
-    #[pyo3(get)]
     pub basic_auth: Option<(String, Option<String>)>,
 
     /// The query parameters to use for the request.
-    #[pyo3(get)]
     pub query: Option<Vec<(String, String)>>,
 
     /// The form parameters to use for the request.
-    #[pyo3(get)]
     pub form: Option<Vec<(String, String)>>,
 
     /// The JSON body to use for the request.
-    #[pyo3(get)]
     pub json: Option<Json>,
 
     /// The body to use for the request.
-    #[pyo3(get)]
     pub body: Option<Body>,
 
     /// The multipart form to use for the request.
-    #[pyo3(get)]
     pub multipart: Option<Py<Multipart>>,
 }
 

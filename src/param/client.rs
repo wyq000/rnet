@@ -29,154 +29,119 @@ use pyo3_stub_gen::derive::gen_stub_pyclass;
 /// print(body)
 /// ```
 #[gen_stub_pyclass]
-#[pyclass]
+#[pyclass(get_all, set_all)]
 #[derive(Default, Debug)]
 pub struct ClientParams {
     /// The impersonation settings for the request.
-    #[pyo3(get)]
     pub impersonate: Option<Impersonate>,
 
     /// The impersonation settings for the operating system.
-    #[pyo3(get)]
     pub impersonate_os: Option<ImpersonateOS>,
 
     /// Whether to skip impersonate HTTP/2.
-    #[pyo3(get)]
     pub impersonate_skip_http2: Option<bool>,
 
     /// Whether to skip impersonate headers.
-    #[pyo3(get)]
     pub impersonate_skip_headers: Option<bool>,
 
     /// The base URL to use for the request.
-    #[pyo3(get)]
     pub base_url: Option<String>,
 
     /// The user agent to use for the request.
-    #[pyo3(get)]
     pub user_agent: Option<String>,
 
     /// The headers to use for the request.
-    #[pyo3(get)]
     pub default_headers: Option<HeaderMap>,
 
     /// The order of the headers to use for the request.
-    #[pyo3(get)]
     pub headers_order: Option<Vec<String>>,
 
     /// Whether to use referer.
-    #[pyo3(get)]
     pub referer: Option<bool>,
 
     /// Whether to allow redirects.
-    #[pyo3(get)]
     pub allow_redirects: Option<bool>,
 
     /// The maximum number of redirects to follow.
-    #[pyo3(get)]
     pub max_redirects: Option<usize>,
 
     /// Whether to use cookie store.
-    #[pyo3(get)]
     pub cookie_store: Option<bool>,
 
     /// The lookup ip strategy
-    #[pyo3(get)]
     pub lookup_ip_strategy: Option<LookupIpStrategy>,
 
     // ========= Timeout options =========
     /// The timeout to use for the request. (in seconds)
-    #[pyo3(get)]
     pub timeout: Option<u64>,
 
     /// The connect timeout to use for the request. (in seconds)
-    #[pyo3(get)]
     pub connect_timeout: Option<u64>,
 
     /// The read timeout to use for the request. (in seconds)
-    #[pyo3(get)]
     pub read_timeout: Option<u64>,
 
     /// Disable keep-alive for the client.
-    #[pyo3(get)]
     pub no_keepalive: Option<bool>,
 
     /// Set that all sockets have `SO_KEEPALIVE` set with the supplied duration. (in seconds)
-    #[pyo3(get)]
     pub tcp_keepalive: Option<u64>,
 
     /// Set an optional timeout for idle sockets being kept-alive. (in seconds)
-    #[pyo3(get)]
     pub pool_idle_timeout: Option<u64>,
 
     /// Sets the maximum idle connection per host allowed in the pool.
-    #[pyo3(get)]
     pub pool_max_idle_per_host: Option<usize>,
 
     /// Sets the maximum number of connections in the pool.
-    #[pyo3(get)]
     pub pool_max_size: Option<usize>,
 
     // ========= Protocol options =========
     /// Whether to use the HTTP/1 protocol only.
-    #[pyo3(get)]
     pub http1_only: Option<bool>,
 
     /// Whether to use the HTTP/2 protocol only.
-    #[pyo3(get)]
     pub http2_only: Option<bool>,
 
     /// Whether to use HTTPS only.
-    #[pyo3(get)]
     pub https_only: Option<bool>,
 
     /// Set whether sockets have `TCP_NODELAY` enabled.
-    #[pyo3(get)]
     pub tcp_nodelay: Option<bool>,
 
     /// Whether to verify the SSL certificate.
-    #[pyo3(get)]
     pub danger_accept_invalid_certs: Option<bool>,
 
     /// The maximum number of times to retry a request.
-    #[pyo3(get)]
     pub http2_max_retry_count: Option<usize>,
 
     /// Add TLS information as `TlsInfo` extension to responses.
-    #[pyo3(get)]
     pub tls_info: Option<bool>,
 
     // ========= Network options =========
     /// Whether to disable the proxy for the request.
-    #[pyo3(get)]
     pub no_proxy: Option<bool>,
 
     /// The proxy to use for the request.
-    #[pyo3(get)]
     pub proxies: Option<Vec<Proxy>>,
 
     /// Bind to a local IP Address.
     pub local_address: Option<IpAddr>,
 
     /// Bind to an interface by `SO_BINDTODEVICE`.
-    #[pyo3(get)]
     pub interface: Option<String>,
 
     // ========= Compression options =========
     /// Sets gzip as an accepted encoding.
-    #[pyo3(get)]
     pub gzip: Option<bool>,
 
     /// Sets brotli as an accepted encoding.
-    #[pyo3(get)]
     pub brotli: Option<bool>,
 
     /// Sets deflate as an accepted encoding.
-    #[pyo3(get)]
     pub deflate: Option<bool>,
 
     /// Sets zstd as an accepted encoding.
-    #[pyo3(get)]
     pub zstd: Option<bool>,
 }
 
@@ -202,44 +167,35 @@ pub struct ClientParams {
 ///
 /// This will update the client with the specified impersonation settings, headers, and proxies.
 #[gen_stub_pyclass]
-#[pyclass]
+#[pyclass(get_all, set_all)]
 #[derive(Default, Debug)]
 pub struct UpdateClientParams {
     /// The impersonation settings for the request.
-    #[pyo3(get)]
     pub impersonate: Option<Impersonate>,
 
     /// The impersonation settings for the operating system.
-    #[pyo3(get)]
     pub impersonate_os: Option<ImpersonateOS>,
 
     /// Whether to skip impersonate HTTP/2.
-    #[pyo3(get)]
     pub impersonate_skip_http2: Option<bool>,
 
     /// Whether to skip impersonate headers.
-    #[pyo3(get)]
     pub impersonate_skip_headers: Option<bool>,
 
     /// The headers to use for the request.
-    #[pyo3(get)]
     pub headers: Option<HeaderMap>,
 
     /// The order of the headers to use for the request.
-    #[pyo3(get)]
     pub headers_order: Option<Vec<String>>,
 
     // ========= Network options =========
     /// The proxy to use for the request.
-    #[pyo3(get)]
     pub proxies: Option<Vec<Proxy>>,
 
     /// Bind to a local IP Address.
-    #[pyo3(get)]
     pub local_address: Option<IpAddr>,
 
     /// Bind to an interface by `SO_BINDTODEVICE`.
-    #[pyo3(get)]
     pub interface: Option<String>,
 }
 

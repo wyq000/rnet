@@ -818,6 +818,7 @@ class ClientParams:
     tls_info: typing.Optional[builtins.bool]
     no_proxy: typing.Optional[builtins.bool]
     proxies: typing.Optional[builtins.list[Proxy]]
+    local_address: typing.Optional[typing.Optional[typing.Union[str, ipaddress.IPv4Address, ipaddress.IPv6Address]]]
     interface: typing.Optional[builtins.str]
     gzip: typing.Optional[builtins.bool]
     brotli: typing.Optional[builtins.bool]
