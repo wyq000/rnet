@@ -1,16 +1,15 @@
 use crate::{
     error::{stream_consumed_error, wrap_io_error, MIMEParseError},
-    types::PyIterator,
+    stream::{AsyncStream, SyncStream},
 };
 use arc_swap::ArcSwapOption;
 use bytes::Bytes;
-use futures_util::StreamExt;
-use pyo3::prelude::*;
+use pyo3::{prelude::*, types::PyBytes};
 use pyo3_stub_gen::{
     derive::{gen_stub_pyclass, gen_stub_pymethods},
     PyStubType, TypeInfo,
 };
-use std::{fmt::Debug, path::PathBuf, pin::Pin, sync::Arc};
+use std::{fmt::Debug, path::PathBuf, sync::Arc};
 
 /// A part of a multipart form.
 #[gen_stub_pyclass]
@@ -22,17 +21,11 @@ pub struct Part {
 
 /// The data for a part of a multipart form.
 pub enum PartData {
-    Text(String),
-    Bytes(Vec<u8>),
+    Text(Bytes),
+    Bytes(Bytes),
     File(PathBuf),
-    Iterator(Arc<ArcSwapOption<Box<dyn Iterator<Item = Vec<u8>> + Send + Sync + 'static>>>),
-    Stream(
-        Arc<
-            ArcSwapOption<
-                Pin<Box<dyn futures_util::Stream<Item = PyObject> + Send + Sync + 'static>>,
-            >,
-        >,
-    ),
+    Iterator(Arc<ArcSwapOption<SyncStream>>),
+    Stream(Arc<ArcSwapOption<AsyncStream>>),
 }
 
 impl Debug for PartData {
@@ -69,27 +62,21 @@ impl Part {
         py.allow_threads(|| {
             // Create the inner part
             let mut inner = match value {
-                PartData::Text(text) => rquest::multipart::Part::text(text),
-                PartData::Bytes(bytes) => rquest::multipart::Part::bytes(bytes),
+                PartData::Text(bytes) | PartData::Bytes(bytes) => {
+                    rquest::multipart::Part::stream(rquest::Body::from(bytes))
+                }
                 PartData::File(path) => pyo3_async_runtimes::tokio::get_runtime()
                     .block_on(rquest::multipart::Part::file(path))
                     .map_err(wrap_io_error)?,
                 PartData::Iterator(iterator) => iterator
                     .swap(None)
                     .and_then(Arc::into_inner)
-                    .map(|iter| iter.map(|item| Ok::<_, PyErr>(Bytes::from(item))))
-                    .map(futures_util::stream::iter)
-                    .map(rquest::Body::wrap_stream)
-                    .map(rquest::multipart::Part::stream)
+                    .map(Into::into)
                     .ok_or_else(stream_consumed_error)?,
                 PartData::Stream(stream) => stream
                     .swap(None)
                     .and_then(Arc::into_inner)
-                    .map(|stream| {
-                        stream.map(|item| Python::with_gil(|py| item.extract::<Vec<u8>>(py)))
-                    })
-                    .map(rquest::Body::wrap_stream)
-                    .map(rquest::multipart::Part::stream)
+                    .map(Into::into)
                     .ok_or_else(stream_consumed_error)?,
             };
 
@@ -116,24 +103,18 @@ impl Part {
 impl FromPyObject<'_> for PartData {
     fn extract_bound(ob: &Bound<'_, PyAny>) -> PyResult<Self> {
         if let Ok(text) = ob.extract::<String>() {
-            Ok(Self::Text(text))
-        } else if let Ok(bytes) = ob.extract::<Vec<u8>>() {
-            Ok(Self::Bytes(bytes))
+            Ok(Self::Text(Bytes::from(text)))
+        } else if let Ok(bytes) = ob.downcast::<PyBytes>() {
+            Ok(Self::Bytes(Bytes::from(bytes.as_bytes().to_vec())))
         } else if let Ok(path) = ob.extract::<PathBuf>() {
             Ok(Self::File(path))
         } else if let Ok(iter) = ob.extract::<PyObject>() {
             Ok(Self::Iterator(Arc::new(ArcSwapOption::from_pointee(
-                Box::new(PyIterator::new(iter))
-                    as Box<dyn Iterator<Item = Vec<u8>> + Send + Sync + 'static>,
+                SyncStream::new(iter),
             ))))
         } else {
             pyo3_async_runtimes::tokio::into_stream_v2(ob.to_owned())
-                .map(|s| {
-                    Box::pin(s)
-                        as Pin<
-                            Box<dyn futures_util::Stream<Item = PyObject> + Send + Sync + 'static>,
-                        >
-                })
+                .map(AsyncStream::new)
                 .map(ArcSwapOption::from_pointee)
                 .map(Arc::new)
                 .map(Self::Stream)
