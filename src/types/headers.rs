@@ -58,17 +58,20 @@ impl PyStubType for HeaderMap {
 impl FromPyObject<'_> for HeaderMap {
     fn extract_bound(ob: &Bound<'_, PyAny>) -> PyResult<Self> {
         let dict = ob.downcast::<PyDict>()?;
-        let mut headers = header::HeaderMap::new();
-        for (key, value) in dict.iter() {
-            let key = key.extract::<&str>()?;
-            let value = value.extract::<&str>()?;
-            headers.insert(
-                HeaderName::from_str(key).map_err(wrap_invali_header_name_error)?,
-                HeaderValue::from_str(value).map_err(wrap_invali_header_value_error)?,
-            );
-        }
 
-        Ok(HeaderMap(headers))
+        dict.iter()
+            .try_fold(
+                header::HeaderMap::with_capacity(dict.len()),
+                |mut headers, (key, value)| {
+                    let name = HeaderName::from_str(key.extract::<&str>()?)
+                        .map_err(wrap_invali_header_name_error)?;
+                    let value = HeaderValue::from_str(value.extract::<&str>()?)
+                        .map_err(wrap_invali_header_value_error)?;
+                    headers.insert(name, value);
+                    Ok(headers)
+                },
+            )
+            .map(HeaderMap)
     }
 }
 impl<'py> IntoPyObject<'py> for HeaderMap {
@@ -79,10 +82,11 @@ impl<'py> IntoPyObject<'py> for HeaderMap {
     type Error = PyErr;
 
     fn into_pyobject(self, py: Python<'py>) -> Result<Self::Output, Self::Error> {
-        let dict = PyDict::new(py);
-        for (header, value) in &self.0 {
-            dict.set_item(header.as_str(), PyBytes::new(py, value.as_ref()))?;
-        }
-        Ok(dict)
+        self.0
+            .iter()
+            .try_fold(PyDict::new(py), |dict, (name, value)| {
+                dict.set_item(name.as_str(), PyBytes::new(py, value.as_bytes()))?;
+                Ok(dict)
+            })
     }
 }
