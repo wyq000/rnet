@@ -25,10 +25,11 @@ impl<'py> IntoPyObject<'py> for CookieMap {
     type Error = PyErr;
 
     fn into_pyobject(self, py: Python<'py>) -> Result<Self::Output, Self::Error> {
-        let dict = PyDict::new(py);
-        for (header, value) in &self.0 {
-            dict.set_item(header.as_str(), value)?;
-        }
-        Ok(dict)
+        self.0
+            .iter()
+            .try_fold(PyDict::new(py), |dict, (header, value)| {
+                dict.set_item(header, value)?;
+                Ok(dict)
+            })
     }
 }
