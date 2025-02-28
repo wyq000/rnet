@@ -216,6 +216,7 @@ class BlockingResponse:
     content_length: builtins.int
     remote_addr: typing.Optional[SocketAddr]
     encoding: builtins.str
+    cookies: typing.Dict[str, str]
     def __enter__(self) -> BlockingResponse:
         ...
 
@@ -1119,6 +1120,7 @@ class Response:
     content_length: builtins.int
     remote_addr: typing.Optional[SocketAddr]
     encoding: builtins.str
+    cookies: typing.Dict[str, str]
     def __aenter__(self) -> typing.Any:
         ...
 
