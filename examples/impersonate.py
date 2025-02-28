@@ -3,10 +3,14 @@ from rnet import Impersonate, Client
 
 
 async def main():
+    headers = {"foo": "bar", "bar": "foo"}
+    headers_order = ["accept-encoding", "foo", "bar"]
     client = Client(
         impersonate=Impersonate.Firefox135,
         user_agent="rnet",
         tls_info=True,
+        default_headers=headers,
+        headers_order=headers_order
     )
     async with await client.get("https://tls.peet.ws/api/all") as resp:
         print("Status Code: ", resp.status_code)

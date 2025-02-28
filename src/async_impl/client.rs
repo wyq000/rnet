@@ -10,7 +10,7 @@ use pyo3::prelude::*;
 use pyo3_async_runtimes::tokio::future_into_py;
 use pyo3_stub_gen::derive::{gen_stub_pyclass, gen_stub_pymethods};
 use rquest::{
-    header::{HeaderMap, HeaderName, HeaderValue},
+    header::{HeaderMap, HeaderValue},
     redirect::Policy,
     Url,
 };
@@ -459,15 +459,13 @@ impl Client {
             );
 
             // Headers order options.
-            if let Some(headers_order) = params.headers_order.take() {
-                builder = builder.headers_order(
-                    headers_order
-                        .into_iter()
-                        .map(|name| HeaderName::from_bytes(name.as_bytes()))
-                        .filter_map(std::result::Result::ok)
-                        .collect::<Vec<_>>(),
-                );
-            }
+            apply_option!(
+                apply_transformed_option,
+                builder,
+                params.headers_order,
+                headers_order,
+                Vec::from
+            );
 
             // Referer options.
             apply_option!(apply_if_some, builder, params.referer, referer);
@@ -808,13 +806,7 @@ impl Client {
 
             // Headers order options.
             params.headers_order.take().map(|value| {
-                client_mut.headers_order(
-                    value
-                        .into_iter()
-                        .map(|name| HeaderName::from_bytes(name.as_bytes()))
-                        .filter_map(std::result::Result::ok)
-                        .collect::<Vec<_>>(),
-                );
+                client_mut.headers_order(Vec::from(value));
             });
 
             // Network options.

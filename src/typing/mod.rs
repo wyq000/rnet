@@ -12,7 +12,7 @@ pub use self::{
     body::Body,
     cookie::CookieMap,
     enums::{Impersonate, ImpersonateOS, LookupIpStrategy, Method, TlsVersion, Version},
-    headers::HeaderMap,
+    headers::{HeaderMap, HeaderNameOrder},
     ipaddr::{IpAddr, SocketAddr},
     json::Json,
     multipart::{Multipart, Part},

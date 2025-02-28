@@ -1,5 +1,6 @@
 use crate::typing::{
-    HeaderMap, Impersonate, ImpersonateOS, IpAddr, LookupIpStrategy, Proxy, TlsVersion,
+    HeaderMap, HeaderNameOrder, Impersonate, ImpersonateOS, IpAddr, LookupIpStrategy, Proxy,
+    TlsVersion,
 };
 use pyo3::prelude::*;
 use pyo3_stub_gen::derive::gen_stub_pyclass;
@@ -56,7 +57,7 @@ pub struct ClientParams {
     pub default_headers: Option<HeaderMap>,
 
     /// The order of the headers to use for the request.
-    pub headers_order: Option<Vec<String>>,
+    pub headers_order: Option<HeaderNameOrder>,
 
     /// Whether to use referer.
     pub referer: Option<bool>,
@@ -195,7 +196,7 @@ pub struct UpdateClientParams {
     pub headers: Option<HeaderMap>,
 
     /// The order of the headers to use for the request.
-    pub headers_order: Option<Vec<String>>,
+    pub headers_order: Option<HeaderNameOrder>,
 
     // ========= Network options =========
     /// The proxy to use for the request.
