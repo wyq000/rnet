@@ -4,7 +4,7 @@ use crate::{
     async_impl,
     buffer::{BytesBuffer, PyBufferProtocol},
     error::{py_stop_iteration_error, wrap_rquest_error},
-    types::{HeaderMap, IndexMap, Json, SocketAddr, StatusCode, Version},
+    types::{CookieMap, HeaderMap, Json, SocketAddr, StatusCode, Version},
 };
 use futures_util::StreamExt;
 use pyo3::prelude::*;
@@ -144,6 +144,16 @@ impl BlockingResponse {
         self.0.peer_certificate(py)
     }
 
+    /// Returns the cookies of the response.
+    ///
+    /// # Returns
+    ///
+    /// A Python dictionary representing the cookies of the response.
+    #[getter]
+    pub fn cookies(&self, py: Python) -> CookieMap {
+        self.0.cookies(py)
+    }
+
     /// Returns the text content of the response.
     ///
     /// # Returns
@@ -220,19 +230,6 @@ impl BlockingResponse {
     #[inline(always)]
     pub fn close(&self, py: Python) {
         self.0.close(py);
-    }
-}
-
-#[pymethods]
-impl BlockingResponse {
-    /// Returns the cookies of the response.
-    ///
-    /// # Returns
-    ///
-    /// A Python dictionary representing the cookies of the response.
-    #[getter]
-    pub fn cookies(&self, py: Python) -> IndexMap<String, String> {
-        self.0.cookies(py)
     }
 }
 

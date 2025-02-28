@@ -1,7 +1,7 @@
 use crate::{
     buffer::{Buffer, BytesBuffer, PyBufferProtocol},
     error::{memory_error, py_stop_async_iteration_error, wrap_rquest_error},
-    types::{HeaderMap, IndexMap, Json, SocketAddr, StatusCode, Version},
+    types::{CookieMap, HeaderMap, Json, SocketAddr, StatusCode, Version},
 };
 use arc_swap::ArcSwapOption;
 use futures_util::{Stream, StreamExt};
@@ -211,7 +211,7 @@ impl Response {
     ///
     /// A Python dictionary representing the cookies of the response.
     #[getter]
-    pub fn cookies(&self, py: Python) -> IndexMap<String, String> {
+    pub fn cookies(&self, py: Python) -> CookieMap {
         py.allow_threads(|| {
             self.headers
                 .get_all(header::SET_COOKIE)
@@ -222,7 +222,7 @@ impl Response {
                         .and_then(cookie::Cookie::parse)
                 })
                 .filter_map(Result::ok)
-                .fold(IndexMap::new(), |mut map, cookie| {
+                .fold(CookieMap::new(), |mut map, cookie| {
                     map.insert(cookie.name().to_owned(), cookie.value().to_owned());
                     map
                 })
