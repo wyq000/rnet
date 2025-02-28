@@ -1,12 +1,11 @@
-use crate::error::wrap_invali_header_value_error;
-
 use super::IndexMap;
+use crate::error::wrap_invali_header_value_error;
 use pyo3::FromPyObject;
 use pyo3::{prelude::*, types::PyDict};
 use pyo3_stub_gen::{PyStubType, TypeInfo};
 use rquest::header::HeaderValue;
 
-pub type CookieMap = super::IndexMap<String, String>;
+pub type CookieMap = IndexMap<String, String>;
 
 impl TryFrom<CookieMap> for HeaderValue {
     type Error = PyErr;
