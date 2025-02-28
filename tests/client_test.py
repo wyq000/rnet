@@ -15,11 +15,14 @@ async def test_update_headers():
 @pytest.mark.asyncio
 @pytest.mark.flaky(reruns=3, reruns_delay=2)
 async def test_update_cookies():
-    url = "https://tls.peet.ws"
+    url = "https://httpbin.org/cookies"
     client = rnet.Client(cookie_store=True)
     cookies = ["foo=bar"]
     client.set_cookies(url, cookies)
     assert client.get_cookies(url) == cookies
+    response = await client.get(url)
+    json = await response.json()
+    assert json["cookies"] == {"foo": "bar"}
 
 
 @pytest.mark.asyncio

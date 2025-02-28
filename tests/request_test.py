@@ -12,6 +12,7 @@ async def test_send_cookies():
     json = await response.json()
     assert json["cookies"] == {"foo": "bar"}
 
+
 @pytest.mark.asyncio
 @pytest.mark.flaky(reruns=3, reruns_delay=2)
 async def test_send_form():
