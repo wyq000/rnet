@@ -1,11 +1,10 @@
 use crate::{
     buffer::{Buffer, BytesBuffer, PyBufferProtocol},
     error::{memory_error, py_stop_async_iteration_error, wrap_rquest_error},
-    types::{HeaderMap, Json, SocketAddr, StatusCode, Version},
+    types::{HeaderMap, IndexMap, Json, SocketAddr, StatusCode, Version},
 };
 use arc_swap::ArcSwapOption;
 use futures_util::{Stream, StreamExt};
-use indexmap::IndexMap;
 use mime::Mime;
 use pyo3::{prelude::*, IntoPyObjectExt};
 use pyo3_async_runtimes::tokio::future_into_py;
@@ -206,6 +205,30 @@ impl Response {
         s.map(|buffer| buffer.into_bytes_ref(py)).transpose()
     }
 
+    /// Returns the cookies of the response.
+    ///
+    /// # Returns
+    ///
+    /// A Python dictionary representing the cookies of the response.
+    #[getter]
+    pub fn cookies(&self, py: Python) -> IndexMap<String, String> {
+        py.allow_threads(|| {
+            self.headers
+                .get_all(header::SET_COOKIE)
+                .iter()
+                .map(|value| {
+                    std::str::from_utf8(value.as_bytes())
+                        .map_err(cookie::ParseError::from)
+                        .and_then(cookie::Cookie::parse)
+                })
+                .filter_map(Result::ok)
+                .fold(IndexMap::new(), |mut map, cookie| {
+                    map.insert(cookie.name().to_owned(), cookie.value().to_owned());
+                    map
+                })
+        })
+    }
+
     /// Returns the text content of the response.
     ///
     /// # Returns
@@ -284,31 +307,6 @@ impl Response {
     pub fn close(&self, py: Python) {
         py.allow_threads(|| {
             let _ = self.inner().map(drop);
-        })
-    }
-}
-
-#[pymethods]
-impl Response {
-    /// Returns the cookies of the response.
-    ///
-    /// # Returns
-    ///
-    /// A Python dictionary representing the cookies of the response.
-    #[getter]
-    pub fn cookies(&self, py: Python) -> IndexMap<String, String> {
-        py.allow_threads(|| {
-            self.headers
-                .get_all(header::SET_COOKIE)
-                .iter()
-                .map(|value| {
-                    std::str::from_utf8(value.as_bytes())
-                        .map_err(cookie::ParseError::from)
-                        .and_then(cookie::Cookie::parse)
-                })
-                .filter_map(Result::ok)
-                .map(|cookie| (cookie.name().to_owned(), cookie.value().to_owned()))
-                .collect()
         })
     }
 }

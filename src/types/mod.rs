@@ -1,6 +1,7 @@
 mod body;
 mod enums;
 mod headers;
+mod indexmap;
 mod ipaddr;
 mod json;
 mod multipart;
@@ -11,6 +12,7 @@ pub use self::{
     body::Body,
     enums::{Impersonate, ImpersonateOS, LookupIpStrategy, Method, Version},
     headers::HeaderMap,
+    indexmap::IndexMap,
     ipaddr::{IpAddr, SocketAddr},
     json::Json,
     multipart::{Multipart, Part},

@@ -4,10 +4,9 @@ use crate::{
     async_impl,
     buffer::{BytesBuffer, PyBufferProtocol},
     error::{py_stop_iteration_error, wrap_rquest_error},
-    types::{HeaderMap, Json, SocketAddr, StatusCode, Version},
+    types::{HeaderMap, IndexMap, Json, SocketAddr, StatusCode, Version},
 };
 use futures_util::StreamExt;
-use indexmap::IndexMap;
 use pyo3::prelude::*;
 use pyo3_stub_gen::derive::{gen_stub_pyclass, gen_stub_pymethods};
 
