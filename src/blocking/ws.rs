@@ -3,7 +3,7 @@ use std::ops::Deref;
 use crate::{
     async_impl::{self, Message},
     error::{py_stop_iteration_error, wrap_rquest_error},
-    types::{HeaderMap, SocketAddr, StatusCode, Version},
+    typing::{HeaderMap, SocketAddr, StatusCode, Version},
 };
 use futures_util::{SinkExt, TryStreamExt};
 use pyo3::prelude::*;

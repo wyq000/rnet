@@ -4,7 +4,7 @@ use crate::{
     async_impl,
     buffer::{BytesBuffer, PyBufferProtocol},
     error::{py_stop_iteration_error, wrap_rquest_error},
-    types::{CookieMap, HeaderMap, Json, SocketAddr, StatusCode, Version},
+    typing::{CookieMap, HeaderMap, Json, SocketAddr, StatusCode, Version},
 };
 use futures_util::StreamExt;
 use pyo3::prelude::*;

@@ -1,7 +1,7 @@
 use crate::{
     buffer::{Buffer, BytesBuffer, PyBufferProtocol},
     error::{memory_error, py_stop_async_iteration_error, wrap_rquest_error},
-    types::{CookieMap, HeaderMap, Json, SocketAddr, StatusCode, Version},
+    typing::{CookieMap, HeaderMap, Json, SocketAddr, StatusCode, Version},
 };
 use arc_swap::ArcSwapOption;
 use futures_util::{Stream, StreamExt};

@@ -2,7 +2,7 @@ mod message;
 
 use crate::{
     error::{py_stop_async_iteration_error, wrap_rquest_error},
-    types::{HeaderMap, SocketAddr, StatusCode, Version},
+    typing::{HeaderMap, SocketAddr, StatusCode, Version},
 };
 use futures_util::{
     stream::{SplitSink, SplitStream},

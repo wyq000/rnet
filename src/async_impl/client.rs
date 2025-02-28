@@ -3,7 +3,7 @@ use crate::{
     apply_option, dns,
     error::{wrap_rquest_error, wrap_url_parse_error},
     param::{ClientParams, RequestParams, UpdateClientParams, WebSocketParams},
-    types::{ImpersonateOS, Method, TlsVersion},
+    typing::{ImpersonateOS, Method, TlsVersion},
 };
 use arc_swap::ArcSwap;
 use pyo3::prelude::*;

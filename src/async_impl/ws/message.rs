@@ -1,7 +1,7 @@
 use pyo3::{prelude::*, types::PyBytes};
 use pyo3_stub_gen::derive::{gen_stub_pyclass, gen_stub_pymethods};
 
-use crate::{error::wrap_rquest_error, types::Json};
+use crate::{error::wrap_rquest_error, typing::Json};
 
 /// A WebSocket message.
 #[gen_stub_pyclass]

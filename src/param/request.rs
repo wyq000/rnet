@@ -1,4 +1,4 @@
-use crate::types::{Body, CookieMap, HeaderMap, IpAddr, Json, Multipart, Version};
+use crate::typing::{Body, CookieMap, HeaderMap, IpAddr, Json, Multipart, Version};
 use pyo3::prelude::*;
 use pyo3_stub_gen::derive::gen_stub_pyclass;
 

@@ -10,7 +10,7 @@ pub use self::{
     ws::{Message, WebSocket},
 };
 use crate::param::{RequestParams, WebSocketParams};
-use crate::types::{LookupIpStrategy, Method};
+use crate::typing::{LookupIpStrategy, Method};
 use crate::{apply_option, dns};
 use request::{execute_request, execute_websocket_request};
 use std::sync::LazyLock;

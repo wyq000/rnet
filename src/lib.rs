@@ -7,7 +7,7 @@ mod macros;
 mod blocking;
 mod buffer;
 mod stream;
-mod types;
+mod typing;
 
 use async_impl::{Client, Message, Response, Streamer, WebSocket};
 use blocking::{BlockingClient, BlockingResponse, BlockingStreamer, BlockingWebSocket};
@@ -19,7 +19,7 @@ use pyo3_async_runtimes::tokio::future_into_py;
 #[cfg(feature = "logging")]
 use pyo3_log::{Caching, Logger};
 use pyo3_stub_gen::{define_stub_info_gatherer, derive::*};
-use types::{
+use typing::{
     HeaderMap, Impersonate, ImpersonateOS, LookupIpStrategy, Method, Multipart, Part, Proxy,
     SocketAddr, StatusCode, TlsVersion, Version,
 };

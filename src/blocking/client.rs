@@ -2,7 +2,7 @@ use super::{http::BlockingResponse, ws::BlockingWebSocket};
 use crate::{
     async_impl::{self, execute_request2, execute_websocket_request2},
     param::{ClientParams, RequestParams, UpdateClientParams, WebSocketParams},
-    types::Method,
+    typing::Method,
 };
 use pyo3::prelude::*;
 use pyo3_stub_gen::derive::{gen_stub_pyclass, gen_stub_pymethods};

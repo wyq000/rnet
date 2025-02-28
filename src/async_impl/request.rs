@@ -3,7 +3,7 @@ use crate::{
     async_impl::{Response, WebSocket},
     error::wrap_rquest_error,
     param::{RequestParams, WebSocketParams},
-    types::{Method, Version},
+    typing::{Method, Version},
     Result,
 };
 use pyo3::prelude::*;

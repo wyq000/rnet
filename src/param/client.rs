@@ -1,4 +1,4 @@
-use crate::types::{
+use crate::typing::{
     HeaderMap, Impersonate, ImpersonateOS, IpAddr, LookupIpStrategy, Proxy, TlsVersion,
 };
 use pyo3::prelude::*;

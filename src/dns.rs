@@ -1,4 +1,4 @@
-use crate::{error::DNSResolverError, types::LookupIpStrategy};
+use crate::{error::DNSResolverError, typing::LookupIpStrategy};
 use rquest::dns::HickoryDnsResolver;
 use std::sync::{Arc, OnceLock};
 
