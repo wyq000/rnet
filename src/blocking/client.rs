@@ -12,188 +12,126 @@ use pyo3_stub_gen::derive::{gen_stub_pyclass, gen_stub_pymethods};
 #[pyclass]
 pub struct BlockingClient(async_impl::Client);
 
+macro_rules! define_http_method {
+    ($name:ident, $method:expr) => {
+        #[gen_stub_pymethods]
+        #[pymethods]
+        impl BlockingClient {
+            /// Sends a request with the given method and URL.
+            ///
+            /// # Arguments
+            ///
+            /// * `url` - The URL to send the request to.
+            /// * `**kwds` - Additional request parameters.
+            ///
+            ///     proxy: typing.Optional[builtins.str]
+            ///     local_address: typing.Optional[typing.Optional[typing.Union[str, ipaddress.IPv4Address, ipaddress.IPv6Address]]]
+            ///     interface: typing.Optional[builtins.str]
+            ///     timeout: typing.Optional[builtins.int]
+            ///     read_timeout: typing.Optional[builtins.int]
+            ///     version: typing.Optional[Version]
+            ///     headers: typing.Optional[typing.Dict[str, bytes]]
+            ///     cookies: typing.Optional[typing.Dict[str, str]]
+            ///     allow_redirects: typing.Optional[builtins.bool]
+            ///     max_redirects: typing.Optional[builtins.int]
+            ///     auth: typing.Optional[str]
+            ///     bearer_auth: typing.Optional[str]
+            ///     basic_auth: typing.Optional[tuple[str, typing.Optional[str]]]
+            ///     query: typing.Optional[typing.List[typing.Tuple[str, str]]]
+            ///     form: typing.Optional[typing.List[typing.Tuple[str, str]]]
+            ///     json: typing.Optional[typing.Any]
+            ///     body: typing.Optional[typing.Any]
+            ///     multipart: typing.Optional[Multipart]
+            ///
+            /// # Returns
+            ///
+            /// A `Response` object.
+            ///
+            /// # Examples
+            ///
+            /// ```python
+            /// import rnet
+            /// import asyncio
+            /// from rnet import Method
+            ///
+            /// async def main():
+            ///     client = rnet.BlockingClient()
+            ///     response = client.get("https://httpbin.org/anything")
+            ///     print(response.text())
+            ///
+            /// asyncio.run(main())
+            /// ```
+            #[pyo3(signature = (url, **kwds))]
+            #[inline(always)]
+            pub fn $name<'rt>(
+                &self,
+                py: Python<'rt>,
+                url: PyBackedStr,
+                kwds: Option<RequestParams>,
+            ) -> PyResult<BlockingResponse> {
+                self.request(py, $method, url, kwds)
+            }
+        }
+    };
+}
+
+define_http_method!(get, Method::GET);
+define_http_method!(post, Method::POST);
+define_http_method!(put, Method::PUT);
+define_http_method!(patch, Method::PATCH);
+define_http_method!(delete, Method::DELETE);
+define_http_method!(head, Method::HEAD);
+define_http_method!(options, Method::OPTIONS);
+define_http_method!(trace, Method::TRACE);
+
 #[gen_stub_pymethods]
 #[pymethods]
 impl BlockingClient {
-    /// Sends a GET request.
-    ///
-    /// # Arguments
-    ///
-    /// * `url` - The URL to send the request to.
-    /// * `**kwds` - Additional request parameters.
-    ///
-    /// # Returns
-    ///
-    /// A `Response` object.
-    #[pyo3(signature = (url, **kwds))]
-    #[inline(always)]
-    pub fn get(
-        &self,
-        py: Python,
-        url: PyBackedStr,
-        kwds: Option<RequestParams>,
-    ) -> PyResult<BlockingResponse> {
-        self.request(py, Method::GET, url, kwds)
-    }
-
-    /// Sends a POST request.
-    ///
-    /// # Arguments
-    ///
-    /// * `url` - The URL to send the request to.
-    /// * `**kwds` - Additional request parameters.
-    ///
-    /// # Returns
-    ///
-    /// A `Response` object.
-    #[pyo3(signature = (url, **kwds))]
-    #[inline(always)]
-    pub fn post(
-        &self,
-        py: Python,
-        url: PyBackedStr,
-        kwds: Option<RequestParams>,
-    ) -> PyResult<BlockingResponse> {
-        self.request(py, Method::POST, url, kwds)
-    }
-
-    /// Sends a PUT request.
-    ///
-    /// # Arguments
-    ///
-    /// * `url` - The URL to send the request to.
-    /// * `**kwds` - Additional request parameters.
-    ///
-    /// # Returns
-    ///
-    /// A `Response` object.
-    #[pyo3(signature = (url, **kwds))]
-    #[inline(always)]
-    pub fn put(
-        &self,
-        py: Python,
-        url: PyBackedStr,
-        kwds: Option<RequestParams>,
-    ) -> PyResult<BlockingResponse> {
-        self.request(py, Method::PUT, url, kwds)
-    }
-
-    /// Sends a PATCH request.
-    ///
-    /// # Arguments
-    ///
-    /// * `url` - The URL to send the request to.
-    /// * `**kwds` - Additional request parameters.
-    ///
-    /// # Returns
-    ///
-    /// A `Response` object.
-    #[pyo3(signature = (url, **kwds))]
-    #[inline(always)]
-    pub fn patch(
-        &self,
-        py: Python,
-        url: PyBackedStr,
-        kwds: Option<RequestParams>,
-    ) -> PyResult<BlockingResponse> {
-        self.request(py, Method::PATCH, url, kwds)
-    }
-
-    /// Sends a DELETE request.
-    ///
-    /// # Arguments
-    ///
-    /// * `url` - The URL to send the request to.
-    /// * `**kwds` - Additional request parameters.
-    ///
-    /// # Returns
-    ///
-    /// A `Response` object.
-    #[pyo3(signature = (url, **kwds))]
-    #[inline(always)]
-    pub fn delete(
-        &self,
-        py: Python,
-        url: PyBackedStr,
-        kwds: Option<RequestParams>,
-    ) -> PyResult<BlockingResponse> {
-        self.request(py, Method::DELETE, url, kwds)
-    }
-
-    /// Sends a HEAD request.
-    ///
-    /// # Arguments
-    ///
-    /// * `url` - The URL to send the request to.
-    /// * `**kwds` - Additional request parameters.
-    ///
-    /// # Returns
-    ///
-    /// A `Response` object.
-    #[pyo3(signature = (url, **kwds))]
-    #[inline(always)]
-    pub fn head(
-        &self,
-        py: Python,
-        url: PyBackedStr,
-        kwds: Option<RequestParams>,
-    ) -> PyResult<BlockingResponse> {
-        self.request(py, Method::HEAD, url, kwds)
-    }
-
-    /// Sends an OPTIONS request.
-    ///
-    /// # Arguments
-    ///
-    /// * `url` - The URL to send the request to.
-    /// * `**kwds` - Additional request parameters.
-    ///
-    /// # Returns
-    ///
-    /// A `Response` object.
-    #[pyo3(signature = (url, **kwds))]
-    pub fn options(
-        &self,
-        py: Python,
-        url: PyBackedStr,
-        kwds: Option<RequestParams>,
-    ) -> PyResult<BlockingResponse> {
-        self.request(py, Method::OPTIONS, url, kwds)
-    }
-
-    /// Sends a TRACE request.
-    ///
-    /// # Arguments
-    ///
-    /// * `url` - The URL to send the request to.
-    /// * `**kwds` - Additional request parameters.
-    ///
-    /// # Returns
-    ///
-    /// A `Response` object.
-    #[pyo3(signature = (url, **kwds))]
-    #[inline(always)]
-    pub fn trace(
-        &self,
-        py: Python,
-        url: PyBackedStr,
-        kwds: Option<RequestParams>,
-    ) -> PyResult<BlockingResponse> {
-        self.request(py, Method::TRACE, url, kwds)
-    }
-
     /// Sends a request with the given method and URL.
     ///
     /// # Arguments
     ///
-    /// * `method` - The HTTP method to use.
     /// * `url` - The URL to send the request to.
     /// * `**kwds` - Additional request parameters.
+    ///
+    ///     proxy: typing.Optional[builtins.str]
+    ///     local_address: typing.Optional[typing.Optional[typing.Union[str, ipaddress.IPv4Address, ipaddress.IPv6Address]]]
+    ///     interface: typing.Optional[builtins.str]
+    ///     timeout: typing.Optional[builtins.int]
+    ///     read_timeout: typing.Optional[builtins.int]
+    ///     version: typing.Optional[Version]
+    ///     headers: typing.Optional[typing.Dict[str, bytes]]
+    ///     cookies: typing.Optional[typing.Dict[str, str]]
+    ///     allow_redirects: typing.Optional[builtins.bool]
+    ///     max_redirects: typing.Optional[builtins.int]
+    ///     auth: typing.Optional[str]
+    ///     bearer_auth: typing.Optional[str]
+    ///     basic_auth: typing.Optional[tuple[str, typing.Optional[str]]]
+    ///     query: typing.Optional[typing.List[typing.Tuple[str, str]]]
+    ///     form: typing.Optional[typing.List[typing.Tuple[str, str]]]
+    ///     json: typing.Optional[typing.Any]
+    ///     body: typing.Optional[typing.Any]
+    ///     multipart: typing.Optional[Multipart]
     ///
     /// # Returns
     ///
     /// A `Response` object.
-    #[pyo3(signature = (method, url, **kwds))]
+    ///
+    /// # Examples
+    ///
+    /// ```python
+    /// import rnet
+    /// import asyncio
+    /// from rnet import Method
+    ///
+    /// async def main():
+    ///     client = rnet.BlockingClient()
+    ///     response = client.request(Method.GET, "https://httpbin.org/anything")
+    ///     print(response.text())
+    ///
+    /// asyncio.run(main())
+    /// ```
+    #[pyo3(signature = (method, url, kwds))]
     #[inline(always)]
     pub fn request(
         &self,
@@ -217,9 +155,42 @@ impl BlockingClient {
     /// * `url` - The URL to send the WebSocket request to.
     /// * `**kwds` - Additional WebSocket request parameters.
     ///
+    ///     proxy: typing.Optional[builtins.str]
+    ///     local_address: typing.Optional[typing.Optional[typing.Union[str, ipaddress.IPv4Address, ipaddress.IPv6Address]]]
+    ///     interface: typing.Optional[builtins.str]
+    ///     headers: typing.Optional[typing.Dict[str, bytes]]
+    ///     cookies: typing.Optional[typing.Dict[str, str]]
+    ///     protocols: typing.Optional[builtins.list[builtins.str]]
+    ///     auth: typing.Optional[builtins.str]
+    ///     bearer_auth: typing.Optional[builtins.str]
+    ///     basic_auth: typing.Optional[tuple[builtins.str, typing.Optional[builtins.str]]]
+    ///     query: typing.Optional[builtins.list[tuple[builtins.str, builtins.str]]]
+    ///     write_buffer_size: typing.Optional[builtins.int]
+    ///     max_write_buffer_size: typing.Optional[builtins.int]
+    ///     max_message_size: typing.Optional[builtins.int]
+    ///     max_frame_size: typing.Optional[builtins.int]
+    ///     accept_unmasked_frames: typing.Optional[builtins.bool]
+    ///
     /// # Returns
     ///
     /// A `WebSocket` object representing the WebSocket connection.
+    ///
+    /// # Examples
+    ///
+    /// ```python
+    /// import rnet
+    /// import asyncio
+    ///
+    /// async def main():
+    ///     client = rnet.BlockingClient()
+    ///     ws = client.websocket("wss://echo.websocket.org")
+    ///     ws.send(rnet.Message.from_text("Hello, WebSocket!"))
+    ///     message = ws.recv()
+    ///     print("Received:", message.data)
+    ///     ws.close()
+    ///
+    /// asyncio.run(main())
+    /// ```
     #[pyo3(signature = (url, **kwds))]
     #[inline(always)]
     pub fn websocket(
@@ -240,15 +211,68 @@ impl BlockingClient {
 #[gen_stub_pymethods]
 #[pymethods]
 impl BlockingClient {
-    /// Creates a new Client instance.
+    /// Creates a new BlockingClient instance.
     ///
     /// # Arguments
     ///
-    /// * `params` - Optional request parameters as a dictionary.
+    /// * `**kwds` - Optional request parameters as a dictionary.
+    ///
+    ///     impersonate: typing.Optional[Impersonate]
+    ///     impersonate_os: typing.Optional[ImpersonateOS]
+    ///     impersonate_skip_http2: typing.Optional[builtins.bool]
+    ///     impersonate_skip_headers: typing.Optional[builtins.bool]
+    ///     base_url: typing.Optional[str]
+    ///     user_agent: typing.Optional[str]
+    ///     default_headers: typing.Optional[typing.Dict[str, bytes]]
+    ///     headers_order: typing.Optional[typing.List[str]]
+    ///     referer: typing.Optional[builtins.bool]
+    ///     allow_redirects: typing.Optional[builtins.bool]
+    ///     max_redirects: typing.Optional[builtins.int]
+    ///     cookie_store: typing.Optional[builtins.bool]
+    ///     lookup_ip_strategy: typing.Optional[LookupIpStrategy]
+    ///     timeout: typing.Optional[builtins.int]
+    ///     connect_timeout: typing.Optional[builtins.int]
+    ///     read_timeout: typing.Optional[builtins.int]
+    ///     no_keepalive: typing.Optional[builtins.bool]
+    ///     tcp_keepalive: typing.Optional[builtins.int]
+    ///     pool_idle_timeout: typing.Optional[builtins.int]
+    ///     pool_max_idle_per_host: typing.Optional[builtins.int]
+    ///     pool_max_size: typing.Optional[builtins.int]
+    ///     http1_only: typing.Optional[builtins.bool]
+    ///     http2_only: typing.Optional[builtins.bool]
+    ///     https_only: typing.Optional[builtins.bool]
+    ///     tcp_nodelay: typing.Optional[builtins.bool]
+    ///     http2_max_retry_count: typing.Optional[builtins.int]
+    ///     danger_accept_invalid_certs: typing.Optional[builtins.bool]
+    ///     tls_info: typing.Optional[builtins.bool]
+    ///     min_tls_version: typing.Optional[TlsVersion]
+    ///     max_tls_version: typing.Optional[TlsVersion]
+    ///     no_proxy: typing.Optional[builtins.bool]
+    ///     proxies: typing.Optional[builtins.list[Proxy]]
+    ///     local_address: typing.Optional[typing.Optional[typing.Union[str, ipaddress.IPv4Address, ipaddress.IPv6Address]]]
+    ///     interface: typing.Optional[builtins.str]
+    ///     gzip: typing.Optional[builtins.bool]
+    ///     brotli: typing.Optional[builtins.bool]
+    ///     deflate: typing.Optional[builtins.bool]
+    ///     zstd: typing.Optional[builtins.bool]
     ///
     /// # Returns
     ///
-    /// A new `Client` instance.
+    /// A new `BlockingClient` instance.
+    ///
+    /// # Examples
+    ///
+    /// ```python
+    /// import asyncio
+    /// import rnet
+    ///
+    /// client = rnet.BlockingClient(
+    ///     user_agent="my-app/0.0.1",
+    ///     timeout=10,
+    /// )
+    /// response = client.get('https://httpbin.org/get')
+    /// print(response.text())
+    /// ```
     #[new]
     #[pyo3(signature = (**kwds))]
     #[inline(always)]
@@ -312,7 +336,30 @@ impl BlockingClient {
     /// Updates the client with the given parameters.
     ///
     /// # Arguments
-    /// * `params` - The parameters to update the client with.
+    /// * `**kwds` - The parameters to update the client with.
+    ///
+    ///     impersonate: typing.Optional[Impersonate]
+    ///     impersonate_os: typing.Optional[ImpersonateOS]
+    ///     impersonate_skip_http2: typing.Optional[builtins.bool]
+    ///     impersonate_skip_headers: typing.Optional[builtins.bool]
+    ///     headers: typing.Optional[typing.Dict[str, bytes]]
+    ///     headers_order: typing.Optional[typing.List[str]]
+    ///     proxies: typing.Optional[builtins.list[Proxy]]
+    ///     local_address: typing.Optional[typing.Optional[typing.Union[str, ipaddress.IPv4Address, ipaddress.IPv6Address]]]
+    ///     interface: typing.Optional[builtins.str]
+    ///
+    /// # Examples
+    ///
+    /// ```python
+    /// import rnet
+    ///
+    /// client = rnet.BlockingClient()
+    /// client.update(
+    ///    impersonate=rnet.Impersonate.Firefox135,
+    ///    headers={"X-My-Header": "value"},
+    ///    proxies=[rnet.Proxy.all("http://proxy.example.com:8080")],
+    /// )
+    /// ```
     #[pyo3(signature = (**kwds))]
     #[inline(always)]
     fn update(&self, py: Python, kwds: Option<UpdateClientParams>) {
