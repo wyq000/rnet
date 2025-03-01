@@ -65,8 +65,11 @@ impl SocketAddr {
     fn port(&self) -> u16 {
         self.0.port()
     }
+}
 
-    /// Returns the socket address as a string.
+#[gen_stub_pymethods]
+#[pymethods]
+impl SocketAddr {
     fn __str__(&self) -> String {
         self.0.to_string()
     }

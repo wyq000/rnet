@@ -45,14 +45,17 @@ impl StatusCode {
     pub fn is_server_error(&self) -> bool {
         self.0.is_server_error()
     }
+}
 
-    /// Returns a str representation of the `StatusCode`
+#[gen_stub_pymethods]
+#[pymethods]
+impl StatusCode {
     fn __str__(&self) -> &str {
         self.0.as_str()
     }
 
-    fn __repr__(&self) -> PyResult<String> {
-        Ok(format!("StatusCode({})", self.0))
+    fn __repr__(&self) -> String {
+        format!("StatusCode({})", self.0)
     }
 }
 

@@ -16,14 +16,6 @@ pub struct Message(pub rquest::Message);
 #[gen_stub_pymethods]
 #[pymethods]
 impl Message {
-    fn __str__(&self) -> String {
-        format!("{:?}", self.0)
-    }
-
-    fn __repr__(&self) -> String {
-        self.__str__()
-    }
-
     /// Returns the JSON representation of the message.
     ///
     /// # Returns
@@ -244,5 +236,17 @@ impl Message {
             code: rquest::CloseCode::from(code),
             reason,
         })
+    }
+}
+
+#[gen_stub_pymethods]
+#[pymethods]
+impl Message {
+    fn __str__(&self) -> String {
+        format!("{:?}", self.0)
+    }
+
+    fn __repr__(&self) -> String {
+        self.__str__()
     }
 }
