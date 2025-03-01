@@ -13,7 +13,7 @@ use pyo3_stub_gen::derive::{gen_stub_pyclass, gen_stub_pymethods};
 pub struct BlockingClient(async_impl::Client);
 
 macro_rules! define_http_method {
-    ($name:ident, $method:expr) => {
+    ($(#[$meta:meta])* $name:ident, $method:expr) => {
         #[gen_stub_pymethods]
         #[pymethods]
         impl BlockingClient {
@@ -47,20 +47,7 @@ macro_rules! define_http_method {
             ///
             /// A `Response` object.
             ///
-            /// # Examples
-            ///
-            /// ```python
-            /// import rnet
-            /// import asyncio
-            /// from rnet import Method
-            ///
-            /// async def main():
-            ///     client = rnet.BlockingClient()
-            ///     response = client.get("https://httpbin.org/anything")
-            ///     print(response.text())
-            ///
-            /// asyncio.run(main())
-            /// ```
+            $(#[$meta])*
             #[pyo3(signature = (url, **kwds))]
             #[inline(always)]
             pub fn $name<'rt>(
@@ -75,14 +62,157 @@ macro_rules! define_http_method {
     };
 }
 
-define_http_method!(get, Method::GET);
-define_http_method!(post, Method::POST);
-define_http_method!(put, Method::PUT);
-define_http_method!(patch, Method::PATCH);
-define_http_method!(delete, Method::DELETE);
-define_http_method!(head, Method::HEAD);
-define_http_method!(options, Method::OPTIONS);
-define_http_method!(trace, Method::TRACE);
+define_http_method!(
+    /// # Examples
+    ///
+    /// ```python
+    /// import rnet
+    /// import asyncio
+    /// from rnet import Method
+    ///
+    /// async def main():
+    ///     client = rnet.BlockingClient()
+    ///     response = client.get("https://httpbin.org/anything")
+    ///     print(response.text())
+    ///
+    /// asyncio.run(main())
+    /// ```
+    get,
+    Method::GET
+);
+
+define_http_method!(
+    /// # Examples
+    ///
+    /// ```python
+    /// import rnet
+    /// import asyncio
+    /// from rnet import Method
+    ///
+    /// async def main():
+    ///     client = rnet.BlockingClient()
+    ///     response = client.post("https://httpbin.org/anything", json={"key": "value"})
+    ///     print(response.text())
+    ///
+    /// asyncio.run(main())
+    /// ```
+    post,
+    Method::POST
+);
+
+define_http_method!(
+    /// # Examples
+    ///
+    /// ```python
+    /// import rnet
+    /// import asyncio
+    /// from rnet import Method
+    ///
+    /// async def main():
+    ///     client = rnet.BlockingClient()
+    ///     response = client.put("https://httpbin.org/anything", json={"key": "value"})
+    ///     print(response.text())
+    ///
+    /// asyncio.run(main())
+    /// ```
+    put,
+    Method::PUT
+);
+
+define_http_method!(
+    /// # Examples
+    ///
+    /// ```python
+    /// import rnet
+    /// import asyncio
+    /// from rnet import Method
+    ///
+    /// async def main():
+    ///     client = rnet.BlockingClient()
+    ///     response = client.patch("https://httpbin.org/anything", json={"key": "value"})
+    ///     print(response.text())
+    ///
+    /// asyncio.run(main())
+    /// ```
+    patch,
+    Method::PATCH
+);
+
+define_http_method!(
+    /// # Examples
+    ///
+    /// ```python
+    /// import rnet
+    /// import asyncio
+    /// from rnet import Method
+    ///
+    /// async def main():
+    ///     client = rnet.BlockingClient()
+    ///     response = client.delete("https://httpbin.org/anything")
+    ///     print(response.text())
+    ///
+    /// asyncio.run(main())
+    /// ```
+    delete,
+    Method::DELETE
+);
+
+define_http_method!(
+    /// # Examples
+    ///
+    /// ```python
+    /// import rnet
+    /// import asyncio
+    /// from rnet import Method
+    ///
+    /// async def main():
+    ///     client = rnet.BlockingClient()
+    ///     response = client.head("https://httpbin.org/anything")
+    ///     print(response.text())
+    ///
+    /// asyncio.run(main())
+    /// ```
+    head,
+    Method::HEAD
+);
+
+define_http_method!(
+    /// # Examples
+    ///
+    /// ```python
+    /// import rnet
+    /// import asyncio
+    /// from rnet import Method
+    ///
+    /// async def main():
+    ///     client = rnet.BlockingClient()
+    ///     response = client.options("https://httpbin.org/anything")
+    ///     print(response.text())
+    ///
+    /// asyncio.run(main())
+    /// ```
+    options,
+    Method::OPTIONS
+);
+
+define_http_method!(
+    /// # Examples
+    ///
+    /// ```python
+    /// import rnet
+    /// import asyncio
+    /// from rnet import Method
+    ///
+    /// async def main():
+    ///     client = rnet.BlockingClient()
+    ///     response = client.trace("https://httpbin.org/anything")
+    ///     print(response.text())
+    ///
+    /// asyncio.run(main())
+    /// ```
+    trace,
+    Method::TRACE
+);
 
 #[gen_stub_pymethods]
 #[pymethods]
@@ -91,6 +221,7 @@ impl BlockingClient {
     ///
     /// # Arguments
     ///
+    /// * `method` - The method to use for the request.
     /// * `url` - The URL to send the request to.
     /// * `**kwds` - Additional request parameters.
     ///

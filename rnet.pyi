@@ -79,6 +79,7 @@ class BlockingClient:
         
         # Arguments
         
+        * `method` - The method to use for the request.
         * `url` - The URL to send the request to.
         * `**kwds` - Additional request parameters.
         
@@ -211,7 +212,7 @@ class BlockingClient:
         
         async def main():
             client = rnet.BlockingClient()
-            response = client.get("https://httpbin.org/anything")
+            response = client.trace("https://httpbin.org/anything")
             print(response.text())
         
         asyncio.run(main())
@@ -260,7 +261,7 @@ class BlockingClient:
         
         async def main():
             client = rnet.BlockingClient()
-            response = client.get("https://httpbin.org/anything")
+            response = client.options("https://httpbin.org/anything")
             print(response.text())
         
         asyncio.run(main())
@@ -309,7 +310,7 @@ class BlockingClient:
         
         async def main():
             client = rnet.BlockingClient()
-            response = client.get("https://httpbin.org/anything")
+            response = client.head("https://httpbin.org/anything")
             print(response.text())
         
         asyncio.run(main())
@@ -358,7 +359,7 @@ class BlockingClient:
         
         async def main():
             client = rnet.BlockingClient()
-            response = client.get("https://httpbin.org/anything")
+            response = client.delete("https://httpbin.org/anything")
             print(response.text())
         
         asyncio.run(main())
@@ -407,7 +408,7 @@ class BlockingClient:
         
         async def main():
             client = rnet.BlockingClient()
-            response = client.get("https://httpbin.org/anything")
+            response = client.patch("https://httpbin.org/anything", json={"key": "value"})
             print(response.text())
         
         asyncio.run(main())
@@ -456,7 +457,7 @@ class BlockingClient:
         
         async def main():
             client = rnet.BlockingClient()
-            response = client.get("https://httpbin.org/anything")
+            response = client.put("https://httpbin.org/anything", json={"key": "value"})
             print(response.text())
         
         asyncio.run(main())
@@ -505,7 +506,7 @@ class BlockingClient:
         
         async def main():
             client = rnet.BlockingClient()
-            response = client.get("https://httpbin.org/anything")
+            response = client.post("https://httpbin.org/anything", json={"key": "value"})
             print(response.text())
         
         asyncio.run(main())
@@ -840,6 +841,7 @@ class Client:
         
         # Arguments
         
+        * `method` - The method to use for the request.
         * `url` - The URL to send the request to.
         * `**kwds` - Additional request parameters.
         
@@ -972,7 +974,7 @@ class Client:
         
         async def main():
             client = rnet.Client()
-            response = await client.get("https://httpbin.org/anything")
+            response = await client.trace("https://httpbin.org/anything")
             print(await response.text())
         
         asyncio.run(main())
@@ -1021,105 +1023,7 @@ class Client:
         
         async def main():
             client = rnet.Client()
-            response = await client.get("https://httpbin.org/anything")
-            print(await response.text())
-        
-        asyncio.run(main())
-        ```
-        """
-        ...
-
-    def head(self, url:str, **kwds) -> typing.Any:
-        r"""
-        Sends a request with the given method and URL.
-        
-        # Arguments
-        
-        * `url` - The URL to send the request to.
-        * `**kwds` - Additional request parameters.
-        
-            proxy: typing.Optional[builtins.str]
-            local_address: typing.Optional[typing.Optional[typing.Union[str, ipaddress.IPv4Address, ipaddress.IPv6Address]]]
-            interface: typing.Optional[builtins.str]
-            timeout: typing.Optional[builtins.int]
-            read_timeout: typing.Optional[builtins.int]
-            version: typing.Optional[Version]
-            headers: typing.Optional[typing.Dict[str, bytes]]
-            cookies: typing.Optional[typing.Dict[str, str]]
-            allow_redirects: typing.Optional[builtins.bool]
-            max_redirects: typing.Optional[builtins.int]
-            auth: typing.Optional[str]
-            bearer_auth: typing.Optional[str]
-            basic_auth: typing.Optional[tuple[str, typing.Optional[str]]]
-            query: typing.Optional[typing.List[typing.Tuple[str, str]]]
-            form: typing.Optional[typing.List[typing.Tuple[str, str]]]
-            json: typing.Optional[typing.Any]
-            body: typing.Optional[typing.Any]
-            multipart: typing.Optional[Multipart]
-        
-        # Returns
-        
-        A `Response` object.
-        
-        # Examples
-        
-        ```python
-        import rnet
-        import asyncio
-        from rnet import Method
-        
-        async def main():
-            client = rnet.Client()
-            response = await client.get("https://httpbin.org/anything")
-            print(await response.text())
-        
-        asyncio.run(main())
-        ```
-        """
-        ...
-
-    def delete(self, url:str, **kwds) -> typing.Any:
-        r"""
-        Sends a request with the given method and URL.
-        
-        # Arguments
-        
-        * `url` - The URL to send the request to.
-        * `**kwds` - Additional request parameters.
-        
-            proxy: typing.Optional[builtins.str]
-            local_address: typing.Optional[typing.Optional[typing.Union[str, ipaddress.IPv4Address, ipaddress.IPv6Address]]]
-            interface: typing.Optional[builtins.str]
-            timeout: typing.Optional[builtins.int]
-            read_timeout: typing.Optional[builtins.int]
-            version: typing.Optional[Version]
-            headers: typing.Optional[typing.Dict[str, bytes]]
-            cookies: typing.Optional[typing.Dict[str, str]]
-            allow_redirects: typing.Optional[builtins.bool]
-            max_redirects: typing.Optional[builtins.int]
-            auth: typing.Optional[str]
-            bearer_auth: typing.Optional[str]
-            basic_auth: typing.Optional[tuple[str, typing.Optional[str]]]
-            query: typing.Optional[typing.List[typing.Tuple[str, str]]]
-            form: typing.Optional[typing.List[typing.Tuple[str, str]]]
-            json: typing.Optional[typing.Any]
-            body: typing.Optional[typing.Any]
-            multipart: typing.Optional[Multipart]
-        
-        # Returns
-        
-        A `Response` object.
-        
-        # Examples
-        
-        ```python
-        import rnet
-        import asyncio
-        from rnet import Method
-        
-        async def main():
-            client = rnet.Client()
-            response = await client.get("https://httpbin.org/anything")
+            response = await client.options("https://httpbin.org/anything")
             print(await response.text())
         
         asyncio.run(main())
@@ -1168,7 +1072,56 @@ class Client:
         
         async def main():
             client = rnet.Client()
-            response = await client.get("https://httpbin.org/anything")
+            response = await client.patch("https://httpbin.org/anything", json={"key": "value"})
+            print(await response.text())
+        
+        asyncio.run(main())
+        ```
+        """
+        ...
+
+    def delete(self, url:str, **kwds) -> typing.Any:
+        r"""
+        Sends a request with the given method and URL.
+        
+        # Arguments
+        
+        * `url` - The URL to send the request to.
+        * `**kwds` - Additional request parameters.
+        
+            proxy: typing.Optional[builtins.str]
+            local_address: typing.Optional[typing.Optional[typing.Union[str, ipaddress.IPv4Address, ipaddress.IPv6Address]]]
+            interface: typing.Optional[builtins.str]
+            timeout: typing.Optional[builtins.int]
+            read_timeout: typing.Optional[builtins.int]
+            version: typing.Optional[Version]
+            headers: typing.Optional[typing.Dict[str, bytes]]
+            cookies: typing.Optional[typing.Dict[str, str]]
+            allow_redirects: typing.Optional[builtins.bool]
+            max_redirects: typing.Optional[builtins.int]
+            auth: typing.Optional[str]
+            bearer_auth: typing.Optional[str]
+            basic_auth: typing.Optional[tuple[str, typing.Optional[str]]]
+            query: typing.Optional[typing.List[typing.Tuple[str, str]]]
+            form: typing.Optional[typing.List[typing.Tuple[str, str]]]
+            json: typing.Optional[typing.Any]
+            body: typing.Optional[typing.Any]
+            multipart: typing.Optional[Multipart]
+        
+        # Returns
+        
+        A `Response` object.
+        
+        # Examples
+        
+        ```python
+        import rnet
+        import asyncio
+        from rnet import Method
+        
+        async def main():
+            client = rnet.Client()
+            response = await client.delete("https://httpbin.org/anything")
             print(await response.text())
         
         asyncio.run(main())
@@ -1217,7 +1170,7 @@ class Client:
         
         async def main():
             client = rnet.Client()
-            response = await client.get("https://httpbin.org/anything")
+            response = await client.put("https://httpbin.org/anything", json={"key": "value"})
             print(await response.text())
         
         asyncio.run(main())
@@ -1266,8 +1219,57 @@ class Client:
         
         async def main():
             client = rnet.Client()
-            response = await client.get("https://httpbin.org/anything")
+            response = await client.post("https://httpbin.org/anything", json={"key": "value"})
             print(await response.text())
+        
+        asyncio.run(main())
+        ```
+        """
+        ...
+
+    def head(self, url:str, **kwds) -> typing.Any:
+        r"""
+        Sends a request with the given method and URL.
+        
+        # Arguments
+        
+        * `url` - The URL to send the request to.
+        * `**kwds` - Additional request parameters.
+        
+            proxy: typing.Optional[builtins.str]
+            local_address: typing.Optional[typing.Optional[typing.Union[str, ipaddress.IPv4Address, ipaddress.IPv6Address]]]
+            interface: typing.Optional[builtins.str]
+            timeout: typing.Optional[builtins.int]
+            read_timeout: typing.Optional[builtins.int]
+            version: typing.Optional[Version]
+            headers: typing.Optional[typing.Dict[str, bytes]]
+            cookies: typing.Optional[typing.Dict[str, str]]
+            allow_redirects: typing.Optional[builtins.bool]
+            max_redirects: typing.Optional[builtins.int]
+            auth: typing.Optional[str]
+            bearer_auth: typing.Optional[str]
+            basic_auth: typing.Optional[tuple[str, typing.Optional[str]]]
+            query: typing.Optional[typing.List[typing.Tuple[str, str]]]
+            form: typing.Optional[typing.List[typing.Tuple[str, str]]]
+            json: typing.Optional[typing.Any]
+            body: typing.Optional[typing.Any]
+            multipart: typing.Optional[Multipart]
+        
+        # Returns
+        
+        A `Response` object.
+        
+        # Examples
+        
+        ```python
+        import rnet
+        import asyncio
+        from rnet import Method
+        
+        async def main():
+            client = rnet.Client()
+            response = await client.head("https://httpbin.org/anything")
+            print(response.status)
         
         asyncio.run(main())
         ```
@@ -2017,7 +2019,7 @@ def delete(url:str, **kwds) -> typing.Any:
     import asyncio
     
     async def run():
-        response = await rnet.get("https://httpbin.org/anything")
+        response = await rnet.delete("https://httpbin.org/anything")
         body = await response.text()
         print(body)
     
@@ -2105,9 +2107,8 @@ def head(url:str, **kwds) -> typing.Any:
     import asyncio
     
     async def run():
-        response = await rnet.get("https://httpbin.org/anything")
-        body = await response.text()
-        print(body)
+        response = await rnet.head("https://httpbin.org/anything")
+        print(response.status)
     
     asyncio.run(run())
     ```
@@ -2149,9 +2150,8 @@ def options(url:str, **kwds) -> typing.Any:
     import asyncio
     
     async def run():
-        response = await rnet.get("https://httpbin.org/anything")
-        body = await response.text()
-        print(body)
+        response = await rnet.options("https://httpbin.org/anything")
+        print(response.status)
     
     asyncio.run(run())
     ```
@@ -2193,7 +2193,7 @@ def patch(url:str, **kwds) -> typing.Any:
     import asyncio
     
     async def run():
-        response = await rnet.get("https://httpbin.org/anything")
+        response = await rnet.patch("https://httpbin.org/anything")
         body = await response.text()
         print(body)
     
@@ -2237,7 +2237,7 @@ def post(url:str, **kwds) -> typing.Any:
     import asyncio
     
     async def run():
-        response = await rnet.get("https://httpbin.org/anything")
+        response = await rnet.post("https://httpbin.org/anything")
         body = await response.text()
         print(body)
     
@@ -2281,7 +2281,7 @@ def put(url:str, **kwds) -> typing.Any:
     import asyncio
     
     async def run():
-        response = await rnet.get("https://httpbin.org/anything")
+        response = await rnet.put("https://httpbin.org/anything")
         body = await response.text()
         print(body)
     
@@ -2296,6 +2296,7 @@ def request(method:Method, url:str, **kwds) -> typing.Any:
     
     # Arguments
     
+    * `method` - The method to use for the request.
     * `url` - The URL to send the request to.
     * `**kwds` - Additional request parameters.
     
@@ -2370,9 +2371,8 @@ def trace(url:str, **kwds) -> typing.Any:
     import asyncio
     
     async def run():
-        response = await rnet.get("https://httpbin.org/anything")
-        body = await response.text()
-        print(body)
+        response = await rnet.trace("https://httpbin.org/anything")
+        print(response.status)
     
     asyncio.run(run())
     ```

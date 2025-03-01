@@ -31,7 +31,7 @@ static ALLOC: jemallocator::Jemalloc = jemallocator::Jemalloc;
 type Result<T> = std::result::Result<T, PyErr>;
 
 macro_rules! define_http_method {
-    ($name:ident, $method:expr) => {
+    ($(#[$meta:meta])* $name:ident, $method:expr) => {
         /// Shortcut method to quickly make a `GET` request.
         ///
         /// # Arguments
@@ -58,19 +58,7 @@ macro_rules! define_http_method {
         ///     body: typing.Optional[typing.Any]
         ///     multipart: typing.Optional[Multipart]
         ///
-        /// # Examples
-        ///
-        /// ```python
-        /// import rnet
-        /// import asyncio
-        ///
-        /// async def run():
-        ///     response = await rnet.get("https://httpbin.org/anything")
-        ///     body = await response.text()
-        ///     print(body)
-        ///
-        /// asyncio.run(run())
-        /// ```
+        $(#[$meta])*
         #[gen_stub_pyfunction]
         #[pyfunction]
         #[pyo3(signature = (url, **kwds))]
@@ -85,19 +73,152 @@ macro_rules! define_http_method {
     };
 }
 
-define_http_method!(get, Method::GET);
-define_http_method!(post, Method::POST);
-define_http_method!(put, Method::PUT);
-define_http_method!(patch, Method::PATCH);
-define_http_method!(delete, Method::DELETE);
-define_http_method!(head, Method::HEAD);
-define_http_method!(options, Method::OPTIONS);
-define_http_method!(trace, Method::TRACE);
+define_http_method!(
+    /// # Examples
+    ///
+    /// ```python
+    /// import rnet
+    /// import asyncio
+    ///
+    /// async def run():
+    ///     response = await rnet.get("https://httpbin.org/anything")
+    ///     body = await response.text()
+    ///     print(body)
+    ///
+    /// asyncio.run(run())
+    /// ```
+    get,
+    Method::GET
+);
+
+define_http_method!(
+    /// # Examples
+    ///
+    /// ```python
+    /// import rnet
+    /// import asyncio
+    ///
+    /// async def run():
+    ///     response = await rnet.post("https://httpbin.org/anything")
+    ///     body = await response.text()
+    ///     print(body)
+    ///
+    /// asyncio.run(run())
+    /// ```
+    post,
+    Method::POST
+);
+
+define_http_method!(
+    /// # Examples
+    ///
+    /// ```python
+    /// import rnet
+    /// import asyncio
+    ///
+    /// async def run():
+    ///     response = await rnet.put("https://httpbin.org/anything")
+    ///     body = await response.text()
+    ///     print(body)
+    ///
+    /// asyncio.run(run())
+    /// ```
+    put,
+    Method::PUT
+);
+
+define_http_method!(
+    /// # Examples
+    ///
+    /// ```python
+    /// import rnet
+    /// import asyncio
+    ///
+    /// async def run():
+    ///     response = await rnet.patch("https://httpbin.org/anything")
+    ///     body = await response.text()
+    ///     print(body)
+    ///
+    /// asyncio.run(run())
+    /// ```
+    patch,
+    Method::PATCH
+);
+
+define_http_method!(
+    /// # Examples
+    ///
+    /// ```python
+    /// import rnet
+    /// import asyncio
+    ///
+    /// async def run():
+    ///     response = await rnet.delete("https://httpbin.org/anything")
+    ///     body = await response.text()
+    ///     print(body)
+    ///
+    /// asyncio.run(run())
+    /// ```
+    delete,
+    Method::DELETE
+);
+
+define_http_method!(
+    /// # Examples
+    ///
+    /// ```python
+    /// import rnet
+    /// import asyncio
+    ///
+    /// async def run():
+    ///     response = await rnet.head("https://httpbin.org/anything")
+    ///     print(response.status)
+    ///
+    /// asyncio.run(run())
+    /// ```
+    head,
+    Method::HEAD
+);
+
+define_http_method!(
+    /// # Examples
+    ///
+    /// ```python
+    /// import rnet
+    /// import asyncio
+    ///
+    /// async def run():
+    ///     response = await rnet.options("https://httpbin.org/anything")
+    ///     print(response.status)
+    ///
+    /// asyncio.run(run())
+    /// ```
+    options,
+    Method::OPTIONS
+);
+
+define_http_method!(
+    /// # Examples
+    ///
+    /// ```python
+    /// import rnet
+    /// import asyncio
+    ///
+    /// async def run():
+    ///     response = await rnet.trace("https://httpbin.org/anything")
+    ///     print(response.status)
+    ///
+    /// asyncio.run(run())
+    /// ```
+    trace,
+    Method::TRACE
+);
 
 /// Make a request with the given parameters.
 ///
 /// # Arguments
 ///
+/// * `method` - The method to use for the request.
 /// * `url` - The URL to send the request to.
 /// * `**kwds` - Additional request parameters.
 ///
