@@ -328,7 +328,7 @@ class BlockingWebSocket:
     def __iter__(self) -> BlockingWebSocket:
         ...
 
-    def __next__(self) -> typing.Optional[Message]:
+    def __next__(self) -> Message:
         ...
 
     def __enter__(self) -> BlockingWebSocket:
@@ -1394,36 +1394,9 @@ class WebSocket:
     headers: typing.Dict[str, bytes]
     remote_addr: typing.Optional[SocketAddr]
     def __aiter__(self) -> WebSocket:
-        r"""
-        Returns the WebSocket instance itself as an asynchronous iterator.
-        
-        This method is used to make the WebSocket instance iterable in an asynchronous context.
-        
-        # Arguments
-        
-        * `slf` - A reference to the WebSocket instance.
-        
-        # Returns
-        
-        Returns the WebSocket instance itself.
-        """
         ...
 
     def __anext__(self) -> typing.Any:
-        r"""
-        Returns the next message from the WebSocket.
-        
-        This method is used to retrieve the next message from the WebSocket in an asynchronous iteration.
-        
-        # Arguments
-        
-        * `py` - The Python runtime.
-        
-        # Returns
-        
-        Returns a `PyResult` containing an `Option` with a `Bound` object representing the received message.
-        If no message is received, returns `None`.
-        """
         ...
 
     def __aenter__(self) -> typing.Any:
