@@ -245,8 +245,7 @@ where
     C: Deref<Target = Arc<rquest::Client>>,
     U: AsRef<str>,
 {
-    let client = client.deref().deref();
-    execute_request(client, method, url, params).await
+    execute_request(client.as_ref(), method, url, params).await
 }
 
 /// Executes a WebSocket request.
@@ -260,6 +259,5 @@ where
     C: Deref<Target = Arc<rquest::Client>>,
     U: AsRef<str>,
 {
-    let client = client.deref().deref();
-    execute_websocket_request(client, url, params).await
+    execute_websocket_request(client.as_ref(), url, params).await
 }
