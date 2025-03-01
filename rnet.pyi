@@ -1334,6 +1334,12 @@ class Message:
     ping: typing.Optional[typing.Any]
     pong: typing.Optional[typing.Any]
     close: typing.Optional[tuple[builtins.int, typing.Optional[builtins.str]]]
+    def __str__(self) -> builtins.str:
+        ...
+
+    def __repr__(self) -> builtins.str:
+        ...
+
     @staticmethod
     def text_from_json(json:typing.Any) -> Message:
         r"""
@@ -1436,12 +1442,6 @@ class Message:
         
         A new `Message` instance containing the close message.
         """
-        ...
-
-    def __str__(self) -> builtins.str:
-        ...
-
-    def __repr__(self) -> builtins.str:
         ...
 
     def json(self) -> typing.Any:
@@ -1679,6 +1679,9 @@ class SocketAddr:
     r"""
     A IP socket address.
     """
+    def __str__(self) -> builtins.str:
+        ...
+
     def ip(self) -> typing.Any:
         r"""
         Returns the IP address of the socket address.
@@ -1691,17 +1694,17 @@ class SocketAddr:
         """
         ...
 
-    def __str__(self) -> builtins.str:
-        r"""
-        Returns the socket address as a string.
-        """
-        ...
-
 
 class StatusCode:
     r"""
     HTTP status code.
     """
+    def __str__(self) -> builtins.str:
+        ...
+
+    def __repr__(self) -> builtins.str:
+        ...
+
     def as_int(self) -> builtins.int:
         r"""
         Return the status code as an integer.
@@ -1736,15 +1739,6 @@ class StatusCode:
         r"""
         Check if status is within 500-599.
         """
-        ...
-
-    def __str__(self) -> builtins.str:
-        r"""
-        Returns a str representation of the `StatusCode`
-        """
-        ...
-
-    def __repr__(self) -> builtins.str:
         ...
 
 
