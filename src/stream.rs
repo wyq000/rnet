@@ -37,13 +37,14 @@ impl Stream for SyncStream {
         self: Pin<&mut Self>,
         _cx: &mut std::task::Context<'_>,
     ) -> std::task::Poll<Option<Self::Item>> {
-        let next = Python::with_gil(|py| {
-            self.iter
+        Python::with_gil(|py| {
+            let next = self
+                .iter
                 .call_method0(py, "__next__")
                 .ok()
-                .map(|item| downcast_bound_bytes(py, item))
-        });
-        std::task::Poll::Ready(next)
+                .map(|item| downcast_bound_bytes(py, item));
+            py.allow_threads(|| std::task::Poll::Ready(next))
+        })
     }
 }
 
