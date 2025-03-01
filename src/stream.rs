@@ -4,14 +4,14 @@ use pyo3::{
     types::{PyBytes, PyBytesMethods},
     PyObject, PyResult, Python,
 };
-use std::pin::Pin;
+use std::{pin::Pin, task::Context};
 
 pub struct SyncStream {
     iter: PyObject,
 }
 
 pub struct AsyncStream {
-    stream: Pin<Box<dyn futures_util::Stream<Item = PyObject> + Send + Sync + 'static>>,
+    stream: Pin<Box<dyn Stream<Item = PyObject> + Send + Sync + 'static>>,
 }
 
 impl SyncStream {
@@ -23,7 +23,7 @@ impl SyncStream {
 
 impl AsyncStream {
     #[inline]
-    pub fn new(stream: impl futures_util::Stream<Item = PyObject> + Send + Sync + 'static) -> Self {
+    pub fn new(stream: impl Stream<Item = PyObject> + Send + Sync + 'static) -> Self {
         AsyncStream {
             stream: Box::pin(stream),
         }
@@ -54,10 +54,15 @@ impl Stream for AsyncStream {
         mut self: Pin<&mut Self>,
         cx: &mut std::task::Context<'_>,
     ) -> std::task::Poll<Option<Self::Item>> {
-        self.stream
-            .as_mut()
-            .poll_next(cx)
-            .map(|item| item.map(|item| Python::with_gil(|py| downcast_bound_bytes(py, item))))
+        let waker = cx.waker();
+        Python::with_gil(|py| {
+            py.allow_threads(|| {
+                self.stream
+                    .as_mut()
+                    .poll_next(&mut Context::from_waker(waker))
+            })
+            .map(|item| item.map(|item| downcast_bound_bytes(py, item)))
+        })
     }
 }
 
