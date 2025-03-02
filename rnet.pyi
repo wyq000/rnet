@@ -12,7 +12,7 @@ class BlockingClient:
     user_agent: typing.Optional[builtins.str]
     headers: typing.Optional[dict]
     def __new__(cls,**kwds): ...
-    def get_cookies(self, url:str) -> builtins.list[builtins.str]:
+    def get_cookies(self, url:str) -> list:
         r"""
         Returns the cookies for the given URL.
         
@@ -755,7 +755,7 @@ class Client:
     user_agent: typing.Optional[builtins.str]
     headers: typing.Optional[dict]
     def __new__(cls,**kwds): ...
-    def get_cookies(self, url:str) -> builtins.list[builtins.str]:
+    def get_cookies(self, url:str) -> list:
         r"""
         Returns the cookies for the given URL.
         

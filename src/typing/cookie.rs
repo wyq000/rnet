@@ -1,5 +1,6 @@
 use super::IndexMap;
 use crate::error::wrap_invali_header_value_error;
+use pyo3::types::PyList;
 use pyo3::FromPyObject;
 use pyo3::{prelude::*, types::PyDict};
 use rquest::header::{self, HeaderMap, HeaderValue};
@@ -7,6 +8,8 @@ use rquest::header::{self, HeaderMap, HeaderValue};
 pub struct CookieMap(pub IndexMap<String, String>);
 
 pub struct CookieMapRef<'a>(pub &'a HeaderMap);
+
+pub struct CookieHeader(pub Option<HeaderValue>);
 
 impl TryFrom<CookieMap> for HeaderValue {
     type Error = PyErr;
@@ -53,6 +56,23 @@ impl<'py> IntoPyObject<'py> for CookieMapRef<'py> {
             .try_fold(PyDict::new(py), |dict, cookie| {
                 dict.set_item(cookie.name(), cookie.value())?;
                 Ok(dict)
+            })
+    }
+}
+
+impl<'py> IntoPyObject<'py> for CookieHeader {
+    type Target = PyList;
+
+    type Output = Bound<'py, Self::Target>;
+
+    type Error = PyErr;
+
+    fn into_pyobject(self, py: Python<'py>) -> Result<Self::Output, Self::Error> {
+        self.0
+            .iter()
+            .filter_map(|hv| hv.to_str().ok())
+            .try_fold(PyList::empty(py), |list, item| {
+                list.append(item).map(|_| list)
             })
     }
 }

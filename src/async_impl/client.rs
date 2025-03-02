@@ -3,13 +3,13 @@ use crate::{
     apply_option, dns,
     error::{wrap_rquest_error, wrap_url_parse_error},
     param::{ClientParams, RequestParams, UpdateClientParams, WebSocketParams},
-    typing::{ImpersonateOS, Method, TlsVersion},
+    typing::{CookieHeader, HeaderMapRef, ImpersonateOS, Method, TlsVersion},
 };
 use arc_swap::ArcSwap;
 use pyo3::{
     prelude::*,
     pybacked::PyBackedStr,
-    types::{PyBytes, PyDict},
+    types::{PyDict, PyList},
 };
 use pyo3_async_runtimes::tokio::future_into_py;
 use pyo3_stub_gen::derive::{gen_stub_pyclass, gen_stub_pymethods};
@@ -690,13 +690,7 @@ impl Client {
     pub fn headers<'py>(&self, py: Python<'py>) -> Option<Bound<'py, PyDict>> {
         let binding = self.0.load();
         let headers = binding.headers();
-        headers
-            .iter()
-            .try_fold(PyDict::new(py), |dict, (name, value)| {
-                dict.set_item(name.as_str(), PyBytes::new(py, value.as_bytes()))
-                    .map(|_| dict)
-            })
-            .ok()
+        HeaderMapRef(headers).into_pyobject(py).ok()
     }
 
     /// Returns the cookies for the given URL.
@@ -719,20 +713,18 @@ impl Client {
     /// print(cookies)
     /// ```
     #[pyo3(signature = (url))]
-    pub fn get_cookies(&self, py: Python, url: PyBackedStr) -> PyResult<Vec<String>> {
-        py.allow_threads(|| {
+    pub fn get_cookies<'py>(
+        &self,
+        py: Python<'py>,
+        url: PyBackedStr,
+    ) -> PyResult<Bound<'py, PyList>> {
+        let cookies = py.allow_threads(|| {
             let url = Url::parse(url.as_ref()).map_err(wrap_url_parse_error)?;
-            let cookies = self
-                .0
-                .load()
-                .get_cookies(&url)
-                .iter()
-                .filter_map(|hv| hv.to_str().ok())
-                .map(ToString::to_string)
-                .collect::<Vec<String>>();
+            let cookies = self.0.load().get_cookies(&url);
+            Ok::<_, PyErr>(cookies)
+        })?;
 
-            Ok(cookies)
-        })
+        CookieHeader(cookies).into_pyobject(py)
     }
 
     /// Sets cookies for the given URL.
@@ -766,7 +758,7 @@ impl Client {
             let cookies = cookies
                 .into_iter()
                 .map(|value| HeaderValue::from_bytes(value.as_bytes()))
-                .flat_map(std::result::Result::ok)
+                .flat_map(Result::ok)
                 .collect::<Vec<HeaderValue>>();
 
             self.0.load().set_cookies(&url, cookies);
