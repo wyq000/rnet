@@ -7,39 +7,39 @@ use rquest::header::{self, HeaderName, HeaderValue};
 use std::{ops::Deref, str::FromStr};
 
 /// A HTTP header map.
-pub struct HeaderMap(pub header::HeaderMap);
+pub struct FromPyHeaderMap(pub header::HeaderMap);
 
 /// A HTTP reference to a header map.
-pub struct HeaderMapRef<'a>(pub &'a header::HeaderMap);
+pub struct IntoPyHeaderMapRef<'a>(pub &'a header::HeaderMap);
 
 /// A list of header names in order.
-pub struct HeaderNameOrder(pub Vec<HeaderName>);
+pub struct FromPyHeaderNameOrder(pub Vec<HeaderName>);
 
-impl From<header::HeaderMap> for HeaderMap {
+impl From<header::HeaderMap> for FromPyHeaderMap {
     fn from(map: header::HeaderMap) -> Self {
-        HeaderMap(map)
+        FromPyHeaderMap(map)
     }
 }
 
-impl<'a> From<&'a header::HeaderMap> for HeaderMapRef<'a> {
+impl<'a> From<&'a header::HeaderMap> for IntoPyHeaderMapRef<'a> {
     fn from(map: &'a header::HeaderMap) -> Self {
-        HeaderMapRef(map)
+        IntoPyHeaderMapRef(map)
     }
 }
 
-impl From<HeaderMap> for header::HeaderMap {
-    fn from(map: HeaderMap) -> Self {
+impl From<FromPyHeaderMap> for header::HeaderMap {
+    fn from(map: FromPyHeaderMap) -> Self {
         map.0
     }
 }
 
-impl From<HeaderNameOrder> for Vec<HeaderName> {
-    fn from(order: HeaderNameOrder) -> Self {
+impl From<FromPyHeaderNameOrder> for Vec<HeaderName> {
+    fn from(order: FromPyHeaderNameOrder) -> Self {
         order.0
     }
 }
 
-impl Deref for HeaderMap {
+impl Deref for FromPyHeaderMap {
     type Target = header::HeaderMap;
 
     fn deref(&self) -> &Self::Target {
@@ -47,7 +47,7 @@ impl Deref for HeaderMap {
     }
 }
 
-impl FromPyObject<'_> for HeaderMap {
+impl FromPyObject<'_> for FromPyHeaderMap {
     fn extract_bound(ob: &Bound<'_, PyAny>) -> PyResult<Self> {
         let dict = ob.downcast::<PyDict>()?;
 
@@ -63,11 +63,11 @@ impl FromPyObject<'_> for HeaderMap {
                     Ok(headers)
                 },
             )
-            .map(HeaderMap)
+            .map(FromPyHeaderMap)
     }
 }
 
-impl<'py> FromPyObject<'py> for HeaderNameOrder {
+impl<'py> FromPyObject<'py> for FromPyHeaderNameOrder {
     fn extract_bound(ob: &Bound<'py, PyAny>) -> PyResult<Self> {
         let list = ob.downcast::<PyList>()?;
         list.iter()
@@ -77,11 +77,11 @@ impl<'py> FromPyObject<'py> for HeaderNameOrder {
                 order.push(name);
                 Ok(order)
             })
-            .map(HeaderNameOrder)
+            .map(FromPyHeaderNameOrder)
     }
 }
 
-impl<'py> IntoPyObject<'py> for HeaderMapRef<'_> {
+impl<'py> IntoPyObject<'py> for IntoPyHeaderMapRef<'_> {
     type Target = PyDict;
 
     type Output = Bound<'py, Self::Target>;

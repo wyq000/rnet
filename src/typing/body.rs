@@ -10,26 +10,25 @@ use pyo3::types::PyBytes;
 use pyo3::{FromPyObject, PyAny};
 
 /// The body to use for the request.
-#[derive(Clone)]
-pub enum Body {
+pub enum FromPyBody {
     Text(Bytes),
     Bytes(Bytes),
     Iterator(Arc<ArcSwapOption<SyncStream>>),
     Stream(Arc<ArcSwapOption<AsyncStream>>),
 }
 
-impl TryFrom<Body> for rquest::Body {
+impl TryFrom<FromPyBody> for rquest::Body {
     type Error = PyErr;
 
-    fn try_from(value: Body) -> Result<rquest::Body, Self::Error> {
+    fn try_from(value: FromPyBody) -> Result<rquest::Body, Self::Error> {
         match value {
-            Body::Text(bytes) | Body::Bytes(bytes) => Ok(rquest::Body::from(bytes)),
-            Body::Iterator(iterator) => iterator
+            FromPyBody::Text(bytes) | FromPyBody::Bytes(bytes) => Ok(rquest::Body::from(bytes)),
+            FromPyBody::Iterator(iterator) => iterator
                 .swap(None)
                 .and_then(Arc::into_inner)
                 .map(Into::into)
                 .ok_or_else(stream_consumed_error),
-            Body::Stream(stream) => stream
+            FromPyBody::Stream(stream) => stream
                 .swap(None)
                 .and_then(Arc::into_inner)
                 .map(Into::into)
@@ -38,7 +37,7 @@ impl TryFrom<Body> for rquest::Body {
     }
 }
 
-impl Debug for Body {
+impl Debug for FromPyBody {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             Self::Text(inner) => write!(f, "Body::Text({:?})", inner),
@@ -49,7 +48,7 @@ impl Debug for Body {
     }
 }
 
-impl FromPyObject<'_> for Body {
+impl FromPyObject<'_> for FromPyBody {
     fn extract_bound(ob: &Bound<'_, PyAny>) -> PyResult<Self> {
         if let Ok(text) = ob.extract::<String>() {
             Ok(Self::Text(Bytes::from(text)))

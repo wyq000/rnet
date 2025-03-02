@@ -2,7 +2,7 @@ mod message;
 
 use crate::{
     error::{py_stop_async_iteration_error, websocket_disconnect_error, wrap_rquest_error},
-    typing::{HeaderMapRef, SocketAddr, StatusCode, Version},
+    typing::{IntoPyHeaderMapRef, SocketAddr, StatusCode, Version},
 };
 use futures_util::{
     stream::{SplitSink, SplitStream},
@@ -196,7 +196,7 @@ impl WebSocket {
     #[getter]
     #[inline(always)]
     pub fn headers<'py>(&self, py: Python<'py>) -> Option<Bound<'py, PyDict>> {
-        HeaderMapRef(&self.headers).into_pyobject(py).ok()
+        IntoPyHeaderMapRef(&self.headers).into_pyobject(py).ok()
     }
 
     /// Returns the remote address of the response.

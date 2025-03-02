@@ -9,10 +9,10 @@ mod proxy;
 mod status;
 
 pub use self::{
-    body::Body,
+    body::FromPyBody,
     cookie::{FromPyCookieList, FromPyCookieMap, IntoPyCookieHeader, IntoPyCookieMapRef},
     enums::{Impersonate, ImpersonateOS, LookupIpStrategy, Method, TlsVersion, Version},
-    headers::{HeaderMap, HeaderMapRef, HeaderNameOrder},
+    headers::{FromPyHeaderMap, FromPyHeaderNameOrder, IntoPyHeaderMapRef},
     ipaddr::{IpAddr, SocketAddr},
     json::Json,
     multipart::{Multipart, Part},

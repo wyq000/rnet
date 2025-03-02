@@ -4,7 +4,7 @@ use crate::{
     error::{wrap_rquest_error, wrap_url_parse_error},
     param::{ClientParams, RequestParams, UpdateClientParams, WebSocketParams},
     typing::{
-        FromPyCookieList, HeaderMapRef, ImpersonateOS, IntoPyCookieHeader, Method, TlsVersion,
+        FromPyCookieList, ImpersonateOS, IntoPyCookieHeader, IntoPyHeaderMapRef, Method, TlsVersion,
     },
 };
 use arc_swap::ArcSwap;
@@ -692,7 +692,7 @@ impl Client {
     pub fn headers<'py>(&self, py: Python<'py>) -> Option<Bound<'py, PyDict>> {
         let binding = self.0.load();
         let headers = binding.headers();
-        HeaderMapRef(headers).into_pyobject(py).ok()
+        IntoPyHeaderMapRef(headers).into_pyobject(py).ok()
     }
 
     /// Returns the cookies for the given URL.
