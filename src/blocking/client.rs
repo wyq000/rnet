@@ -21,7 +21,7 @@ macro_rules! define_http_method {
         #[gen_stub_pymethods]
         #[pymethods]
         impl BlockingClient {
-            /// Sends a request with the given method and URL.
+            /// Sends a request with the given URL.
             ///
             /// # Arguments
             ///

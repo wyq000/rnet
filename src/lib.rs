@@ -32,7 +32,7 @@ type Result<T> = std::result::Result<T, PyErr>;
 
 macro_rules! define_http_method {
     ($(#[$meta:meta])* $name:ident, $method:expr) => {
-        /// Shortcut method to quickly make a `GET` request.
+        /// Shortcut method to quickly make a request.
         ///
         /// # Arguments
         ///

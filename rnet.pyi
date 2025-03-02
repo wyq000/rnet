@@ -173,7 +173,7 @@ class BlockingClient:
 
     def trace(self, url:str, **kwds) -> BlockingResponse:
         r"""
-        Sends a request with the given method and URL.
+        Sends a request with the given URL.
         
         # Arguments
         
@@ -222,7 +222,7 @@ class BlockingClient:
 
     def options(self, url:str, **kwds) -> BlockingResponse:
         r"""
-        Sends a request with the given method and URL.
+        Sends a request with the given URL.
         
         # Arguments
         
@@ -271,7 +271,7 @@ class BlockingClient:
 
     def head(self, url:str, **kwds) -> BlockingResponse:
         r"""
-        Sends a request with the given method and URL.
+        Sends a request with the given URL.
         
         # Arguments
         
@@ -320,7 +320,7 @@ class BlockingClient:
 
     def delete(self, url:str, **kwds) -> BlockingResponse:
         r"""
-        Sends a request with the given method and URL.
+        Sends a request with the given URL.
         
         # Arguments
         
@@ -369,7 +369,7 @@ class BlockingClient:
 
     def patch(self, url:str, **kwds) -> BlockingResponse:
         r"""
-        Sends a request with the given method and URL.
+        Sends a request with the given URL.
         
         # Arguments
         
@@ -418,7 +418,7 @@ class BlockingClient:
 
     def put(self, url:str, **kwds) -> BlockingResponse:
         r"""
-        Sends a request with the given method and URL.
+        Sends a request with the given URL.
         
         # Arguments
         
@@ -467,7 +467,7 @@ class BlockingClient:
 
     def post(self, url:str, **kwds) -> BlockingResponse:
         r"""
-        Sends a request with the given method and URL.
+        Sends a request with the given URL.
         
         # Arguments
         
@@ -516,7 +516,7 @@ class BlockingClient:
 
     def get(self, url:str, **kwds) -> BlockingResponse:
         r"""
-        Sends a request with the given method and URL.
+        Sends a request with the given URL.
         
         # Arguments
         
@@ -935,7 +935,7 @@ class Client:
 
     def trace(self, url:str, **kwds) -> typing.Any:
         r"""
-        Sends a request with the given method and URL.
+        Sends a request with the given URL
         
         # Arguments
         
@@ -984,7 +984,7 @@ class Client:
 
     def options(self, url:str, **kwds) -> typing.Any:
         r"""
-        Sends a request with the given method and URL.
+        Sends a request with the given URL
         
         # Arguments
         
@@ -1033,7 +1033,7 @@ class Client:
 
     def patch(self, url:str, **kwds) -> typing.Any:
         r"""
-        Sends a request with the given method and URL.
+        Sends a request with the given URL
         
         # Arguments
         
@@ -1082,7 +1082,7 @@ class Client:
 
     def delete(self, url:str, **kwds) -> typing.Any:
         r"""
-        Sends a request with the given method and URL.
+        Sends a request with the given URL
         
         # Arguments
         
@@ -1131,7 +1131,7 @@ class Client:
 
     def put(self, url:str, **kwds) -> typing.Any:
         r"""
-        Sends a request with the given method and URL.
+        Sends a request with the given URL
         
         # Arguments
         
@@ -1180,7 +1180,7 @@ class Client:
 
     def post(self, url:str, **kwds) -> typing.Any:
         r"""
-        Sends a request with the given method and URL.
+        Sends a request with the given URL
         
         # Arguments
         
@@ -1229,7 +1229,7 @@ class Client:
 
     def head(self, url:str, **kwds) -> typing.Any:
         r"""
-        Sends a request with the given method and URL.
+        Sends a request with the given URL
         
         # Arguments
         
@@ -1278,7 +1278,7 @@ class Client:
 
     def get(self, url:str, **kwds) -> typing.Any:
         r"""
-        Sends a request with the given method and URL.
+        Sends a request with the given URL
         
         # Arguments
         
@@ -1985,7 +1985,7 @@ class Version(Enum):
 
 def delete(url:str, **kwds) -> typing.Any:
     r"""
-    Shortcut method to quickly make a `GET` request.
+    Shortcut method to quickly make a request.
     
     # Arguments
     
@@ -2029,7 +2029,7 @@ def delete(url:str, **kwds) -> typing.Any:
 
 def get(url:str, **kwds) -> typing.Any:
     r"""
-    Shortcut method to quickly make a `GET` request.
+    Shortcut method to quickly make a request.
     
     # Arguments
     
@@ -2073,7 +2073,7 @@ def get(url:str, **kwds) -> typing.Any:
 
 def head(url:str, **kwds) -> typing.Any:
     r"""
-    Shortcut method to quickly make a `GET` request.
+    Shortcut method to quickly make a request.
     
     # Arguments
     
@@ -2116,7 +2116,7 @@ def head(url:str, **kwds) -> typing.Any:
 
 def options(url:str, **kwds) -> typing.Any:
     r"""
-    Shortcut method to quickly make a `GET` request.
+    Shortcut method to quickly make a request.
     
     # Arguments
     
@@ -2159,7 +2159,7 @@ def options(url:str, **kwds) -> typing.Any:
 
 def patch(url:str, **kwds) -> typing.Any:
     r"""
-    Shortcut method to quickly make a `GET` request.
+    Shortcut method to quickly make a request.
     
     # Arguments
     
@@ -2203,7 +2203,7 @@ def patch(url:str, **kwds) -> typing.Any:
 
 def post(url:str, **kwds) -> typing.Any:
     r"""
-    Shortcut method to quickly make a `GET` request.
+    Shortcut method to quickly make a request.
     
     # Arguments
     
@@ -2247,7 +2247,7 @@ def post(url:str, **kwds) -> typing.Any:
 
 def put(url:str, **kwds) -> typing.Any:
     r"""
-    Shortcut method to quickly make a `GET` request.
+    Shortcut method to quickly make a request.
     
     # Arguments
     
@@ -2337,7 +2337,7 @@ def request(method:Method, url:str, **kwds) -> typing.Any:
 
 def trace(url:str, **kwds) -> typing.Any:
     r"""
-    Shortcut method to quickly make a `GET` request.
+    Shortcut method to quickly make a request.
     
     # Arguments
     
