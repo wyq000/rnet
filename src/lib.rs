@@ -1,11 +1,9 @@
 mod async_impl;
+mod blocking;
+mod buffer;
 mod dns;
 mod error;
 mod param;
-#[macro_use]
-mod macros;
-mod blocking;
-mod buffer;
 mod stream;
 mod typing;
 
