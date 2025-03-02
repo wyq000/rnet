@@ -188,11 +188,6 @@ where
         accept_unmasked_frames
     );
 
-    // Cookies options.
-    if let Some(cookies) = params.cookies.take() {
-        builder = builder.with_builder(|builder| builder.header(header::COOKIE, cookies.0));
-    }
-
     // The origin to use for the request.
     builder = builder.with_builder(|mut builder| {
         // Network options.
@@ -239,6 +234,11 @@ where
             headers,
             From::from
         );
+
+        // Cookies options.
+        if let Some(cookies) = params.cookies.take() {
+            builder = builder.header(header::COOKIE, cookies.0);
+        }
 
         // Query options.
         apply_option!(apply_if_some_ref, builder, params.query, query);
