@@ -1,6 +1,5 @@
 import asyncio
 import rnet
-from rnet import Impersonate, Proxy
 
 
 async def main():

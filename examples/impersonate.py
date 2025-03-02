@@ -10,7 +10,7 @@ async def main():
         user_agent="rnet",
         tls_info=True,
         default_headers=headers,
-        headers_order=headers_order
+        headers_order=headers_order,
     )
     async with await client.get("https://tls.peet.ws/api/all") as resp:
         print("Status Code: ", resp.status_code)
