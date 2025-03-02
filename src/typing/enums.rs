@@ -1,7 +1,6 @@
 use pyo3::prelude::*;
 use pyo3_stub_gen::derive::gen_stub_pyclass_enum;
 
-#[macro_export]
 macro_rules! define_enum_with_conversion {
     ($(#[$meta:meta])* $enum_type:ident, $ffi_type:ty, $($variant:ident),* $(,)?) => {
         $(#[$meta])*
@@ -31,7 +30,7 @@ macro_rules! define_enum_with_conversion {
 
     };
 
-    (const, $(#[$meta:meta])* $enum_type:ident, $ffi_type:ty, $($variant:ident),* $(,)?) => {
+    ($(#[$meta:meta])* const, $enum_type:ident, $ffi_type:ty, $($variant:ident),* $(,)?) => {
         $(#[$meta])*
         #[gen_stub_pyclass_enum]
         #[pyclass(eq, eq_int)]
@@ -60,8 +59,8 @@ macro_rules! define_enum_with_conversion {
 }
 
 define_enum_with_conversion!(
-    const,
     /// An HTTP version.
+    const,
     Version,
     rquest::Version,
     HTTP_09,
@@ -86,8 +85,8 @@ define_enum_with_conversion!(
 );
 
 define_enum_with_conversion!(
-    const,
     /// An impersonate.
+    const,
     Impersonate,
     rquest::Impersonate,
     Chrome100,
@@ -150,8 +149,8 @@ define_enum_with_conversion!(
 );
 
 define_enum_with_conversion!(
-    const,
     /// An impersonate operating system.
+    const,
     ImpersonateOS,
     rquest::ImpersonateOS,
     Windows,
@@ -162,8 +161,8 @@ define_enum_with_conversion!(
 );
 
 define_enum_with_conversion!(
-    const,
     /// The lookup ip strategy.
+    const,
     LookupIpStrategy,
     rquest::dns::LookupIpStrategy,
     Ipv4Only,
@@ -174,8 +173,8 @@ define_enum_with_conversion!(
 );
 
 define_enum_with_conversion!(
-    const,
     /// The TLS version.
+    const,
     TlsVersion,
     rquest::TlsVersion,
     TLS_1_0,
