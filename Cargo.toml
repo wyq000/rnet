@@ -1,6 +1,6 @@
 [package]
 name = "rnet"
-version = "1.6.0"
+version = "1.6.1"
 description = "An easy and powerful Python HTTP Client with Black Magic"
 edition = "2024"
 rust-version = "1.85.0"
