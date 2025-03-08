@@ -12,11 +12,11 @@ An easy and powerful Python HTTP Client with Black Magic, capable of mimicking `
 ## Features
 
 - Async and Blocking `Client`s
-- Plain, JSON, urlencoded, multipart bodies
+- Plain bodies, JSON, urlencoded, multipart
 - Header Order
 - Redirect Policy
 - Cookie Store
-- HTTP Proxies
+- Rotating Proxies
 - WebSocket Upgrade
 - Async DNS Resolver
 - Free-Threaded Safety
