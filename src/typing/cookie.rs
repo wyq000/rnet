@@ -9,7 +9,7 @@ use rquest::header::{self, HeaderMap, HeaderValue};
 
 pub struct FromPyCookieMap(pub HeaderValue);
 
-pub struct IntoPyCookieMapRef<'a>(pub &'a HeaderMap);
+pub struct IntoPyCookieMap<'a>(pub &'a HeaderMap);
 
 pub struct IntoPyCookieList(pub Option<HeaderValue>);
 
@@ -39,7 +39,7 @@ impl FromPyObject<'_> for FromPyCookieMap {
     }
 }
 
-impl<'py> IntoPyObject<'py> for IntoPyCookieMapRef<'py> {
+impl<'py> IntoPyObject<'py> for IntoPyCookieMap<'py> {
     type Target = PyDict;
 
     type Output = Bound<'py, Self::Target>;

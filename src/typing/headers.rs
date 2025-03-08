@@ -11,7 +11,7 @@ use std::str::FromStr;
 pub struct FromPyHeaderMap(pub header::HeaderMap);
 
 /// A HTTP reference to a header map.
-pub struct IntoPyHeaderMapRef<'a>(pub &'a header::HeaderMap);
+pub struct IntoPyHeaderMap<'a>(pub &'a header::HeaderMap);
 
 /// A list of header names in order.
 pub struct FromPyHeaderOrderList(pub Vec<HeaderName>);
@@ -52,7 +52,7 @@ impl<'py> FromPyObject<'py> for FromPyHeaderOrderList {
     }
 }
 
-impl<'py> IntoPyObject<'py> for IntoPyHeaderMapRef<'_> {
+impl<'py> IntoPyObject<'py> for IntoPyHeaderMap<'_> {
     type Target = PyDict;
 
     type Output = Bound<'py, Self::Target>;
