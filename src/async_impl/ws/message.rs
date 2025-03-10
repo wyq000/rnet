@@ -1,4 +1,3 @@
-use bytes::Bytes;
 use pyo3::{
     prelude::*,
     pybacked::{PyBackedBytes, PyBackedStr},
@@ -206,7 +205,7 @@ impl Message {
     #[pyo3(signature = (data))]
     #[inline(always)]
     pub fn from_ping(data: PyBackedBytes) -> Self {
-        let msg = rquest::Message::Ping(Bytes::from(data.as_ref().to_owned()));
+        let msg = rquest::Message::ping(data.as_ref().to_owned());
         Message(msg)
     }
 
@@ -223,7 +222,7 @@ impl Message {
     #[pyo3(signature = (data))]
     #[inline(always)]
     pub fn from_pong(data: PyBackedBytes) -> Self {
-        let msg = rquest::Message::Pong(Bytes::from(data.as_ref().to_owned()));
+        let msg = rquest::Message::pong(data.as_ref().to_owned());
         Message(msg)
     }
 
@@ -241,10 +240,10 @@ impl Message {
     #[pyo3(signature = (code, reason=None))]
     #[inline(always)]
     pub fn from_close(code: u16, reason: Option<String>) -> Self {
-        let msg = rquest::Message::Close(Some(rquest::CloseFrame {
+        let msg = rquest::Message::close(rquest::CloseFrame {
             code: rquest::CloseCode(code),
             reason: Utf8Bytes::from(reason.as_deref().unwrap_or("Goodbye")),
-        }));
+        });
         Message(msg)
     }
 }
