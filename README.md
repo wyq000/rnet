@@ -5,6 +5,7 @@
 ![Python Version from PEP 621 TOML](https://img.shields.io/python/required-version-toml?tomlFilePath=https%3A%2F%2Fraw.githubusercontent.com%2F0x676e67%2Frnet%2Fmain%2Fpyproject.toml)
 [![PyPI](https://img.shields.io/pypi/v/rnet)](https://pypi.org/project/rnet/)
 [![PyPI Downloads](https://static.pepy.tech/badge/rnet)](https://pepy.tech/projects/rnet)
+
 > 🚀 Help me work seamlessly with open source sharing by [sponsoring me on GitHub](https://github.com/0x676e67/0x676e67/blob/main/SPONSOR.md)
 
 A blazing-fast Python HTTP client with TLS fingerprint, capable of mimicking `TLS` and `HTTP2` fingerprints of popular browsers like `Chrome`, `Safari`, `Firefox`, and `OkHttp`.
@@ -14,12 +15,11 @@ A blazing-fast Python HTTP client with TLS fingerprint, capable of mimicking `TL
 - Async and Blocking `Client`s
 - Plain bodies, JSON, urlencoded, multipart
 - Header Order
-- Redirect Policy
 - Cookie Store
+- Redirect Policy
 - Rotating Proxies
 - WebSocket Upgrade
 - Async DNS Resolver
-- Free-Threaded Safety
 - HTTPS via BoringSSL
 
 ## Example
@@ -39,10 +39,10 @@ from rnet import Impersonate, Client
 
 async def main():
     client = Client(
-        impersonate=Impersonate.Firefox135,
+        impersonate=Impersonate.Firefox136,
         user_agent="rnet",
     )
-    resp = await client.get("https://tls.peet.ws/api/all")
+    resp = await client.get("https://tls.browserleaks.com")
     print("Status Code: ", resp.status_code)
     print("Version: ", resp.version)
     print("Response URL: ", resp.url)
@@ -62,6 +62,7 @@ Additional learning resources include:
 
 - [API Documentation](https://github.com/0x676e67/rnet/blob/main/rnet.pyi)
 - [Repository Examples](https://github.com/0x676e67/rnet/tree/main/examples)
+- [Repository Tests](https://github.com/0x676e67/rnet/tree/main/tests)
 
 ## Platforms
 
@@ -95,7 +96,7 @@ maturin develop --uv
 python3 examples/client.py
 ```
 
-1. Compile wheels
+3. Compile wheels
 
 - Local Compilation
 
