@@ -138,10 +138,12 @@ class BlockingClient:
             headers: typing.Optional[typing.Dict[str, bytes]]
             cookies: typing.Optional[typing.Dict[str, str]]
             protocols: typing.Optional[builtins.list[builtins.str]]
+            use_http2: typing.Optional[builtins.bool]
             auth: typing.Optional[builtins.str]
             bearer_auth: typing.Optional[builtins.str]
             basic_auth: typing.Optional[tuple[builtins.str, typing.Optional[builtins.str]]]
             query: typing.Optional[builtins.list[tuple[builtins.str, builtins.str]]]
+            read_buffer_size: typing.Optional[builtins.int]
             write_buffer_size: typing.Optional[builtins.int]
             max_write_buffer_size: typing.Optional[builtins.int]
             max_message_size: typing.Optional[builtins.int]
@@ -900,10 +902,12 @@ class Client:
             headers: typing.Optional[typing.Dict[str, bytes]]
             cookies: typing.Optional[typing.Dict[str, str]]
             protocols: typing.Optional[builtins.list[builtins.str]]
+            use_http2: typing.Optional[builtins.bool]
             auth: typing.Optional[builtins.str]
             bearer_auth: typing.Optional[builtins.str]
             basic_auth: typing.Optional[tuple[builtins.str, typing.Optional[builtins.str]]]
             query: typing.Optional[builtins.list[tuple[builtins.str, builtins.str]]]
+            read_buffer_size: typing.Optional[builtins.int]
             write_buffer_size: typing.Optional[builtins.int]
             max_write_buffer_size: typing.Optional[builtins.int]
             max_message_size: typing.Optional[builtins.int]
@@ -1371,7 +1375,7 @@ class Message:
         ...
 
     @staticmethod
-    def from_text(text:builtins.str) -> Message:
+    def from_text(text:str) -> Message:
         r"""
         Creates a new text message.
         
@@ -1895,6 +1899,7 @@ class Impersonate(Enum):
     Chrome129 = auto()
     Chrome130 = auto()
     Chrome131 = auto()
+    Chrome132 = auto()
     Chrome133 = auto()
     Edge101 = auto()
     Edge122 = auto()
@@ -1907,6 +1912,8 @@ class Impersonate(Enum):
     Firefox135 = auto()
     FirefoxPrivate135 = auto()
     FirefoxAndroid135 = auto()
+    Firefox136 = auto()
+    FirefoxPrivate136 = auto()
     SafariIos17_2 = auto()
     SafariIos17_4_1 = auto()
     SafariIos16_5 = auto()
@@ -1922,6 +1929,7 @@ class Impersonate(Enum):
     Safari18 = auto()
     SafariIPad18 = auto()
     Safari18_2 = auto()
+    Safari18_3 = auto()
     SafariIos18_1_1 = auto()
     OkHttp3_9 = auto()
     OkHttp3_11 = auto()
@@ -1929,6 +1937,7 @@ class Impersonate(Enum):
     OkHttp3_14 = auto()
     OkHttp4_9 = auto()
     OkHttp4_10 = auto()
+    OkHttp4_12 = auto()
     OkHttp5 = auto()
 
 class ImpersonateOS(Enum):
@@ -2393,10 +2402,12 @@ def websocket(url:str, **kwds) -> typing.Any:
         headers: typing.Optional[typing.Dict[str, bytes]]
         cookies: typing.Optional[typing.Dict[str, str]]
         protocols: typing.Optional[builtins.list[builtins.str]]
+        use_http2: typing.Optional[builtins.bool]
         auth: typing.Optional[builtins.str]
         bearer_auth: typing.Optional[builtins.str]
         basic_auth: typing.Optional[tuple[builtins.str, typing.Optional[builtins.str]]]
         query: typing.Optional[builtins.list[tuple[builtins.str, builtins.str]]]
+        read_buffer_size: typing.Optional[builtins.int]
         write_buffer_size: typing.Optional[builtins.int]
         max_write_buffer_size: typing.Optional[builtins.int]
         max_message_size: typing.Optional[builtins.int]
