@@ -8,15 +8,15 @@ use rquest::header::{self, HeaderName, HeaderValue};
 use std::str::FromStr;
 
 /// A HTTP header map.
-pub struct FromPyHeaderMap(pub header::HeaderMap);
+pub struct HeaderMapFromPyDict(pub header::HeaderMap);
 
 /// A HTTP reference to a header map.
-pub struct IntoPyHeaderMap<'a>(pub &'a header::HeaderMap);
+pub struct HeaderMapIntoPyDict<'a>(pub &'a header::HeaderMap);
 
 /// A list of header names in order.
-pub struct FromPyHeaderOrderList(pub Vec<HeaderName>);
+pub struct HeadersOrderFromPyList(pub Vec<HeaderName>);
 
-impl FromPyObject<'_> for FromPyHeaderMap {
+impl FromPyObject<'_> for HeaderMapFromPyDict {
     fn extract_bound(ob: &Bound<'_, PyAny>) -> PyResult<Self> {
         let dict = ob.downcast::<PyDict>()?;
 
@@ -38,7 +38,7 @@ impl FromPyObject<'_> for FromPyHeaderMap {
     }
 }
 
-impl<'py> FromPyObject<'py> for FromPyHeaderOrderList {
+impl<'py> FromPyObject<'py> for HeadersOrderFromPyList {
     fn extract_bound(ob: &Bound<'py, PyAny>) -> PyResult<Self> {
         let list = ob.downcast::<PyList>()?;
         list.iter()
@@ -52,7 +52,7 @@ impl<'py> FromPyObject<'py> for FromPyHeaderOrderList {
     }
 }
 
-impl<'py> IntoPyObject<'py> for IntoPyHeaderMap<'_> {
+impl<'py> IntoPyObject<'py> for HeaderMapIntoPyDict<'_> {
     type Target = PyDict;
 
     type Output = Bound<'py, Self::Target>;

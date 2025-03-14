@@ -1,7 +1,7 @@
 use crate::{
     buffer::{Buffer, BytesBuffer, PyBufferProtocol},
     error::{memory_error, py_stop_async_iteration_error, wrap_rquest_error},
-    typing::{IntoPyCookieMap, IntoPyHeaderMap, Json, SocketAddr, StatusCode, Version},
+    typing::{IntoPyCookieMap, HeaderMapIntoPyDict, Json, SocketAddr, StatusCode, Version},
 };
 use arc_swap::ArcSwapOption;
 use futures_util::{Stream, TryStreamExt};
@@ -142,7 +142,7 @@ impl Response {
     #[getter]
     #[inline(always)]
     pub fn headers<'py>(&self, py: Python<'py>) -> Option<Bound<'py, PyDict>> {
-        IntoPyHeaderMap(&self.headers).into_pyobject(py).ok()
+        HeaderMapIntoPyDict(&self.headers).into_pyobject(py).ok()
     }
 
     /// Returns the cookies of the response.

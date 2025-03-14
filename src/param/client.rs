@@ -1,6 +1,6 @@
 use crate::typing::{
-    FromPyHeaderMap, FromPyHeaderOrderList, Impersonate, ImpersonateOS, IpAddr, LookupIpStrategy,
-    Proxy, TlsVersion, Verify,
+    HeaderMapFromPyDict, HeadersOrderFromPyList, Impersonate, ImpersonateOS, IpAddr,
+    LookupIpStrategy, Proxy, TlsVersion, Verify,
 };
 use pyo3::{prelude::*, pybacked::PyBackedStr, types::PyList};
 use pyo3_stub_gen::{PyStubType, TypeInfo};
@@ -24,10 +24,10 @@ pub struct ClientParams {
     pub user_agent: Option<PyBackedStr>,
 
     /// The headers to use for the request.
-    pub default_headers: Option<FromPyHeaderMap>,
+    pub default_headers: Option<HeaderMapFromPyDict>,
 
     /// The order of the headers to use for the request.
-    pub headers_order: Option<FromPyHeaderOrderList>,
+    pub headers_order: Option<HeadersOrderFromPyList>,
 
     /// Whether to use referer.
     pub referer: Option<bool>,
@@ -141,10 +141,10 @@ pub struct UpdateClientParams {
     pub impersonate_skip_headers: Option<bool>,
 
     /// The headers to use for the request.
-    pub headers: Option<FromPyHeaderMap>,
+    pub headers: Option<HeaderMapFromPyDict>,
 
     /// The order of the headers to use for the request.
-    pub headers_order: Option<FromPyHeaderOrderList>,
+    pub headers_order: Option<HeadersOrderFromPyList>,
 
     // ========= Network options =========
     /// The proxy to use for the request.

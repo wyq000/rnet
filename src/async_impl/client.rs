@@ -4,8 +4,8 @@ use crate::{
     error::{wrap_rquest_error, wrap_url_parse_error},
     param::{ClientParams, RequestParams, UpdateClientParams, WebSocketParams},
     typing::{
-        FromPyCookieList, FromPyHeaderOrderList, ImpersonateOS, IntoPyCookieList, IntoPyHeaderMap,
-        Method, TlsVersion, Verify,
+        FromPyCookieList, HeaderMapIntoPyDict, ImpersonateOS, IntoPyCookieList, Method, TlsVersion,
+        Verify,
     },
 };
 use pyo3::{
@@ -686,7 +686,7 @@ impl Client {
     #[getter]
     pub fn headers<'py>(&self, py: Python<'py>) -> Option<Bound<'py, PyDict>> {
         let headers = self.0.headers();
-        IntoPyHeaderMap(&headers).into_pyobject(py).ok()
+        HeaderMapIntoPyDict(&headers).into_pyobject(py).ok()
     }
 
     /// Returns the cookies for the given URL.
@@ -813,11 +813,10 @@ impl Client {
 
             // Headers order options.
             apply_option!(
-                apply_transformed_option,
+                apply_if_some_inner,
                 update,
                 params.headers_order,
-                headers_order,
-                |s: FromPyHeaderOrderList| s.0
+                headers_order
             );
 
             // Network options.
