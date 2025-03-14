@@ -15,8 +15,8 @@ crate-type = ["cdylib", "rlib"]
 doctest = false
 
 [[bin]]
-name = "stub_gen"
-path = "src/stub_gen.rs"
+name = "stubgen"
+path = "src/stubgen.rs"
 
 [dependencies]
 tokio = { version = "1.44.1", features = ["sync"] }
