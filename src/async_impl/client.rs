@@ -4,15 +4,10 @@ use crate::{
     error::{wrap_rquest_error, wrap_url_parse_error},
     param::{ClientParams, RequestParams, UpdateClientParams, WebSocketParams},
     typing::{
-        FromPyCookieList, HeaderMapIntoPyDict, ImpersonateOS, IntoPyCookieList, Method, TlsVersion,
-        Verify,
+        FromPyCookieList, HeaderMap, ImpersonateOS, IntoPyCookieList, Method, TlsVersion, Verify,
     },
 };
-use pyo3::{
-    prelude::*,
-    pybacked::PyBackedStr,
-    types::{PyDict, PyList},
-};
+use pyo3::{prelude::*, pybacked::PyBackedStr, types::PyList};
 use pyo3_async_runtimes::tokio::future_into_py;
 use pyo3_stub_gen::derive::{gen_stub_pyclass, gen_stub_pymethods};
 use rquest::{RootCertStore, Url, redirect::Policy};
@@ -684,9 +679,8 @@ impl Client {
     /// print(headers)
     /// ```
     #[getter]
-    pub fn headers<'py>(&self, py: Python<'py>) -> Option<Bound<'py, PyDict>> {
-        let headers = self.0.headers();
-        HeaderMapIntoPyDict(&headers).into_pyobject(py).ok()
+    pub fn headers(&self) -> HeaderMap {
+        HeaderMap(self.0.headers())
     }
 
     /// Returns the cookies for the given URL.

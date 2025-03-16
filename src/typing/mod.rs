@@ -14,7 +14,7 @@ pub use self::{
     cookie::{FromPyCookieList, FromPyCookieMap, IntoPyCookieList, IntoPyCookieMap},
     enums::{Impersonate, ImpersonateOS, LookupIpStrategy, Method, TlsVersion, Version},
     headers::{
-        HeaderMap, HeaderMapFromPyDict, HeaderMapIntoPyDict, HeaderMapItemsIter, HeaderMapKeysIter,
+        HeaderMap, HeaderMapFromPyDict, HeaderMapItemsIter, HeaderMapKeysIter,
         HeadersOrderFromPyList,
     },
     ipaddr::{IpAddr, SocketAddr},
