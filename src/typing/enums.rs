@@ -187,3 +187,13 @@ define_enum_with_conversion!(
     TLS_1_2,
     TLS_1_3,
 );
+
+define_enum_with_conversion!(
+    /// The Cookie SameSite attribute.
+    const,
+    SameSite,
+    rquest::cookie::SameSite,
+    Strict,
+    Lax,
+    None,
+);

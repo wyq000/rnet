@@ -98,6 +98,7 @@ pub fn wrap_rquest_error(error: rquest::Error) -> pyo3::PyErr {
     wrap_error!(error,
         is_body => BodyError,
         is_connect => ConnectionError,
+        is_connection_reset => ConnectionError,
         is_decode => DecodingError,
         is_redirect => RedirectError,
         is_timeout => TimeoutError,

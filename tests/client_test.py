@@ -1,6 +1,6 @@
 import pytest
 import rnet
-from rnet import Impersonate, ImpersonateOS
+from rnet import Impersonate, ImpersonateOS, Cookie
 
 
 @pytest.mark.asyncio
@@ -14,12 +14,14 @@ async def test_update_headers():
 
 @pytest.mark.asyncio
 @pytest.mark.flaky(reruns=3, reruns_delay=2)
-async def test_update_cookies():
+async def test_set_cookie():
     url = "https://httpbin.org/cookies"
     client = rnet.Client(cookie_store=True)
-    cookies = ["foo=bar"]
-    client.set_cookies(url, cookies)
-    assert client.get_cookies(url) == cookies
+
+    cookie = Cookie(name="foo", value="bar")
+    client.set_cookie(url, cookie)
+    assert client.get_cookies(url) == b"foo=bar"
+
     response = await client.get(url)
     json = await response.json()
     assert json["cookies"] == {"foo": "bar"}

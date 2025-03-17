@@ -2,6 +2,7 @@
 # ruff: noqa: E501, F401
 
 import builtins
+import datetime
 import typing
 from enum import Enum, auto
 
@@ -10,9 +11,9 @@ class BlockingClient:
     A blocking client for making HTTP requests.
     """
     user_agent: typing.Optional[builtins.str]
-    headers: typing.Optional[dict]
+    headers: HeaderMap
     def __new__(cls,**kwds): ...
-    def get_cookies(self, url:str) -> list:
+    def get_cookies(self, url:str) -> typing.Optional[typing.Any]:
         r"""
         Returns the cookies for the given URL.
         
@@ -26,18 +27,46 @@ class BlockingClient:
         """
         ...
 
-    def set_cookies(self, url:str, value:typing.List[str]) -> None:
+    def set_cookie(self, url:str, cookie:Cookie) -> None:
         r"""
-        Sets cookies for the given URL.
+        Sets the cookies for the given URL.
         
         # Arguments
-        
         * `url` - The URL to set the cookies for.
-        * `value` - A list of cookie strings to set.
+        * `cookie` - The cookie to set.
         
-        # Returns
+        # Examples
         
-        A `PyResult` indicating success or failure.
+        ```python
+        import rnet
+        
+        client = rnet.Client(cookie_store=True)
+        client.set_cookie("https://example.com", rnet.Cookie(name="foo", value="bar"))
+        ```
+        """
+        ...
+
+    def remove_cookie(self, url:str, name:str) -> None:
+        r"""
+        Removes the cookie with the given name for the given URL.
+        
+        # Arguments
+        * `url` - The URL to remove the cookie from.
+        * `name` - The name of the cookie to remove.
+        
+        # Examples
+        
+        ```python
+        import rnet
+        
+        client = rnet.Client(cookie_store=True)
+        client.remove_cookie("https://example.com", "foo")
+        """
+        ...
+
+    def clear_cookies(self) -> None:
+        r"""
+        Clears the cookies for the given URL.
         """
         ...
 
@@ -575,8 +604,8 @@ class BlockingResponse:
     status: builtins.int
     status_code: StatusCode
     version: Version
-    headers: typing.Optional[dict]
-    cookies: typing.Optional[dict]
+    headers: HeaderMap
+    cookies: builtins.list[Cookie]
     content_length: builtins.int
     remote_addr: typing.Optional[SocketAddr]
     encoding: builtins.str
@@ -686,7 +715,8 @@ class BlockingWebSocket:
     status: builtins.int
     status_code: StatusCode
     version: Version
-    headers: typing.Optional[dict]
+    headers: HeaderMap
+    cookies: builtins.list[Cookie]
     remote_addr: typing.Optional[SocketAddr]
     def __iter__(self) -> BlockingWebSocket:
         ...
@@ -755,9 +785,9 @@ class Client:
     A client for making HTTP requests.
     """
     user_agent: typing.Optional[builtins.str]
-    headers: typing.Optional[dict]
+    headers: HeaderMap
     def __new__(cls,**kwds): ...
-    def get_cookies(self, url:str) -> list:
+    def get_cookies(self, url:str) -> typing.Optional[typing.Any]:
         r"""
         Returns the cookies for the given URL.
         
@@ -781,18 +811,13 @@ class Client:
         """
         ...
 
-    def set_cookies(self, url:str, cookies:typing.List[str]) -> None:
+    def set_cookie(self, url:str, cookie:Cookie) -> None:
         r"""
-        Sets cookies for the given URL.
+        Sets the cookies for the given URL.
         
         # Arguments
-        
         * `url` - The URL to set the cookies for.
-        * `value` - A list of cookie strings to set.
-        
-        # Returns
-        
-        A `PyResult` indicating success or failure.
+        * `cookie` - The cookie to set.
         
         # Examples
         
@@ -800,8 +825,32 @@ class Client:
         import rnet
         
         client = rnet.Client(cookie_store=True)
-        client.set_cookies("https://example.com", ["cookie1=value1", "cookie2=value2"])
+        client.set_cookie("https://example.com", rnet.Cookie(name="foo", value="bar"))
         ```
+        """
+        ...
+
+    def remove_cookie(self, url:str, name:str) -> None:
+        r"""
+        Removes the cookie with the given name for the given URL.
+        
+        # Arguments
+        * `url` - The URL to remove the cookie from.
+        * `name` - The name of the cookie to remove.
+        
+        # Examples
+        
+        ```python
+        import rnet
+        
+        client = rnet.Client(cookie_store=True)
+        client.remove_cookie("https://example.com", "foo")
+        """
+        ...
+
+    def clear_cookies(self) -> None:
+        r"""
+        Clears the cookies for the given URL.
         """
         ...
 
@@ -1330,6 +1379,82 @@ class Client:
         ...
 
 
+class Cookie:
+    r"""
+    A cookie.
+    """
+    name: builtins.str
+    value: builtins.str
+    http_only: builtins.bool
+    secure: builtins.bool
+    same_site_lax: builtins.bool
+    same_site_strict: builtins.bool
+    path: typing.Optional[builtins.str]
+    domain: typing.Optional[builtins.str]
+    max_age: typing.Optional[datetime.timedelta]
+    expires: typing.Optional[datetime.datetime]
+    def __new__(cls,name:builtins.str, value:builtins.str, domain:typing.Optional[builtins.str]=None, path:typing.Optional[builtins.str]=None, max_age:typing.Optional[datetime.timedelta]=None, expires:typing.Optional[datetime.datetime]=None, http_only:builtins.bool=False, secure:builtins.bool=False, same_site:typing.Optional[SameSite]=None): ...
+    def __str__(self) -> builtins.str:
+        ...
+
+    def __repr__(self) -> builtins.str:
+        ...
+
+
+class HeaderMap:
+    r"""
+    A HTTP header map.
+    """
+    def __getitem__(self, key:str) -> typing.Optional[typing.Any]:
+        ...
+
+    def __setitem__(self, key:str, value:str) -> None:
+        ...
+
+    def __delitem__(self, key:str) -> None:
+        ...
+
+    def __contains__(self, key:str) -> builtins.bool:
+        ...
+
+    def __len__(self) -> builtins.int:
+        ...
+
+    def __iter__(self) -> HeaderMapKeysIter:
+        ...
+
+    def items(self) -> HeaderMapItemsIter:
+        ...
+
+    def __str__(self) -> builtins.str:
+        ...
+
+    def __repr__(self) -> builtins.str:
+        ...
+
+
+class HeaderMapItemsIter:
+    r"""
+    An iterator over the items in a HeaderMap.
+    """
+    def __iter__(self) -> HeaderMapItemsIter:
+        ...
+
+    def __next__(self) -> typing.Optional[tuple[typing.Any, typing.Optional[typing.Any]]]:
+        ...
+
+
+class HeaderMapKeysIter:
+    r"""
+    An iterator over the keys in a HeaderMap.
+    """
+    def __iter__(self) -> HeaderMapKeysIter:
+        ...
+
+    def __next__(self) -> typing.Optional[typing.Any]:
+        ...
+
+
 class Message:
     r"""
     A WebSocket message.
@@ -1599,8 +1724,8 @@ class Response:
     status: builtins.int
     status_code: StatusCode
     version: Version
-    headers: typing.Optional[dict]
-    cookies: typing.Optional[dict]
+    headers: HeaderMap
+    cookies: builtins.list[Cookie]
     content_length: builtins.int
     remote_addr: typing.Optional[SocketAddr]
     encoding: builtins.str
@@ -1803,7 +1928,8 @@ class WebSocket:
     status: builtins.int
     status_code: StatusCode
     version: Version
-    headers: typing.Optional[dict]
+    headers: HeaderMap
+    cookies: builtins.list[Cookie]
     remote_addr: typing.Optional[SocketAddr]
     def __aiter__(self) -> WebSocket:
         ...
@@ -1972,6 +2098,14 @@ class Method(Enum):
     OPTIONS = auto()
     TRACE = auto()
     PATCH = auto()
+
+class SameSite(Enum):
+    r"""
+    The Cookie SameSite attribute.
+    """
+    Strict = auto()
+    Lax = auto()
+    None = auto()
 
 class TlsVersion(Enum):
     r"""
