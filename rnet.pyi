@@ -2027,6 +2027,7 @@ class Impersonate(Enum):
     Chrome131 = auto()
     Chrome132 = auto()
     Chrome133 = auto()
+    Chrome134 = auto()
     Edge101 = auto()
     Edge122 = auto()
     Edge127 = auto()
