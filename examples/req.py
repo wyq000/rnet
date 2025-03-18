@@ -20,7 +20,7 @@ async def main():
 
     for key, value in resp.headers.items():
         print(f"{key}: {value}")
-        
+
     for cookie in resp.cookies:
         print(cookie)
     # Close the response connection

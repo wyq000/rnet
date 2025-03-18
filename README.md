@@ -34,19 +34,20 @@ And then the code:
 
 ```python
 import asyncio
-from rnet import Impersonate, Client
+from rnet import Impersonate, ImpersonateOS, Client
 
 
 async def main():
     client = Client(
         impersonate=Impersonate.Firefox136,
-        user_agent="rnet",
+        impersonate_os=ImpersonateOS.Windows,
     )
     resp = await client.get("https://tls.browserleaks.com")
     print("Status Code: ", resp.status_code)
     print("Version: ", resp.version)
     print("Response URL: ", resp.url)
     print("Headers: ", resp.headers)
+    print("Cookies: ", resp.cookies)
     print("Encoding: ", resp.encoding)
     print("Content-Length: ", resp.content_length)
     print("Remote Address: ", resp.remote_addr)
