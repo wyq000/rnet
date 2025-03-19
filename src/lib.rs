@@ -3,16 +3,15 @@ mod blocking;
 mod buffer;
 mod dns;
 mod error;
-mod param;
 mod stream;
 mod typing;
 
 use async_impl::{Client, Message, Response, Streamer, WebSocket};
 use blocking::{BlockingClient, BlockingResponse, BlockingStreamer, BlockingWebSocket};
-use param::{RequestParams, WebSocketParams};
 use pyo3::{prelude::*, pybacked::PyBackedStr};
 use pyo3_async_runtimes::tokio::future_into_py;
 use pyo3_stub_gen::{define_stub_info_gatherer, derive::*};
+use typing::param::{RequestParams, WebSocketParams};
 use typing::{
     Cookie, HeaderMap, HeaderMapItemsIter, HeaderMapKeysIter, Impersonate, ImpersonateOS,
     LookupIpStrategy, Method, Multipart, Part, Proxy, SameSite, SocketAddr, StatusCode, TlsVersion,

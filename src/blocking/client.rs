@@ -1,7 +1,7 @@
-use super::{http::BlockingResponse, ws::BlockingWebSocket};
+use super::{BlockingResponse, BlockingWebSocket};
 use crate::{
     async_impl::{self, execute_request, execute_websocket_request},
-    param::{ClientParams, RequestParams, UpdateClientParams, WebSocketParams},
+    typing::param::{ClientParams, RequestParams, UpdateClientParams, WebSocketParams},
     typing::{Cookie, HeaderMap, Method},
 };
 use pyo3::{prelude::*, pybacked::PyBackedStr};

@@ -1,14 +1,12 @@
 mod client;
-mod http;
 mod request;
-mod ws;
+mod response;
 
 pub use self::{
     client::Client,
-    http::{Response, Streamer},
-    ws::{Message, WebSocket},
+    response::{Message, Response, Streamer, WebSocket},
 };
-use crate::param::{RequestParams, WebSocketParams};
+use crate::typing::param::{RequestParams, WebSocketParams};
 use crate::typing::{LookupIpStrategy, Method};
 use crate::{apply_option, dns};
 pub use request::{execute_request, execute_websocket_request};

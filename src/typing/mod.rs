@@ -5,6 +5,7 @@ mod headers;
 mod ipaddr;
 mod json;
 mod multipart;
+pub mod param;
 mod proxy;
 mod ssl;
 mod status;

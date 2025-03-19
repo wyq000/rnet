@@ -3,7 +3,7 @@ use crate::{
     Result,
     async_impl::{Response, WebSocket},
     error::wrap_rquest_error,
-    param::{RequestParams, WebSocketParams},
+    typing::param::{RequestParams, WebSocketParams},
     typing::{Method, Version},
 };
 

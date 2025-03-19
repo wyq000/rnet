@@ -1,9 +1,7 @@
 mod client;
-mod http;
-mod ws;
+mod response;
 
 pub use self::{
     client::BlockingClient,
-    http::{BlockingResponse, BlockingStreamer},
-    ws::BlockingWebSocket,
+    response::{BlockingResponse, BlockingStreamer, BlockingWebSocket},
 };

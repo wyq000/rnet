@@ -4,7 +4,7 @@ use crate::{
     buffer::{HeaderValueBuffer, PyBufferProtocol},
     dns,
     error::{wrap_rquest_error, wrap_url_parse_error},
-    param::{ClientParams, RequestParams, UpdateClientParams, WebSocketParams},
+    typing::param::{ClientParams, RequestParams, UpdateClientParams, WebSocketParams},
     typing::{Cookie, HeaderMap, ImpersonateOS, Method, SslVerify, TlsVersion},
 };
 use pyo3::{prelude::*, pybacked::PyBackedStr};
