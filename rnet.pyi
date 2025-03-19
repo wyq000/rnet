@@ -764,7 +764,7 @@ class BlockingWebSocket:
         """
         ...
 
-    def close(self, code:typing.Optional[builtins.int]=None, reason:typing.Optional[builtins.str]=None) -> None:
+    def close(self, code:typing.Optional[builtins.int]=None, reason:typing.Optional[str]=None) -> None:
         r"""
         Closes the WebSocket connection.
         
@@ -1560,7 +1560,7 @@ class Message:
         ...
 
     @staticmethod
-    def from_close(code:builtins.int, reason:typing.Optional[builtins.str]=None) -> Message:
+    def from_close(code:builtins.int, reason:typing.Optional[str]=None) -> Message:
         r"""
         Creates a new close message.
         
@@ -1983,7 +1983,7 @@ class WebSocket:
         """
         ...
 
-    def close(self, code:typing.Optional[builtins.int]=None, reason:typing.Optional[builtins.str]=None) -> typing.Any:
+    def close(self, code:typing.Optional[builtins.int]=None, reason:typing.Optional[str]=None) -> typing.Any:
         r"""
         Closes the WebSocket connection.
         
@@ -2058,6 +2058,7 @@ class Impersonate(Enum):
     SafariIPad18 = auto()
     Safari18_2 = auto()
     Safari18_3 = auto()
+    Safari18_3_1 = auto()
     SafariIos18_1_1 = auto()
     OkHttp3_9 = auto()
     OkHttp3_11 = auto()
