@@ -8,6 +8,7 @@ macro_rules! define_enum_with_conversion {
         #[pyclass(eq, eq_int)]
         #[derive(Clone, Copy, PartialEq, Eq, Hash)]
         #[allow(non_camel_case_types)]
+        #[allow(clippy::upper_case_acronyms)]
         pub enum $enum_type {
             $($variant),*
         }
@@ -36,6 +37,7 @@ macro_rules! define_enum_with_conversion {
         #[pyclass(eq, eq_int)]
         #[derive(Clone, Copy, PartialEq, Eq, Hash, Debug)]
         #[allow(non_camel_case_types)]
+        #[allow(clippy::upper_case_acronyms)]
         pub enum $enum_type {
             $($variant),*
         }

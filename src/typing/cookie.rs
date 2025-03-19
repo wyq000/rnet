@@ -44,6 +44,7 @@ impl Cookie {
         secure = false,
         same_site = None
     ))]
+    #[allow(clippy::too_many_arguments)]
     pub fn new(
         name: String,
         value: String,
@@ -149,7 +150,7 @@ impl Cookie {
     #[getter]
     #[inline(always)]
     pub fn max_age(&self) -> Option<std::time::Duration> {
-        self.0.max_age().and_then(|d| d.try_into().ok())
+        self.0.max_age()
     }
 
     /// The cookie expiration time.

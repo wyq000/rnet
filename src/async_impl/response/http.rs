@@ -381,7 +381,7 @@ impl Streamer {
         Streamer(Arc::new(Mutex::new(Some(Box::pin(stream)))))
     }
 
-    pub async fn _anext<'rt>(
+    pub async fn _anext(
         streamer: Arc<Mutex<Option<InnerStreamer>>>,
         py_stop_iteration_error: fn() -> PyErr,
     ) -> PyResult<Py<PyAny>> {
@@ -397,7 +397,7 @@ impl Streamer {
         let buffer = val
             .map_err(wrap_rquest_error)?
             .map(BytesBuffer::new)
-            .ok_or_else(&py_stop_iteration_error)?;
+            .ok_or_else(py_stop_iteration_error)?;
 
         Python::with_gil(|py| buffer.into_bytes(py))
     }
@@ -434,6 +434,9 @@ impl Streamer {
         _traceback: &Bound<'a, PyAny>,
     ) -> PyResult<Bound<'a, PyAny>> {
         let streamer = self.0.clone();
-        future_into_py(py, async move { Ok(drop(streamer.lock().await.take())) })
+        future_into_py(py, async move {
+            drop(streamer.lock().await.take());
+            Ok(())
+        })
     }
 }

@@ -39,9 +39,7 @@ from rnet import Impersonate, Client
 
 
 async def main():
-    client = Client(
-        impersonate=Impersonate.Firefox136
-    )
+    client = Client(impersonate=Impersonate.Firefox136)
     resp = await client.get("https://tls.browserleaks.com")
     print("Status Code: ", resp.status_code)
     print("Version: ", resp.version)

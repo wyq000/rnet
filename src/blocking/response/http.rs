@@ -298,7 +298,8 @@ impl BlockingStreamer {
             let streamer = self.0.clone();
             pyo3_async_runtimes::tokio::get_runtime().block_on(async move {
                 let mut lock = streamer.lock().await;
-                Ok(drop(lock.take()))
+                drop(lock.take());
+                Ok(())
             })
         })
     }

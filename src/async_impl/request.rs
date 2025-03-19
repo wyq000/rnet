@@ -120,9 +120,7 @@ where
     apply_option!(apply_if_some_ref, builder, params.json, json);
 
     // Body options.
-    if let Some(body) = params.body.take() {
-        builder = builder.body(rquest::Body::try_from(body)?);
-    }
+    apply_option!(apply_if_some, builder, params.body, body);
 
     // Multipart options.
     apply_option!(apply_if_some, builder, params.multipart, multipart);

@@ -50,9 +50,9 @@ macro_rules! define_http_method {
             $(#[$meta])*
             #[pyo3(signature = (url, **kwds))]
             #[inline(always)]
-            pub fn $name<'rt>(
+            pub fn $name(
                 &self,
-                py: Python<'rt>,
+                py: Python<'_>,
                 url: PyBackedStr,
                 kwds: Option<RequestParams>,
             ) -> PyResult<BlockingResponse> {

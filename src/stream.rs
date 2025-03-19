@@ -65,7 +65,7 @@ impl Stream for AsyncStream {
 }
 
 #[inline]
-fn downcast_bound_bytes<'p>(py: Python<'p>, ob: PyObject) -> PyResult<Bytes> {
+fn downcast_bound_bytes(py: Python<'_>, ob: PyObject) -> PyResult<Bytes> {
     let bind = ob.bind(py);
     bind.extract::<PyBackedBytes>()
         .map(move |b| b.as_ref().to_vec())

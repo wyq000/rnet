@@ -94,7 +94,7 @@ pub struct HeaderMapKeysIter {
 #[pymethods]
 impl HeaderMapKeysIter {
     #[inline]
-    fn __iter__<'py>(slf: PyRefMut<'py, Self>) -> PyRefMut<'py, Self> {
+    fn __iter__(slf: PyRefMut<'_, Self>) -> PyRefMut<'_, Self> {
         slf
     }
 
@@ -122,9 +122,9 @@ impl HeaderMapItemsIter {
     }
 
     #[inline]
-    fn __next__<'py>(
-        mut slf: PyRefMut<'py, Self>,
-    ) -> Option<(Bound<'py, PyAny>, Option<Bound<'py, PyAny>>)> {
+    fn __next__(
+        mut slf: PyRefMut<'_, Self>,
+    ) -> Option<(Bound<'_, PyAny>, Option<Bound<'_, PyAny>>)> {
         if let Some((k, v)) = slf.inner.pop() {
             let key = HeaderNameBuffer::new(k).into_bytes_ref(slf.py()).ok()?;
             let value = HeaderValueBuffer::new(v).into_bytes_ref(slf.py()).ok();
