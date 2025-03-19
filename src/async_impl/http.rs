@@ -305,11 +305,13 @@ impl Response {
 #[gen_stub_pymethods]
 #[pymethods]
 impl Response {
+    #[inline(always)]
     fn __aenter__<'a>(slf: PyRef<'a, Self>, py: Python<'a>) -> PyResult<Bound<'a, PyAny>> {
         let slf = slf.into_py_any(py)?;
         future_into_py(py, async move { Ok(slf) })
     }
 
+    #[inline(always)]
     fn __aexit__<'a>(
         &self,
         py: Python<'a>,
@@ -417,11 +419,13 @@ impl Streamer {
         )
     }
 
+    #[inline(always)]
     fn __aenter__<'a>(slf: PyRef<'a, Self>, py: Python<'a>) -> PyResult<Bound<'a, PyAny>> {
         let slf = slf.into_py_any(py)?;
         future_into_py(py, async move { Ok(slf) })
     }
 
+    #[inline(always)]
     fn __aexit__<'a>(
         &self,
         py: Python<'a>,

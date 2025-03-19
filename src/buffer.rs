@@ -56,8 +56,9 @@ macro_rules! impl_buffer {
         }
 
         impl PyBufferProtocol<'_> for $name {
+            #[inline(always)]
             fn as_slice(&self) -> &[u8] {
-                self.inner.as_ref() as &[u8]
+                self.inner.as_ref()
             }
         }
 

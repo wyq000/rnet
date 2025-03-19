@@ -33,14 +33,14 @@ pub struct WebSocket {
 }
 
 impl WebSocket {
-    pub async fn new(builder: rquest::WebSocketRequestBuilder) -> crate::Result<WebSocket> {
-        let response = builder.send().await.map_err(wrap_rquest_error)?;
+    pub async fn new(builder: rquest::WebSocketRequestBuilder) -> Result<WebSocket, rquest::Error> {
+        let response = builder.send().await?;
 
         let version = Version::from_ffi(response.version());
         let status_code = StatusCode::from(response.status());
         let remote_addr = response.remote_addr().map(SocketAddr::from);
         let headers = response.headers().clone();
-        let websocket = response.into_websocket().await.map_err(wrap_rquest_error)?;
+        let websocket = response.into_websocket().await?;
         let protocol = websocket.protocol().cloned();
         let (sender, receiver) = websocket.split();
 
@@ -302,11 +302,13 @@ impl WebSocket {
         )
     }
 
+    #[inline(always)]
     fn __aenter__<'a>(slf: PyRef<'a, Self>, py: Python<'a>) -> PyResult<Bound<'a, PyAny>> {
         let slf = slf.into_py_any(py)?;
         future_into_py(py, async move { Ok(slf) })
     }
 
+    #[inline(always)]
     fn __aexit__<'a>(
         &self,
         py: Python<'a>,

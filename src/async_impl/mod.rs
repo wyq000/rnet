@@ -88,13 +88,7 @@ pub async fn shortcut_request<U>(
 where
     U: AsRef<str>,
 {
-    execute_request(
-        DEFAULT_CLIENT.clone(),
-        method,
-        url.as_ref().to_string(),
-        params,
-    )
-    .await
+    execute_request(DEFAULT_CLIENT.clone(), method, url, params).await
 }
 
 /// Send a shortcut WebSocket request.
@@ -106,5 +100,5 @@ pub async fn shortcut_websocket_request<U>(
 where
     U: AsRef<str>,
 {
-    execute_websocket_request(DEFAULT_CLIENT.clone(), url.as_ref().to_string(), params).await
+    execute_websocket_request(DEFAULT_CLIENT.clone(), url, params).await
 }

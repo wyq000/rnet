@@ -179,6 +179,7 @@ impl BlockingWebSocket {
         slf
     }
 
+    #[inline(always)]
     fn __next__(&self, py: Python) -> PyResult<Message> {
         py.allow_threads(|| {
             pyo3_async_runtimes::tokio::get_runtime().block_on(async_impl::WebSocket::_anext(
@@ -193,6 +194,7 @@ impl BlockingWebSocket {
         slf
     }
 
+    #[inline(always)]
     fn __exit__<'a>(
         &self,
         py: Python<'a>,

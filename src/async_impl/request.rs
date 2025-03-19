@@ -252,5 +252,5 @@ where
     // Query options.
     apply_option!(apply_if_some_ref, builder, params.query, query);
 
-    WebSocket::new(builder).await
+    WebSocket::new(builder).await.map_err(wrap_rquest_error)
 }

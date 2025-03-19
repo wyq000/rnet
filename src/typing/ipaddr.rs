@@ -58,6 +58,7 @@ impl SocketAddr {
 #[gen_stub_pymethods]
 #[pymethods]
 impl SocketAddr {
+    #[inline(always)]
     fn __str__(&self) -> String {
         self.0.to_string()
     }

@@ -50,10 +50,12 @@ impl StatusCode {
 #[gen_stub_pymethods]
 #[pymethods]
 impl StatusCode {
+    #[inline(always)]
     fn __str__(&self) -> &str {
         self.0.as_str()
     }
 
+    #[inline(always)]
     fn __repr__(&self) -> String {
         format!("StatusCode({})", self.0)
     }

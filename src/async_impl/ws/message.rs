@@ -251,10 +251,12 @@ impl Message {
 #[gen_stub_pymethods]
 #[pymethods]
 impl Message {
+    #[inline(always)]
     fn __str__(&self) -> String {
         format!("{:?}", self.0)
     }
 
+    #[inline(always)]
     fn __repr__(&self) -> String {
         self.__str__()
     }
