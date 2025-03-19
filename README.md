@@ -18,10 +18,13 @@ A blazing-fast Python HTTP client with TLS fingerprint, capable of mimicking `TL
 - Header Order
 - Redirect Policy
 - Rotating Proxies
+- Connection Pooling
+- Streaming Transfers
 - WebSocket Upgrade
 - Async DNS Resolver
 - HTTPS via BoringSSL
 - Free-Threaded Safety
+- Automatic Decompression
 
 ## Example
 
@@ -135,6 +138,10 @@ In fact, most device models share the same `TLS`/`HTTP2` configuration, with the
 ## Documentation
 
 The python documentation is automatically supported by [pyo3-stub-gen](https://github.com/Jij-Inc/pyo3-stub-gen). It is not perfect. If you have any suggestions, you can submit a PR to improve it.
+
+## Contributing
+
+If you would like to submit your contribution, please open a [Pull Request](https://github.com/0x676e67/rnet/pulls).
 
 ## License
 
