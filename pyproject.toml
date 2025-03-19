@@ -29,9 +29,7 @@ description = "A blazing-fast Python HTTP client with TLS fingerprint"
 readme = "README.md"
 dynamic = ["version"]
 license = { text = "GPL-3.0" }
-authors = [
-    { name = "0x676e67", email = "gngppz@gmail.com" }
-]
+authors = [{ name = "0x676e67", email = "gngppz@gmail.com" }]
 keywords = ["http", "client", "websocket", "ja3", "ja4"]
 
 [tool.maturin]
@@ -43,7 +41,5 @@ Documentation = "https://github.com/0x676e67/rnet/blob/main/rnet.pyi"
 Homepage = "https://github.com/0x676e67/rnet"
 Repository = "https://github.com/0x676e67/rnet"
 
-[tool.poetry.dev-dependencies]
-pytest = "^8.3.4"
-pytest-asyncio = "^0.25.3"
-pytest-rerunfailures = "^15.0"
+[dependency-groups]
+dev = ["pytest>=8.3.4", "pytest-asyncio>=0.25.3", "pytest-rerunfailures>=15.0"]

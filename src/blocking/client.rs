@@ -9,7 +9,7 @@ use pyo3_stub_gen::derive::{gen_stub_pyclass, gen_stub_pymethods};
 
 /// A blocking client for making HTTP requests.
 #[gen_stub_pyclass]
-#[pyclass]
+#[pyclass(subclass)]
 pub struct BlockingClient(async_impl::Client);
 
 macro_rules! define_http_method {
