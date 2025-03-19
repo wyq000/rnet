@@ -16,8 +16,8 @@ impl From<FromPyBody> for rquest::Body {
     fn from(value: FromPyBody) -> rquest::Body {
         match value {
             FromPyBody::Text(bytes) | FromPyBody::Bytes(bytes) => rquest::Body::from(bytes),
-            FromPyBody::SyncStream(stream) => rquest::Body::from(stream),
-            FromPyBody::AsyncStream(stream) => rquest::Body::from(stream),
+            FromPyBody::SyncStream(stream) => rquest::Body::wrap_stream(stream),
+            FromPyBody::AsyncStream(stream) => rquest::Body::wrap_stream(stream),
         }
     }
 }

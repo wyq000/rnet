@@ -58,8 +58,12 @@ impl Part {
                 PartData::File(path) => pyo3_async_runtimes::tokio::get_runtime()
                     .block_on(rquest::multipart::Part::file(path))
                     .map_err(wrap_io_error)?,
-                PartData::SyncStream(stream) => rquest::multipart::Part::stream(stream),
-                PartData::AsyncStream(stream) => rquest::multipart::Part::stream(stream),
+                PartData::SyncStream(stream) => {
+                    rquest::multipart::Part::stream(rquest::Body::wrap_stream(stream))
+                }
+                PartData::AsyncStream(stream) => {
+                    rquest::multipart::Part::stream(rquest::Body::wrap_stream(stream))
+                }
             };
 
             // Set the filename and MIME type if provided

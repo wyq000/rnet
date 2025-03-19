@@ -71,31 +71,3 @@ fn downcast_bound_bytes(py: Python<'_>, ob: PyObject) -> PyResult<Bytes> {
         .map(Bytes::from_owner)
         .map_err(|_| pyo3::exceptions::PyTypeError::new_err("Stream must yield bytes-like objects"))
 }
-
-impl From<SyncStream> for rquest::Body {
-    #[inline]
-    fn from(iterator: SyncStream) -> Self {
-        rquest::Body::wrap_stream(iterator)
-    }
-}
-
-impl From<SyncStream> for rquest::multipart::Part {
-    #[inline]
-    fn from(iterator: SyncStream) -> Self {
-        rquest::multipart::Part::stream(iterator)
-    }
-}
-
-impl From<AsyncStream> for rquest::Body {
-    #[inline]
-    fn from(stream: AsyncStream) -> Self {
-        rquest::Body::wrap_stream(stream)
-    }
-}
-
-impl From<AsyncStream> for rquest::multipart::Part {
-    #[inline]
-    fn from(stream: AsyncStream) -> Self {
-        rquest::multipart::Part::stream(stream)
-    }
-}
