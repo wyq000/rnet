@@ -11,6 +11,7 @@ use pyo3_stub_gen::{
     PyStubType, TypeInfo,
     derive::{gen_stub_pyclass, gen_stub_pymethods},
 };
+use rquest::Body;
 use std::path::PathBuf;
 
 /// A part of a multipart form.
@@ -53,16 +54,16 @@ impl Part {
             // Create the inner part
             let mut inner = match value {
                 PartData::Text(bytes) | PartData::Bytes(bytes) => {
-                    rquest::multipart::Part::stream(rquest::Body::from(bytes))
+                    rquest::multipart::Part::stream(Body::from(bytes))
                 }
                 PartData::File(path) => pyo3_async_runtimes::tokio::get_runtime()
                     .block_on(rquest::multipart::Part::file(path))
-                    .map_err(Error::IoError)?,
+                    .map_err(Error::from)?,
                 PartData::SyncStream(stream) => {
-                    rquest::multipart::Part::stream(rquest::Body::wrap_stream(stream))
+                    rquest::multipart::Part::stream(Body::wrap_stream(stream))
                 }
                 PartData::AsyncStream(stream) => {
-                    rquest::multipart::Part::stream(rquest::Body::wrap_stream(stream))
+                    rquest::multipart::Part::stream(Body::wrap_stream(stream))
                 }
             };
 

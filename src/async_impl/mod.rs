@@ -9,6 +9,7 @@ pub use self::{
 use crate::typing::param::{RequestParams, WebSocketParams};
 use crate::typing::{LookupIpStrategy, Method};
 use crate::{apply_option, dns};
+use pyo3::PyResult;
 pub use request::{execute_request, execute_websocket_request};
 use std::sync::LazyLock;
 
@@ -82,7 +83,7 @@ pub async fn shortcut_request<U>(
     url: U,
     method: Method,
     params: Option<RequestParams>,
-) -> crate::Result<Response>
+) -> PyResult<Response>
 where
     U: AsRef<str>,
 {
@@ -94,7 +95,7 @@ where
 pub async fn shortcut_websocket_request<U>(
     url: U,
     params: Option<WebSocketParams>,
-) -> crate::Result<WebSocket>
+) -> PyResult<WebSocket>
 where
     U: AsRef<str>,
 {

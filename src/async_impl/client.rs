@@ -715,15 +715,12 @@ impl Client {
         url: PyBackedStr,
     ) -> PyResult<Option<Bound<'py, PyAny>>> {
         let cookies = py.allow_threads(|| {
-            let url = Url::parse(url.as_ref()).map_err(Error::UrlParseError)?;
+            let url = Url::parse(url.as_ref()).map_err(Error::from)?;
             let cookies = self.0.get_cookies(&url);
-            Ok::<_, PyErr>(cookies)
+            Ok::<_, PyErr>(cookies.map(HeaderValueBuffer::new))
         })?;
 
-        cookies
-            .map(HeaderValueBuffer::new)
-            .map(|buffer| buffer.into_bytes_ref(py))
-            .transpose()
+        cookies.map(|buffer| buffer.into_bytes_ref(py)).transpose()
     }
 
     /// Sets the cookies for the given URL.
@@ -743,7 +740,7 @@ impl Client {
     #[pyo3(signature = (url, cookie))]
     pub fn set_cookie(&self, py: Python, url: PyBackedStr, cookie: Cookie) -> PyResult<()> {
         py.allow_threads(|| {
-            let url = Url::parse(url.as_ref()).map_err(Error::UrlParseError)?;
+            let url = Url::parse(url.as_ref()).map_err(Error::from)?;
             self.0.set_cookie(&url, cookie.0);
             Ok(())
         })
@@ -765,7 +762,7 @@ impl Client {
     #[pyo3(signature = (url, name))]
     pub fn remove_cookie(&self, py: Python, url: PyBackedStr, name: PyBackedStr) -> PyResult<()> {
         py.allow_threads(|| {
-            let url = Url::parse(url.as_ref()).map_err(Error::UrlParseError)?;
+            let url = Url::parse(url.as_ref()).map_err(Error::from)?;
             self.0.remove_cookie(&url, &name);
             Ok(())
         })

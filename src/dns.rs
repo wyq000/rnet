@@ -1,4 +1,5 @@
 use crate::{error::DNSResolverError, typing::LookupIpStrategy};
+use pyo3::PyResult;
 use rquest::dns::HickoryDnsResolver;
 use std::sync::{Arc, OnceLock};
 
@@ -22,7 +23,7 @@ macro_rules! dns_resolver {
 /// # Errors
 ///
 /// This function returns an error if the DNS resolver fails to initialize.
-pub fn get_or_try_init<S>(strategy: S) -> crate::Result<Arc<HickoryDnsResolver>>
+pub fn get_or_try_init<S>(strategy: S) -> PyResult<Arc<HickoryDnsResolver>>
 where
     S: Into<Option<LookupIpStrategy>>,
 {
@@ -39,7 +40,7 @@ where
 fn init(
     dns_resolver: &'static OnceLock<Result<Arc<HickoryDnsResolver>, &'static str>>,
     strategy: LookupIpStrategy,
-) -> crate::Result<Arc<HickoryDnsResolver>> {
+) -> PyResult<Arc<HickoryDnsResolver>> {
     dns_resolver
         .get_or_init(move || {
             HickoryDnsResolver::new(strategy.into_ffi())

@@ -1,12 +1,12 @@
 use crate::apply_option;
 use crate::error::Error;
 use crate::{
-    Result,
     async_impl::{Response, WebSocket},
     typing::param::{RequestParams, WebSocketParams},
     typing::{Method, Version},
 };
 
+use pyo3::PyResult;
 use rquest::redirect::Policy;
 use rquest::{Client, header};
 use std::net::IpAddr;
@@ -18,7 +18,7 @@ pub async fn execute_request<U>(
     method: Method,
     url: U,
     mut params: Option<RequestParams>,
-) -> Result<Response>
+) -> PyResult<Response>
 where
     U: AsRef<str>,
 {
@@ -139,7 +139,7 @@ pub async fn execute_websocket_request<U>(
     client: Client,
     url: U,
     mut params: Option<WebSocketParams>,
-) -> Result<WebSocket>
+) -> PyResult<WebSocket>
 where
     U: AsRef<str>,
 {

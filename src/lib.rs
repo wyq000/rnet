@@ -22,8 +22,6 @@ use typing::{
 #[global_allocator]
 static ALLOC: jemallocator::Jemalloc = jemallocator::Jemalloc;
 
-type Result<T> = std::result::Result<T, PyErr>;
-
 macro_rules! define_http_method {
     ($(#[$meta:meta])* $name:ident, $method:expr) => {
         /// Shortcut method to quickly make a request.

@@ -149,11 +149,9 @@ impl FromPyObject<'_> for HeaderMapFromPyDict {
                 header::HeaderMap::with_capacity(dict.len()),
                 |mut headers, (key, value)| {
                     let key = key.extract::<PyBackedStr>()?;
-                    let name =
-                        HeaderName::from_bytes(key.as_bytes()).map_err(Error::InvalidHeaderName)?;
+                    let name = HeaderName::from_bytes(key.as_bytes()).map_err(Error::from)?;
                     let value = value.extract::<PyBackedStr>()?;
-                    let value = HeaderValue::from_bytes(value.as_bytes())
-                        .map_err(Error::InvalidHeaderValue)?;
+                    let value = HeaderValue::from_bytes(value.as_bytes()).map_err(Error::from)?;
                     headers.insert(name, value);
                     Ok(headers)
                 },
@@ -185,8 +183,7 @@ impl<'py> FromPyObject<'py> for HeadersOrderFromPyList {
         let list = ob.downcast::<PyList>()?;
         list.iter()
             .try_fold(Vec::with_capacity(list.len()), |mut order, item| {
-                let name = HeaderName::from_str(item.extract::<&str>()?)
-                    .map_err(Error::InvalidHeaderName)?;
+                let name = HeaderName::from_str(item.extract::<&str>()?).map_err(Error::from)?;
                 order.push(name);
                 Ok(order)
             })

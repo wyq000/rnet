@@ -3,6 +3,7 @@ use bytes::Bytes;
 use pyo3::prelude::*;
 use pyo3::pybacked::{PyBackedBytes, PyBackedStr};
 use pyo3::{FromPyObject, PyAny};
+use rquest::Body;
 
 /// The body to use for the request.
 pub enum FromPyBody {
@@ -12,12 +13,12 @@ pub enum FromPyBody {
     AsyncStream(AsyncStream),
 }
 
-impl From<FromPyBody> for rquest::Body {
-    fn from(value: FromPyBody) -> rquest::Body {
+impl From<FromPyBody> for Body {
+    fn from(value: FromPyBody) -> Body {
         match value {
-            FromPyBody::Text(bytes) | FromPyBody::Bytes(bytes) => rquest::Body::from(bytes),
-            FromPyBody::SyncStream(stream) => rquest::Body::wrap_stream(stream),
-            FromPyBody::AsyncStream(stream) => rquest::Body::wrap_stream(stream),
+            FromPyBody::Text(bytes) | FromPyBody::Bytes(bytes) => Body::from(bytes),
+            FromPyBody::SyncStream(stream) => Body::wrap_stream(stream),
+            FromPyBody::AsyncStream(stream) => Body::wrap_stream(stream),
         }
     }
 }

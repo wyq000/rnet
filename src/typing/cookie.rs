@@ -1,3 +1,4 @@
+use crate::error::Error;
 use bytes::Bytes;
 use pyo3::FromPyObject;
 use pyo3::pybacked::PyBackedStr;
@@ -8,13 +9,11 @@ use rquest::cookie::{self, Expiration};
 use rquest::header::{self, HeaderMap, HeaderValue};
 use std::time::SystemTime;
 
-use crate::error::Error;
-
 /// A cookie.
 #[gen_stub_pyclass]
 #[pyclass]
 #[derive(Clone)]
-pub struct Cookie(pub rquest::cookie::Cookie<'static>);
+pub struct Cookie(pub cookie::Cookie<'static>);
 
 impl Cookie {
     pub(crate) fn extract_cookies(headers: &HeaderMap) -> Vec<Self> {
@@ -57,7 +56,7 @@ impl Cookie {
         secure: bool,
         same_site: Option<crate::typing::SameSite>,
     ) -> Cookie {
-        let mut builder = rquest::cookie::Cookie::builder(name, value);
+        let mut builder = cookie::Cookie::builder(name, value);
         if let Some(domain) = domain {
             builder = builder.domain(domain);
         }
@@ -67,7 +66,7 @@ impl Cookie {
         }
 
         if let Some(max_age) = max_age {
-            if let Ok(max_age) = rquest::cookie::Duration::try_from(max_age) {
+            if let Ok(max_age) = cookie::Duration::try_from(max_age) {
                 builder = builder.max_age(max_age);
             }
         }
@@ -194,7 +193,7 @@ impl FromPyObject<'_> for CookieFromPyDict {
             .and_then(|cookies| {
                 HeaderValue::from_maybe_shared(Bytes::from(cookies))
                     .map(Self)
-                    .map_err(Error::InvalidHeaderValue)
+                    .map_err(Error::from)
                     .map_err(Into::into)
             })
     }
