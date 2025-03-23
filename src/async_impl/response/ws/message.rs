@@ -250,7 +250,8 @@ impl Message {
     #[inline(always)]
     pub fn from_close(code: u16, reason: Option<PyBackedStr>) -> Self {
         let reason = reason
-            .and_then(|r| Utf8Bytes::try_from(Bytes::from_owner(r)).ok())
+            .map(Bytes::from_owner)
+            .map(Utf8Bytes::from_bytes_unchecked)
             .unwrap_or_else(|| rquest::Utf8Bytes::from_static("Goodbye"));
         let msg = rquest::Message::close(rquest::CloseFrame {
             code: rquest::CloseCode(code),
