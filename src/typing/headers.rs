@@ -13,7 +13,6 @@ use pyo3_stub_gen::{
     derive::{gen_stub_pyclass, gen_stub_pymethods},
 };
 use rquest::header::{self, HeaderName, HeaderValue};
-use std::str::FromStr;
 
 /// A HTTP header map.
 #[cfg_attr(feature = "docs", gen_stub_pyclass)]
@@ -148,9 +147,9 @@ impl FromPyObject<'_> for HeaderMapFromPyDict {
         dict.iter()
             .try_fold(
                 header::HeaderMap::with_capacity(dict.len()),
-                |mut headers, (key, value)| {
-                    let key = key.extract::<PyBackedStr>()?;
-                    let name = HeaderName::from_bytes(key.as_bytes()).map_err(Error::from)?;
+                |mut headers, (name, value)| {
+                    let name = name.extract::<PyBackedStr>()?;
+                    let name = HeaderName::from_bytes(name.as_bytes()).map_err(Error::from)?;
                     let value = value.extract::<PyBackedStr>()?;
                     let value = HeaderValue::from_bytes(value.as_bytes()).map_err(Error::from)?;
                     headers.insert(name, value);
@@ -184,8 +183,9 @@ impl<'py> FromPyObject<'py> for HeadersOrderFromPyList {
     fn extract_bound(ob: &Bound<'py, PyAny>) -> PyResult<Self> {
         let list = ob.downcast::<PyList>()?;
         list.iter()
-            .try_fold(Vec::with_capacity(list.len()), |mut order, item| {
-                let name = HeaderName::from_str(item.extract::<&str>()?).map_err(Error::from)?;
+            .try_fold(Vec::with_capacity(list.len()), |mut order, name| {
+                let name = name.extract::<PyBackedStr>()?;
+                let name = HeaderName::from_bytes(name.as_bytes()).map_err(Error::from)?;
                 order.push(name);
                 Ok(order)
             })
