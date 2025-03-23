@@ -168,12 +168,12 @@ macro_rules! extract_option {
 
 fn extract_proxies(ob: &Bound<'_, PyAny>) -> PyResult<Option<Vec<rquest::Proxy>>> {
     if let Ok(proxies) = ob.get_item("proxies") {
-        let proxies = proxies.downcast_into_exact::<PyList>()?;
+        let proxies = proxies.downcast::<PyList>()?;
         let len = proxies.len();
         proxies
             .into_iter()
             .try_fold(Vec::with_capacity(len), |mut list, proxy| {
-                let proxy = proxy.downcast_into_exact::<Proxy>()?;
+                let proxy = proxy.downcast::<Proxy>()?;
                 if let Some(proxy) = proxy.borrow_mut().0.take() {
                     list.push(proxy);
                 }

@@ -76,7 +76,7 @@ impl<'py> FromPyObject<'py> for RequestParams {
     fn extract_bound(ob: &Bound<'py, PyAny>) -> PyResult<RequestParams> {
         let mut params = Self::default();
         if let Ok(ob) = ob.get_item("proxy") {
-            let proxy = ob.downcast_into_exact::<Proxy>()?;
+            let proxy = ob.downcast::<Proxy>()?;
             params.proxy = proxy.borrow_mut().0.take();
         }
         extract_option!(ob, params, local_address);
@@ -97,7 +97,7 @@ impl<'py> FromPyObject<'py> for RequestParams {
         extract_option!(ob, params, json);
         extract_option!(ob, params, body);
         if let Ok(value) = ob.get_item("multipart") {
-            let form = value.downcast_into_exact::<Multipart>()?;
+            let form = value.downcast::<Multipart>()?;
             params.multipart = form.borrow_mut().0.take();
         }
 

@@ -42,7 +42,7 @@ impl Stream for SyncStream {
                 .iter
                 .call_method0(py, "__next__")
                 .ok()
-                .map(|item| downcast_bound_bytes(py, item));
+                .map(|item| extract_bytes(py, item));
             py.allow_threads(|| std::task::Poll::Ready(next))
         })
     }
@@ -62,13 +62,13 @@ impl Stream for AsyncStream {
                     .as_mut()
                     .poll_next(&mut Context::from_waker(waker))
             })
-            .map(|item| item.map(|item| downcast_bound_bytes(py, item)))
+            .map(|item| item.map(|item| extract_bytes(py, item)))
         })
     }
 }
 
 #[inline]
-fn downcast_bound_bytes(py: Python<'_>, ob: PyObject) -> PyResult<Bytes> {
+fn extract_bytes(py: Python<'_>, ob: PyObject) -> PyResult<Bytes> {
     if let Ok(str_chunk) = ob.extract::<PyBackedBytes>(py) {
         return Ok(Bytes::from_owner(str_chunk));
     }
