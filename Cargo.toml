@@ -48,7 +48,7 @@ rquest = { version = "5.0.0", features = [
     "hickory-dns",
     "apple-network-device-binding",
 ] }
-rquest-util = { version = "2.0.0" }
+rquest-util = { version = "2.1.0" }
 
 [target.'cfg(not(target_env = "msvc"))'.dependencies]
 jemallocator = { package = "tikv-jemallocator", version = "0.6", features = [
