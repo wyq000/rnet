@@ -243,14 +243,6 @@ impl WebSocket {
     }
 
     /// Receives a message from the WebSocket.
-    ///
-    /// # Arguments
-    ///
-    /// * `py` - The Python runtime.
-    ///
-    /// # Returns
-    ///
-    /// A `PyResult` containing a `Bound` object with the received message, or `None` if no message is received.
     #[inline(always)]
     pub fn recv<'rt>(&self, py: Python<'rt>) -> PyResult<Bound<'rt, PyAny>> {
         future_into_py(py, Self::_recv(self.receiver.clone()))
@@ -260,12 +252,7 @@ impl WebSocket {
     ///
     /// # Arguments
     ///
-    /// * `py` - The Python runtime.
     /// * `message` - The message to send.
-    ///
-    /// # Returns
-    ///
-    /// A `PyResult` containing a `Bound` object.
     #[pyo3(signature = (message))]
     #[inline(always)]
     pub fn send<'rt>(&self, py: Python<'rt>, message: Message) -> PyResult<Bound<'rt, PyAny>> {
@@ -276,13 +263,8 @@ impl WebSocket {
     ///
     /// # Arguments
     ///
-    /// * `py` - The Python runtime.
     /// * `code` - An optional close code.
     /// * `reason` - An optional reason for closing.
-    ///
-    /// # Returns
-    ///
-    /// A `PyResult` containing a `Bound` object.
     #[pyo3(signature = (code=None, reason=None))]
     #[inline(always)]
     pub fn close<'rt>(

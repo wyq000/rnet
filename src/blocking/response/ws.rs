@@ -118,10 +118,6 @@ impl BlockingWebSocket {
     }
 
     /// Receives a message from the WebSocket.
-    ///
-    /// # Returns
-    ///
-    /// A `PyResult` containing a `Bound` object with the received message, or `None` if no message is received.
     #[inline(always)]
     pub fn recv(&self, py: Python) -> PyResult<Option<Message>> {
         py.allow_threads(|| {
@@ -135,10 +131,6 @@ impl BlockingWebSocket {
     /// # Arguments
     ///
     /// * `message` - The message to send.
-    ///
-    /// # Returns
-    ///
-    /// A `PyResult` containing a `Bound` object.
     #[pyo3(signature = (message))]
     #[inline(always)]
     pub fn send(&self, py: Python, message: Message) -> PyResult<()> {
@@ -154,10 +146,6 @@ impl BlockingWebSocket {
     ///
     /// * `code` - An optional close code.
     /// * `reason` - An optional reason for closing.
-    ///
-    /// # Returns
-    ///
-    /// A `PyResult` containing a `Bound` object.
     #[pyo3(signature = (code=None, reason=None))]
     #[inline(always)]
     pub fn close(

@@ -23,10 +23,6 @@ pub struct Message(pub rquest::Message);
 #[pymethods]
 impl Message {
     /// Returns the JSON representation of the message.
-    ///
-    /// # Returns
-    ///
-    /// A `PyResult` containing the JSON representation of the message.
     pub fn json(&self, py: Python) -> PyResult<Json> {
         py.allow_threads(|| {
             self.0
