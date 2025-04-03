@@ -1,6 +1,6 @@
 [package]
 name = "rnet"
-version = "2.2.0"
+version = "2.2.1"
 description = "A blazing-fast Python HTTP client with TLS fingerprint"
 edition = "2024"
 rust-version = "1.85.0"
@@ -24,7 +24,7 @@ docs = ["dep:pyo3-stub-gen"]
 
 [dependencies]
 tokio = { version = "1.44.1", features = ["sync"] }
-pyo3 = { version = "0.24.0", features = [
+pyo3 = { version = "0.24.1", features = [
     "indexmap",
     "multiple-pymethods",
     "generate-import-lib",
