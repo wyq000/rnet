@@ -17,7 +17,7 @@ define_into_pyobject_todo!(IpAddrExtractor);
 
 define_py_stub_gen!(
     IpAddrExtractor,
-    "typing.Union[str, ipaddress.IPv4Address, ipaddress.IPv6Address]",
+    "typing.Union[ipaddress.IPv4Address, ipaddress.IPv6Address]",
     "ipaddress"
 );
 

@@ -152,7 +152,7 @@ class BlockingClient:
         headers_order: typing.Optional[typing.List[str]] = None,
         proxies: typing.Optional[typing.List[Proxy]] = None,
         local_address: typing.Optional[
-            typing.Union[str, ipaddress.IPv4Address, ipaddress.IPv6Address]
+            typing.Union[ipaddress.IPv4Address, ipaddress.IPv6Address]
         ] = None,
         interface: typing.Optional[builtins.str] = None,
     ) -> None:
@@ -1118,7 +1118,7 @@ class Client:
         headers_order: typing.Optional[typing.List[str]] = None,
         proxies: typing.Optional[typing.List[Proxy]] = None,
         local_address: typing.Optional[
-            typing.Union[str, ipaddress.IPv4Address, ipaddress.IPv6Address]
+            typing.Union[ipaddress.IPv4Address, ipaddress.IPv6Address]
         ] = None,
         interface: typing.Optional[builtins.str] = None,
     ) -> None:
