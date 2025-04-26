@@ -8,7 +8,7 @@
 
 > 🚀 Help me work seamlessly with open source sharing by [sponsoring me on GitHub](https://github.com/0x676e67/0x676e67/blob/main/SPONSOR.md)
 
-A blazing-fast Python HTTP client with TLS fingerprint, capable of mimicking `TLS` and `HTTP2` fingerprints of popular browsers like `Chrome`, `Safari`, `Firefox`, and `OkHttp`.
+A blazing-fast Python HTTP client with advanced browser fingerprinting. Precisely emulates Chrome, Firefox, Safari, and OkHttp, accurately replicating TLS/HTTP2 signatures. Built on [rquest](https://github.com/0x676e67/rquest) for exceptional speed and a clean, intuitive API.
 
 ## Features
 
