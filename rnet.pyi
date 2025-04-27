@@ -4,6 +4,7 @@
 import builtins
 import datetime
 import ipaddress
+import pathlib
 import typing
 from enum import Enum, auto
 
@@ -20,7 +21,47 @@ class BlockingClient:
     r"""
     Returns the headers of the client.
     """
-    def __new__(cls, **kwds) -> BlockingClient:
+    def __new__(
+        cls,
+        impersonate: typing.Optional[typing.Union[Impersonate, ImpersonateOption]],
+        user_agent: typing.Optional[str],
+        default_headers: typing.Optional[typing.Dict[str, bytes]],
+        headers_order: typing.Optional[typing.List[str]],
+        referer: typing.Optional[builtins.bool],
+        allow_redirects: typing.Optional[builtins.bool],
+        max_redirects: typing.Optional[builtins.int],
+        cookie_store: typing.Optional[builtins.bool],
+        lookup_ip_strategy: typing.Optional[LookupIpStrategy],
+        timeout: typing.Optional[builtins.int],
+        connect_timeout: typing.Optional[builtins.int],
+        read_timeout: typing.Optional[builtins.int],
+        no_keepalive: typing.Optional[builtins.bool],
+        tcp_keepalive: typing.Optional[builtins.int],
+        pool_idle_timeout: typing.Optional[builtins.int],
+        pool_max_idle_per_host: typing.Optional[builtins.int],
+        pool_max_size: typing.Optional[builtins.int],
+        http1_only: typing.Optional[builtins.bool],
+        http2_only: typing.Optional[builtins.bool],
+        https_only: typing.Optional[builtins.bool],
+        tcp_nodelay: typing.Optional[builtins.bool],
+        http2_max_retry_count: typing.Optional[builtins.int],
+        verify: typing.Optional[typing.Union[bool, pathlib.Path]],
+        tls_info: typing.Optional[builtins.bool],
+        min_tls_version: typing.Optional[TlsVersion],
+        max_tls_version: typing.Optional[TlsVersion],
+        no_proxy: typing.Optional[builtins.bool],
+        proxies: typing.Optional[builtins.list[Proxy]],
+        local_address: typing.Optional[
+            typing.Optional[
+                typing.Union[str, ipaddress.IPv4Address, ipaddress.IPv6Address]
+            ]
+        ],
+        interface: typing.Optional[builtins.str],
+        gzip: typing.Optional[builtins.bool],
+        brotli: typing.Optional[builtins.bool],
+        deflate: typing.Optional[builtins.bool],
+        zstd: typing.Optional[builtins.bool],
+    ) -> BlockingClient:
         r"""
         Creates a new BlockingClient instance.
 
@@ -28,40 +69,7 @@ class BlockingClient:
 
         * `**kwds` - Optional request parameters as a dictionary.
 
-            impersonate: typing.Optional[typing.Union[Impersonate, ImpersonateOption]]
-            user_agent: typing.Optional[str]
-            default_headers: typing.Optional[typing.Dict[str, bytes]]
-            headers_order: typing.Optional[typing.List[str]]
-            referer: typing.Optional[builtins.bool]
-            allow_redirects: typing.Optional[builtins.bool]
-            max_redirects: typing.Optional[builtins.int]
-            cookie_store: typing.Optional[builtins.bool]
-            lookup_ip_strategy: typing.Optional[LookupIpStrategy]
-            timeout: typing.Optional[builtins.int]
-            connect_timeout: typing.Optional[builtins.int]
-            read_timeout: typing.Optional[builtins.int]
-            no_keepalive: typing.Optional[builtins.bool]
-            tcp_keepalive: typing.Optional[builtins.int]
-            pool_idle_timeout: typing.Optional[builtins.int]
-            pool_max_idle_per_host: typing.Optional[builtins.int]
-            pool_max_size: typing.Optional[builtins.int]
-            http1_only: typing.Optional[builtins.bool]
-            http2_only: typing.Optional[builtins.bool]
-            https_only: typing.Optional[builtins.bool]
-            tcp_nodelay: typing.Optional[builtins.bool]
-            http2_max_retry_count: typing.Optional[builtins.int]
-            verify: Optional[Union[bool, Path]]
-            tls_info: typing.Optional[builtins.bool]
-            min_tls_version: typing.Optional[TlsVersion]
-            max_tls_version: typing.Optional[TlsVersion]
-            no_proxy: typing.Optional[builtins.bool]
-            proxies: typing.Optional[builtins.list[Proxy]]
-            local_address: typing.Optional[typing.Optional[typing.Union[str, ipaddress.IPv4Address, ipaddress.IPv6Address]]]
-            interface: typing.Optional[builtins.str]
-            gzip: typing.Optional[builtins.bool]
-            brotli: typing.Optional[builtins.bool]
-            deflate: typing.Optional[builtins.bool]
-            zstd: typing.Optional[builtins.bool]
+
 
         # Examples
 
@@ -78,7 +86,7 @@ class BlockingClient:
         ```
         """
 
-    def get_cookies(self, url: str) -> typing.Optional[typing.Any]:
+    def get_cookies(self, url: str) -> typing.Optional[bytes]:
         r"""
         Returns the cookies for the given URL.
 
@@ -171,35 +179,29 @@ class BlockingClient:
         self,
         method: Method,
         url: str,
-        kwds: typing.Optional[typing.Dict[str, typing.Any]],
+        proxy: typing.Optional[typing.Union[Proxy, str]] = None,
+        local_address: typing.Optional[
+            typing.Union[ipaddress.IPv4Address, ipaddress.IPv6Address]
+        ] = None,
+        interface: typing.Optional[builtins.str] = None,
+        timeout: typing.Optional[builtins.int] = None,
+        read_timeout: typing.Optional[builtins.int] = None,
+        version: typing.Optional[Version] = None,
+        headers: typing.Optional[typing.Union[typing.Dict[str, str], HeaderMap]] = None,
+        cookies: typing.Optional[typing.Dict[str, str]] = None,
+        allow_redirects: typing.Optional[builtins.bool] = None,
+        max_redirects: typing.Optional[builtins.int] = None,
+        auth: typing.Optional[str] = None,
+        bearer_auth: typing.Optional[str] = None,
+        basic_auth: typing.Optional[tuple[str, typing.Optional[str]]] = None,
+        query: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+        form: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+        json: typing.Optional[typing.Dict[str, typing.Any]] = None,
+        body: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+        multipart: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
     ) -> BlockingResponse:
         r"""
         Sends a request with the given method and URL.
-
-        # Arguments
-
-        * `method` - The method to use for the request.
-        * `url` - The URL to send the request to.
-        * `**kwds` - Additional request parameters.
-
-            proxy: typing.Optional[Proxy]
-            local_address: typing.Optional[typing.Optional[typing.Union[str, ipaddress.IPv4Address, ipaddress.IPv6Address]]]
-            interface: typing.Optional[builtins.str]
-            timeout: typing.Optional[builtins.int]
-            read_timeout: typing.Optional[builtins.int]
-            version: typing.Optional[Version]
-            headers: typing.Optional[typing.Dict[str, bytes]]
-            cookies: typing.Optional[typing.Dict[str, str]]
-            allow_redirects: typing.Optional[builtins.bool]
-            max_redirects: typing.Optional[builtins.int]
-            auth: typing.Optional[str]
-            bearer_auth: typing.Optional[str]
-            basic_auth: typing.Optional[tuple[str, typing.Optional[str]]]
-            query: typing.Optional[typing.List[typing.Tuple[str, str]]]
-            form: typing.Optional[typing.List[typing.Tuple[str, str]]]
-            json: typing.Optional[typing.Any]
-            body: typing.Optional[typing.Any]
-            multipart: typing.Optional[Multipart]
 
         # Examples
 
@@ -217,32 +219,33 @@ class BlockingClient:
         ```
         """
 
-    def websocket(self, url: str, **kwds) -> BlockingWebSocket:
+    def websocket(
+        self,
+        url: str,
+        proxy: typing.Optional[Proxy],
+        local_address: typing.Optional[
+            typing.Optional[
+                typing.Union[str, ipaddress.IPv4Address, ipaddress.IPv6Address]
+            ]
+        ],
+        interface: typing.Optional[builtins.str],
+        headers: typing.Optional[typing.Dict[str, bytes]],
+        cookies: typing.Optional[typing.Dict[str, str]],
+        protocols: typing.Optional[builtins.list[builtins.str]],
+        use_http2: typing.Optional[builtins.bool],
+        auth: typing.Optional[builtins.str],
+        bearer_auth: typing.Optional[builtins.str],
+        basic_auth: typing.Optional[tuple[builtins.str, typing.Optional[builtins.str]]],
+        query: typing.Optional[builtins.list[tuple[builtins.str, builtins.str]]],
+        read_buffer_size: typing.Optional[builtins.int],
+        write_buffer_size: typing.Optional[builtins.int],
+        max_write_buffer_size: typing.Optional[builtins.int],
+        max_message_size: typing.Optional[builtins.int],
+        max_frame_size: typing.Optional[builtins.int],
+        accept_unmasked_frames: typing.Optional[builtins.bool],
+    ) -> BlockingWebSocket:
         r"""
         Sends a WebSocket request.
-
-        # Arguments
-
-        * `url` - The URL to send the WebSocket request to.
-        * `**kwds` - Additional WebSocket request parameters.
-
-            proxy: typing.Optional[Proxy]
-            local_address: typing.Optional[typing.Optional[typing.Union[str, ipaddress.IPv4Address, ipaddress.IPv6Address]]]
-            interface: typing.Optional[builtins.str]
-            headers: typing.Optional[typing.Dict[str, bytes]]
-            cookies: typing.Optional[typing.Dict[str, str]]
-            protocols: typing.Optional[builtins.list[builtins.str]]
-            use_http2: typing.Optional[builtins.bool]
-            auth: typing.Optional[builtins.str]
-            bearer_auth: typing.Optional[builtins.str]
-            basic_auth: typing.Optional[tuple[builtins.str, typing.Optional[builtins.str]]]
-            query: typing.Optional[builtins.list[tuple[builtins.str, builtins.str]]]
-            read_buffer_size: typing.Optional[builtins.int]
-            write_buffer_size: typing.Optional[builtins.int]
-            max_write_buffer_size: typing.Optional[builtins.int]
-            max_message_size: typing.Optional[builtins.int]
-            max_frame_size: typing.Optional[builtins.int]
-            accept_unmasked_frames: typing.Optional[builtins.bool]
 
         # Examples
 
@@ -262,33 +265,33 @@ class BlockingClient:
         ```
         """
 
-    def trace(self, url: str, **kwds) -> BlockingResponse:
+    def trace(
+        self,
+        url: str,
+        proxy: typing.Optional[typing.Union[Proxy, str]] = None,
+        local_address: typing.Optional[
+            typing.Union[ipaddress.IPv4Address, ipaddress.IPv6Address]
+        ] = None,
+        interface: typing.Optional[builtins.str] = None,
+        timeout: typing.Optional[builtins.int] = None,
+        read_timeout: typing.Optional[builtins.int] = None,
+        version: typing.Optional[Version] = None,
+        headers: typing.Optional[typing.Union[typing.Dict[str, str], HeaderMap]] = None,
+        cookies: typing.Optional[typing.Dict[str, str]] = None,
+        allow_redirects: typing.Optional[builtins.bool] = None,
+        max_redirects: typing.Optional[builtins.int] = None,
+        auth: typing.Optional[str] = None,
+        bearer_auth: typing.Optional[str] = None,
+        basic_auth: typing.Optional[tuple[str, typing.Optional[str]]] = None,
+        query: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+        form: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+        json: typing.Optional[typing.Dict[str, typing.Any]] = None,
+        body: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+        multipart: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+    ) -> BlockingResponse:
         r"""
         Sends a request with the given URL.
 
-        # Arguments
-
-        * `url` - The URL to send the request to.
-        * `**kwds` - Additional request parameters.
-
-            proxy: typing.Optional[Proxy]
-            local_address: typing.Optional[typing.Optional[typing.Union[str, ipaddress.IPv4Address, ipaddress.IPv6Address]]]
-            interface: typing.Optional[builtins.str]
-            timeout: typing.Optional[builtins.int]
-            read_timeout: typing.Optional[builtins.int]
-            version: typing.Optional[Version]
-            headers: typing.Optional[typing.Dict[str, bytes]]
-            cookies: typing.Optional[typing.Dict[str, str]]
-            allow_redirects: typing.Optional[builtins.bool]
-            max_redirects: typing.Optional[builtins.int]
-            auth: typing.Optional[str]
-            bearer_auth: typing.Optional[str]
-            basic_auth: typing.Optional[tuple[str, typing.Optional[str]]]
-            query: typing.Optional[typing.List[typing.Tuple[str, str]]]
-            form: typing.Optional[typing.List[typing.Tuple[str, str]]]
-            json: typing.Optional[typing.Any]
-            body: typing.Optional[typing.Any]
-            multipart: typing.Optional[Multipart]
         # Examples
 
         ```python
@@ -305,33 +308,33 @@ class BlockingClient:
         ```
         """
 
-    def options(self, url: str, **kwds) -> BlockingResponse:
+    def options(
+        self,
+        url: str,
+        proxy: typing.Optional[typing.Union[Proxy, str]] = None,
+        local_address: typing.Optional[
+            typing.Union[ipaddress.IPv4Address, ipaddress.IPv6Address]
+        ] = None,
+        interface: typing.Optional[builtins.str] = None,
+        timeout: typing.Optional[builtins.int] = None,
+        read_timeout: typing.Optional[builtins.int] = None,
+        version: typing.Optional[Version] = None,
+        headers: typing.Optional[typing.Union[typing.Dict[str, str], HeaderMap]] = None,
+        cookies: typing.Optional[typing.Dict[str, str]] = None,
+        allow_redirects: typing.Optional[builtins.bool] = None,
+        max_redirects: typing.Optional[builtins.int] = None,
+        auth: typing.Optional[str] = None,
+        bearer_auth: typing.Optional[str] = None,
+        basic_auth: typing.Optional[tuple[str, typing.Optional[str]]] = None,
+        query: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+        form: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+        json: typing.Optional[typing.Dict[str, typing.Any]] = None,
+        body: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+        multipart: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+    ) -> BlockingResponse:
         r"""
         Sends a request with the given URL.
 
-        # Arguments
-
-        * `url` - The URL to send the request to.
-        * `**kwds` - Additional request parameters.
-
-            proxy: typing.Optional[Proxy]
-            local_address: typing.Optional[typing.Optional[typing.Union[str, ipaddress.IPv4Address, ipaddress.IPv6Address]]]
-            interface: typing.Optional[builtins.str]
-            timeout: typing.Optional[builtins.int]
-            read_timeout: typing.Optional[builtins.int]
-            version: typing.Optional[Version]
-            headers: typing.Optional[typing.Dict[str, bytes]]
-            cookies: typing.Optional[typing.Dict[str, str]]
-            allow_redirects: typing.Optional[builtins.bool]
-            max_redirects: typing.Optional[builtins.int]
-            auth: typing.Optional[str]
-            bearer_auth: typing.Optional[str]
-            basic_auth: typing.Optional[tuple[str, typing.Optional[str]]]
-            query: typing.Optional[typing.List[typing.Tuple[str, str]]]
-            form: typing.Optional[typing.List[typing.Tuple[str, str]]]
-            json: typing.Optional[typing.Any]
-            body: typing.Optional[typing.Any]
-            multipart: typing.Optional[Multipart]
         # Examples
 
         ```python
@@ -348,33 +351,33 @@ class BlockingClient:
         ```
         """
 
-    def head(self, url: str, **kwds) -> BlockingResponse:
+    def head(
+        self,
+        url: str,
+        proxy: typing.Optional[typing.Union[Proxy, str]] = None,
+        local_address: typing.Optional[
+            typing.Union[ipaddress.IPv4Address, ipaddress.IPv6Address]
+        ] = None,
+        interface: typing.Optional[builtins.str] = None,
+        timeout: typing.Optional[builtins.int] = None,
+        read_timeout: typing.Optional[builtins.int] = None,
+        version: typing.Optional[Version] = None,
+        headers: typing.Optional[typing.Union[typing.Dict[str, str], HeaderMap]] = None,
+        cookies: typing.Optional[typing.Dict[str, str]] = None,
+        allow_redirects: typing.Optional[builtins.bool] = None,
+        max_redirects: typing.Optional[builtins.int] = None,
+        auth: typing.Optional[str] = None,
+        bearer_auth: typing.Optional[str] = None,
+        basic_auth: typing.Optional[tuple[str, typing.Optional[str]]] = None,
+        query: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+        form: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+        json: typing.Optional[typing.Dict[str, typing.Any]] = None,
+        body: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+        multipart: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+    ) -> BlockingResponse:
         r"""
         Sends a request with the given URL.
 
-        # Arguments
-
-        * `url` - The URL to send the request to.
-        * `**kwds` - Additional request parameters.
-
-            proxy: typing.Optional[Proxy]
-            local_address: typing.Optional[typing.Optional[typing.Union[str, ipaddress.IPv4Address, ipaddress.IPv6Address]]]
-            interface: typing.Optional[builtins.str]
-            timeout: typing.Optional[builtins.int]
-            read_timeout: typing.Optional[builtins.int]
-            version: typing.Optional[Version]
-            headers: typing.Optional[typing.Dict[str, bytes]]
-            cookies: typing.Optional[typing.Dict[str, str]]
-            allow_redirects: typing.Optional[builtins.bool]
-            max_redirects: typing.Optional[builtins.int]
-            auth: typing.Optional[str]
-            bearer_auth: typing.Optional[str]
-            basic_auth: typing.Optional[tuple[str, typing.Optional[str]]]
-            query: typing.Optional[typing.List[typing.Tuple[str, str]]]
-            form: typing.Optional[typing.List[typing.Tuple[str, str]]]
-            json: typing.Optional[typing.Any]
-            body: typing.Optional[typing.Any]
-            multipart: typing.Optional[Multipart]
         # Examples
 
         ```python
@@ -391,33 +394,33 @@ class BlockingClient:
         ```
         """
 
-    def delete(self, url: str, **kwds) -> BlockingResponse:
+    def delete(
+        self,
+        url: str,
+        proxy: typing.Optional[typing.Union[Proxy, str]] = None,
+        local_address: typing.Optional[
+            typing.Union[ipaddress.IPv4Address, ipaddress.IPv6Address]
+        ] = None,
+        interface: typing.Optional[builtins.str] = None,
+        timeout: typing.Optional[builtins.int] = None,
+        read_timeout: typing.Optional[builtins.int] = None,
+        version: typing.Optional[Version] = None,
+        headers: typing.Optional[typing.Union[typing.Dict[str, str], HeaderMap]] = None,
+        cookies: typing.Optional[typing.Dict[str, str]] = None,
+        allow_redirects: typing.Optional[builtins.bool] = None,
+        max_redirects: typing.Optional[builtins.int] = None,
+        auth: typing.Optional[str] = None,
+        bearer_auth: typing.Optional[str] = None,
+        basic_auth: typing.Optional[tuple[str, typing.Optional[str]]] = None,
+        query: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+        form: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+        json: typing.Optional[typing.Dict[str, typing.Any]] = None,
+        body: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+        multipart: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+    ) -> BlockingResponse:
         r"""
         Sends a request with the given URL.
 
-        # Arguments
-
-        * `url` - The URL to send the request to.
-        * `**kwds` - Additional request parameters.
-
-            proxy: typing.Optional[Proxy]
-            local_address: typing.Optional[typing.Optional[typing.Union[str, ipaddress.IPv4Address, ipaddress.IPv6Address]]]
-            interface: typing.Optional[builtins.str]
-            timeout: typing.Optional[builtins.int]
-            read_timeout: typing.Optional[builtins.int]
-            version: typing.Optional[Version]
-            headers: typing.Optional[typing.Dict[str, bytes]]
-            cookies: typing.Optional[typing.Dict[str, str]]
-            allow_redirects: typing.Optional[builtins.bool]
-            max_redirects: typing.Optional[builtins.int]
-            auth: typing.Optional[str]
-            bearer_auth: typing.Optional[str]
-            basic_auth: typing.Optional[tuple[str, typing.Optional[str]]]
-            query: typing.Optional[typing.List[typing.Tuple[str, str]]]
-            form: typing.Optional[typing.List[typing.Tuple[str, str]]]
-            json: typing.Optional[typing.Any]
-            body: typing.Optional[typing.Any]
-            multipart: typing.Optional[Multipart]
         # Examples
 
         ```python
@@ -434,33 +437,33 @@ class BlockingClient:
         ```
         """
 
-    def patch(self, url: str, **kwds) -> BlockingResponse:
+    def patch(
+        self,
+        url: str,
+        proxy: typing.Optional[typing.Union[Proxy, str]] = None,
+        local_address: typing.Optional[
+            typing.Union[ipaddress.IPv4Address, ipaddress.IPv6Address]
+        ] = None,
+        interface: typing.Optional[builtins.str] = None,
+        timeout: typing.Optional[builtins.int] = None,
+        read_timeout: typing.Optional[builtins.int] = None,
+        version: typing.Optional[Version] = None,
+        headers: typing.Optional[typing.Union[typing.Dict[str, str], HeaderMap]] = None,
+        cookies: typing.Optional[typing.Dict[str, str]] = None,
+        allow_redirects: typing.Optional[builtins.bool] = None,
+        max_redirects: typing.Optional[builtins.int] = None,
+        auth: typing.Optional[str] = None,
+        bearer_auth: typing.Optional[str] = None,
+        basic_auth: typing.Optional[tuple[str, typing.Optional[str]]] = None,
+        query: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+        form: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+        json: typing.Optional[typing.Dict[str, typing.Any]] = None,
+        body: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+        multipart: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+    ) -> BlockingResponse:
         r"""
         Sends a request with the given URL.
 
-        # Arguments
-
-        * `url` - The URL to send the request to.
-        * `**kwds` - Additional request parameters.
-
-            proxy: typing.Optional[Proxy]
-            local_address: typing.Optional[typing.Optional[typing.Union[str, ipaddress.IPv4Address, ipaddress.IPv6Address]]]
-            interface: typing.Optional[builtins.str]
-            timeout: typing.Optional[builtins.int]
-            read_timeout: typing.Optional[builtins.int]
-            version: typing.Optional[Version]
-            headers: typing.Optional[typing.Dict[str, bytes]]
-            cookies: typing.Optional[typing.Dict[str, str]]
-            allow_redirects: typing.Optional[builtins.bool]
-            max_redirects: typing.Optional[builtins.int]
-            auth: typing.Optional[str]
-            bearer_auth: typing.Optional[str]
-            basic_auth: typing.Optional[tuple[str, typing.Optional[str]]]
-            query: typing.Optional[typing.List[typing.Tuple[str, str]]]
-            form: typing.Optional[typing.List[typing.Tuple[str, str]]]
-            json: typing.Optional[typing.Any]
-            body: typing.Optional[typing.Any]
-            multipart: typing.Optional[Multipart]
         # Examples
 
         ```python
@@ -477,33 +480,33 @@ class BlockingClient:
         ```
         """
 
-    def put(self, url: str, **kwds) -> BlockingResponse:
+    def put(
+        self,
+        url: str,
+        proxy: typing.Optional[typing.Union[Proxy, str]] = None,
+        local_address: typing.Optional[
+            typing.Union[ipaddress.IPv4Address, ipaddress.IPv6Address]
+        ] = None,
+        interface: typing.Optional[builtins.str] = None,
+        timeout: typing.Optional[builtins.int] = None,
+        read_timeout: typing.Optional[builtins.int] = None,
+        version: typing.Optional[Version] = None,
+        headers: typing.Optional[typing.Union[typing.Dict[str, str], HeaderMap]] = None,
+        cookies: typing.Optional[typing.Dict[str, str]] = None,
+        allow_redirects: typing.Optional[builtins.bool] = None,
+        max_redirects: typing.Optional[builtins.int] = None,
+        auth: typing.Optional[str] = None,
+        bearer_auth: typing.Optional[str] = None,
+        basic_auth: typing.Optional[tuple[str, typing.Optional[str]]] = None,
+        query: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+        form: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+        json: typing.Optional[typing.Dict[str, typing.Any]] = None,
+        body: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+        multipart: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+    ) -> BlockingResponse:
         r"""
         Sends a request with the given URL.
 
-        # Arguments
-
-        * `url` - The URL to send the request to.
-        * `**kwds` - Additional request parameters.
-
-            proxy: typing.Optional[Proxy]
-            local_address: typing.Optional[typing.Optional[typing.Union[str, ipaddress.IPv4Address, ipaddress.IPv6Address]]]
-            interface: typing.Optional[builtins.str]
-            timeout: typing.Optional[builtins.int]
-            read_timeout: typing.Optional[builtins.int]
-            version: typing.Optional[Version]
-            headers: typing.Optional[typing.Dict[str, bytes]]
-            cookies: typing.Optional[typing.Dict[str, str]]
-            allow_redirects: typing.Optional[builtins.bool]
-            max_redirects: typing.Optional[builtins.int]
-            auth: typing.Optional[str]
-            bearer_auth: typing.Optional[str]
-            basic_auth: typing.Optional[tuple[str, typing.Optional[str]]]
-            query: typing.Optional[typing.List[typing.Tuple[str, str]]]
-            form: typing.Optional[typing.List[typing.Tuple[str, str]]]
-            json: typing.Optional[typing.Any]
-            body: typing.Optional[typing.Any]
-            multipart: typing.Optional[Multipart]
         # Examples
 
         ```python
@@ -520,33 +523,33 @@ class BlockingClient:
         ```
         """
 
-    def post(self, url: str, **kwds) -> BlockingResponse:
+    def post(
+        self,
+        url: str,
+        proxy: typing.Optional[typing.Union[Proxy, str]] = None,
+        local_address: typing.Optional[
+            typing.Union[ipaddress.IPv4Address, ipaddress.IPv6Address]
+        ] = None,
+        interface: typing.Optional[builtins.str] = None,
+        timeout: typing.Optional[builtins.int] = None,
+        read_timeout: typing.Optional[builtins.int] = None,
+        version: typing.Optional[Version] = None,
+        headers: typing.Optional[typing.Union[typing.Dict[str, str], HeaderMap]] = None,
+        cookies: typing.Optional[typing.Dict[str, str]] = None,
+        allow_redirects: typing.Optional[builtins.bool] = None,
+        max_redirects: typing.Optional[builtins.int] = None,
+        auth: typing.Optional[str] = None,
+        bearer_auth: typing.Optional[str] = None,
+        basic_auth: typing.Optional[tuple[str, typing.Optional[str]]] = None,
+        query: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+        form: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+        json: typing.Optional[typing.Dict[str, typing.Any]] = None,
+        body: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+        multipart: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+    ) -> BlockingResponse:
         r"""
         Sends a request with the given URL.
 
-        # Arguments
-
-        * `url` - The URL to send the request to.
-        * `**kwds` - Additional request parameters.
-
-            proxy: typing.Optional[Proxy]
-            local_address: typing.Optional[typing.Optional[typing.Union[str, ipaddress.IPv4Address, ipaddress.IPv6Address]]]
-            interface: typing.Optional[builtins.str]
-            timeout: typing.Optional[builtins.int]
-            read_timeout: typing.Optional[builtins.int]
-            version: typing.Optional[Version]
-            headers: typing.Optional[typing.Dict[str, bytes]]
-            cookies: typing.Optional[typing.Dict[str, str]]
-            allow_redirects: typing.Optional[builtins.bool]
-            max_redirects: typing.Optional[builtins.int]
-            auth: typing.Optional[str]
-            bearer_auth: typing.Optional[str]
-            basic_auth: typing.Optional[tuple[str, typing.Optional[str]]]
-            query: typing.Optional[typing.List[typing.Tuple[str, str]]]
-            form: typing.Optional[typing.List[typing.Tuple[str, str]]]
-            json: typing.Optional[typing.Any]
-            body: typing.Optional[typing.Any]
-            multipart: typing.Optional[Multipart]
         # Examples
 
         ```python
@@ -563,33 +566,33 @@ class BlockingClient:
         ```
         """
 
-    def get(self, url: str, **kwds) -> BlockingResponse:
+    def get(
+        self,
+        url: str,
+        proxy: typing.Optional[typing.Union[Proxy, str]] = None,
+        local_address: typing.Optional[
+            typing.Union[ipaddress.IPv4Address, ipaddress.IPv6Address]
+        ] = None,
+        interface: typing.Optional[builtins.str] = None,
+        timeout: typing.Optional[builtins.int] = None,
+        read_timeout: typing.Optional[builtins.int] = None,
+        version: typing.Optional[Version] = None,
+        headers: typing.Optional[typing.Union[typing.Dict[str, str], HeaderMap]] = None,
+        cookies: typing.Optional[typing.Dict[str, str]] = None,
+        allow_redirects: typing.Optional[builtins.bool] = None,
+        max_redirects: typing.Optional[builtins.int] = None,
+        auth: typing.Optional[str] = None,
+        bearer_auth: typing.Optional[str] = None,
+        basic_auth: typing.Optional[tuple[str, typing.Optional[str]]] = None,
+        query: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+        form: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+        json: typing.Optional[typing.Dict[str, typing.Any]] = None,
+        body: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+        multipart: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+    ) -> BlockingResponse:
         r"""
         Sends a request with the given URL.
 
-        # Arguments
-
-        * `url` - The URL to send the request to.
-        * `**kwds` - Additional request parameters.
-
-            proxy: typing.Optional[Proxy]
-            local_address: typing.Optional[typing.Optional[typing.Union[str, ipaddress.IPv4Address, ipaddress.IPv6Address]]]
-            interface: typing.Optional[builtins.str]
-            timeout: typing.Optional[builtins.int]
-            read_timeout: typing.Optional[builtins.int]
-            version: typing.Optional[Version]
-            headers: typing.Optional[typing.Dict[str, bytes]]
-            cookies: typing.Optional[typing.Dict[str, str]]
-            allow_redirects: typing.Optional[builtins.bool]
-            max_redirects: typing.Optional[builtins.int]
-            auth: typing.Optional[str]
-            bearer_auth: typing.Optional[str]
-            basic_auth: typing.Optional[tuple[str, typing.Optional[str]]]
-            query: typing.Optional[typing.List[typing.Tuple[str, str]]]
-            form: typing.Optional[typing.List[typing.Tuple[str, str]]]
-            json: typing.Optional[typing.Any]
-            body: typing.Optional[typing.Any]
-            multipart: typing.Optional[Multipart]
         # Examples
 
         ```python
@@ -655,7 +658,7 @@ class BlockingResponse:
     def __exit__(
         self, _exc_type: typing.Any, _exc_value: typing.Any, _traceback: typing.Any
     ) -> None: ...
-    def peer_certificate(self) -> typing.Optional[typing.Any]:
+    def peer_certificate(self) -> typing.Optional[bytes]:
         r"""
         Returns the TLS peer certificate of the response.
         """
@@ -679,7 +682,7 @@ class BlockingResponse:
         Returns the JSON content of the response.
         """
 
-    def bytes(self) -> typing.Any:
+    def bytes(self) -> bytes:
         r"""
         Returns the bytes content of the response.
         """
@@ -743,17 +746,16 @@ class BlockingWebSocket:
     r"""
     Returns the remote address of the response.
     """
+    protocol: typing.Optional[builtins.str]
+    r"""
+    Returns the WebSocket protocol.
+    """
     def __iter__(self) -> BlockingWebSocket: ...
     def __next__(self) -> Message: ...
     def __enter__(self) -> BlockingWebSocket: ...
     def __exit__(
         self, _exc_type: typing.Any, _exc_value: typing.Any, _traceback: typing.Any
     ) -> None: ...
-    def protocol(self) -> typing.Optional[builtins.str]:
-        r"""
-        Returns the WebSocket protocol.
-        """
-
     def recv(self) -> typing.Optional[Message]:
         r"""
         Receives a message from the WebSocket.
@@ -815,49 +817,49 @@ class Client:
     print(headers)
     ```
     """
-    def __new__(cls, **kwds) -> Client:
+    def __new__(
+        cls,
+        impersonate: typing.Optional[typing.Union[Impersonate, ImpersonateOption]],
+        user_agent: typing.Optional[str],
+        default_headers: typing.Optional[typing.Dict[str, bytes]],
+        headers_order: typing.Optional[typing.List[str]],
+        referer: typing.Optional[builtins.bool],
+        allow_redirects: typing.Optional[builtins.bool],
+        max_redirects: typing.Optional[builtins.int],
+        cookie_store: typing.Optional[builtins.bool],
+        lookup_ip_strategy: typing.Optional[LookupIpStrategy],
+        timeout: typing.Optional[builtins.int],
+        connect_timeout: typing.Optional[builtins.int],
+        read_timeout: typing.Optional[builtins.int],
+        no_keepalive: typing.Optional[builtins.bool],
+        tcp_keepalive: typing.Optional[builtins.int],
+        pool_idle_timeout: typing.Optional[builtins.int],
+        pool_max_idle_per_host: typing.Optional[builtins.int],
+        pool_max_size: typing.Optional[builtins.int],
+        http1_only: typing.Optional[builtins.bool],
+        http2_only: typing.Optional[builtins.bool],
+        https_only: typing.Optional[builtins.bool],
+        tcp_nodelay: typing.Optional[builtins.bool],
+        http2_max_retry_count: typing.Optional[builtins.int],
+        verify: typing.Optional[typing.Union[bool, pathlib.Path]],
+        tls_info: typing.Optional[builtins.bool],
+        min_tls_version: typing.Optional[TlsVersion],
+        max_tls_version: typing.Optional[TlsVersion],
+        no_proxy: typing.Optional[builtins.bool],
+        proxies: typing.Optional[builtins.list[Proxy]],
+        local_address: typing.Optional[
+            typing.Optional[
+                typing.Union[str, ipaddress.IPv4Address, ipaddress.IPv6Address]
+            ]
+        ],
+        interface: typing.Optional[builtins.str],
+        gzip: typing.Optional[builtins.bool],
+        brotli: typing.Optional[builtins.bool],
+        deflate: typing.Optional[builtins.bool],
+        zstd: typing.Optional[builtins.bool],
+    ) -> Client:
         r"""
         Creates a new Client instance.
-
-        # Arguments
-
-        * `**kwds` - Optional request parameters as a dictionary.
-
-            impersonate: typing.Optional[typing.Union[Impersonate, ImpersonateOption]]
-            base_url: typing.Optional[str]
-            user_agent: typing.Optional[str]
-            default_headers: typing.Optional[typing.Dict[str, bytes]]
-            headers_order: typing.Optional[typing.List[str]]
-            referer: typing.Optional[builtins.bool]
-            allow_redirects: typing.Optional[builtins.bool]
-            max_redirects: typing.Optional[builtins.int]
-            cookie_store: typing.Optional[builtins.bool]
-            lookup_ip_strategy: typing.Optional[LookupIpStrategy]
-            timeout: typing.Optional[builtins.int]
-            connect_timeout: typing.Optional[builtins.int]
-            read_timeout: typing.Optional[builtins.int]
-            no_keepalive: typing.Optional[builtins.bool]
-            tcp_keepalive: typing.Optional[builtins.int]
-            pool_idle_timeout: typing.Optional[builtins.int]
-            pool_max_idle_per_host: typing.Optional[builtins.int]
-            pool_max_size: typing.Optional[builtins.int]
-            http1_only: typing.Optional[builtins.bool]
-            http2_only: typing.Optional[builtins.bool]
-            https_only: typing.Optional[builtins.bool]
-            tcp_nodelay: typing.Optional[builtins.bool]
-            http2_max_retry_count: typing.Optional[builtins.int]
-            verify: Optional[Union[bool, Path]]
-            tls_info: typing.Optional[builtins.bool]
-            min_tls_version: typing.Optional[TlsVersion]
-            max_tls_version: typing.Optional[TlsVersion]
-            no_proxy: typing.Optional[builtins.bool]
-            proxies: typing.Optional[builtins.list[Proxy]]
-            local_address: typing.Optional[typing.Optional[typing.Union[str, ipaddress.IPv4Address, ipaddress.IPv6Address]]]
-            interface: typing.Optional[builtins.str]
-            gzip: typing.Optional[builtins.bool]
-            brotli: typing.Optional[builtins.bool]
-            deflate: typing.Optional[builtins.bool]
-            zstd: typing.Optional[builtins.bool]
 
         # Examples
 
@@ -874,7 +876,7 @@ class Client:
         ```
         """
 
-    def get_cookies(self, url: str) -> typing.Optional[typing.Any]:
+    def get_cookies(self, url: str) -> typing.Optional[bytes]:
         r"""
         Returns the cookies for the given URL.
 
@@ -976,34 +978,33 @@ class Client:
         ```
         """
 
-    def request(self, method: Method, url: str, **kwds) -> typing.Any:
+    async def request(
+        self,
+        method: Method,
+        url: str,
+        proxy: typing.Optional[typing.Union[Proxy, str]] = None,
+        local_address: typing.Optional[
+            typing.Union[ipaddress.IPv4Address, ipaddress.IPv6Address]
+        ] = None,
+        interface: typing.Optional[builtins.str] = None,
+        timeout: typing.Optional[builtins.int] = None,
+        read_timeout: typing.Optional[builtins.int] = None,
+        version: typing.Optional[Version] = None,
+        headers: typing.Optional[typing.Union[typing.Dict[str, str], HeaderMap]] = None,
+        cookies: typing.Optional[typing.Dict[str, str]] = None,
+        allow_redirects: typing.Optional[builtins.bool] = None,
+        max_redirects: typing.Optional[builtins.int] = None,
+        auth: typing.Optional[str] = None,
+        bearer_auth: typing.Optional[str] = None,
+        basic_auth: typing.Optional[tuple[str, typing.Optional[str]]] = None,
+        query: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+        form: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+        json: typing.Optional[typing.Dict[str, typing.Any]] = None,
+        body: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+        multipart: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+    ) -> Response:
         r"""
         Sends a request with the given method and URL.
-
-        # Arguments
-
-        * `method` - The method to use for the request.
-        * `url` - The URL to send the request to.
-        * `**kwds` - Additional request parameters.
-
-            proxy: typing.Optional[Proxy]
-            local_address: typing.Optional[typing.Optional[typing.Union[str, ipaddress.IPv4Address, ipaddress.IPv6Address]]]
-            interface: typing.Optional[builtins.str]
-            timeout: typing.Optional[builtins.int]
-            read_timeout: typing.Optional[builtins.int]
-            version: typing.Optional[Version]
-            headers: typing.Optional[typing.Dict[str, bytes]]
-            cookies: typing.Optional[typing.Dict[str, str]]
-            allow_redirects: typing.Optional[builtins.bool]
-            max_redirects: typing.Optional[builtins.int]
-            auth: typing.Optional[str]
-            bearer_auth: typing.Optional[str]
-            basic_auth: typing.Optional[tuple[str, typing.Optional[str]]]
-            query: typing.Optional[typing.List[typing.Tuple[str, str]]]
-            form: typing.Optional[typing.List[typing.Tuple[str, str]]]
-            json: typing.Optional[typing.Any]
-            body: typing.Optional[typing.Any]
-            multipart: typing.Optional[Multipart]
 
         # Examples
 
@@ -1021,32 +1022,33 @@ class Client:
         ```
         """
 
-    def websocket(self, url: str, **kwds) -> typing.Any:
+    async def websocket(
+        self,
+        url: str,
+        proxy: typing.Optional[Proxy],
+        local_address: typing.Optional[
+            typing.Optional[
+                typing.Union[str, ipaddress.IPv4Address, ipaddress.IPv6Address]
+            ]
+        ],
+        interface: typing.Optional[builtins.str],
+        headers: typing.Optional[typing.Dict[str, bytes]],
+        cookies: typing.Optional[typing.Dict[str, str]],
+        protocols: typing.Optional[builtins.list[builtins.str]],
+        use_http2: typing.Optional[builtins.bool],
+        auth: typing.Optional[builtins.str],
+        bearer_auth: typing.Optional[builtins.str],
+        basic_auth: typing.Optional[tuple[builtins.str, typing.Optional[builtins.str]]],
+        query: typing.Optional[builtins.list[tuple[builtins.str, builtins.str]]],
+        read_buffer_size: typing.Optional[builtins.int],
+        write_buffer_size: typing.Optional[builtins.int],
+        max_write_buffer_size: typing.Optional[builtins.int],
+        max_message_size: typing.Optional[builtins.int],
+        max_frame_size: typing.Optional[builtins.int],
+        accept_unmasked_frames: typing.Optional[builtins.bool],
+    ) -> WebSocket:
         r"""
         Sends a WebSocket request.
-
-        # Arguments
-
-        * `url` - The URL to send the WebSocket request to.
-        * `**kwds` - Additional WebSocket request parameters.
-
-            proxy: typing.Optional[Proxy]
-            local_address: typing.Optional[typing.Optional[typing.Union[str, ipaddress.IPv4Address, ipaddress.IPv6Address]]]
-            interface: typing.Optional[builtins.str]
-            headers: typing.Optional[typing.Dict[str, bytes]]
-            cookies: typing.Optional[typing.Dict[str, str]]
-            protocols: typing.Optional[builtins.list[builtins.str]]
-            use_http2: typing.Optional[builtins.bool]
-            auth: typing.Optional[builtins.str]
-            bearer_auth: typing.Optional[builtins.str]
-            basic_auth: typing.Optional[tuple[builtins.str, typing.Optional[builtins.str]]]
-            query: typing.Optional[builtins.list[tuple[builtins.str, builtins.str]]]
-            read_buffer_size: typing.Optional[builtins.int]
-            write_buffer_size: typing.Optional[builtins.int]
-            max_write_buffer_size: typing.Optional[builtins.int]
-            max_message_size: typing.Optional[builtins.int]
-            max_frame_size: typing.Optional[builtins.int]
-            accept_unmasked_frames: typing.Optional[builtins.bool]
 
         # Examples
 
@@ -1066,33 +1068,33 @@ class Client:
         ```
         """
 
-    def trace(self, url: str, **kwds) -> typing.Any:
+    async def trace(
+        self,
+        url: str,
+        proxy: typing.Optional[typing.Union[Proxy, str]] = None,
+        local_address: typing.Optional[
+            typing.Union[ipaddress.IPv4Address, ipaddress.IPv6Address]
+        ] = None,
+        interface: typing.Optional[builtins.str] = None,
+        timeout: typing.Optional[builtins.int] = None,
+        read_timeout: typing.Optional[builtins.int] = None,
+        version: typing.Optional[Version] = None,
+        headers: typing.Optional[typing.Union[typing.Dict[str, str], HeaderMap]] = None,
+        cookies: typing.Optional[typing.Dict[str, str]] = None,
+        allow_redirects: typing.Optional[builtins.bool] = None,
+        max_redirects: typing.Optional[builtins.int] = None,
+        auth: typing.Optional[str] = None,
+        bearer_auth: typing.Optional[str] = None,
+        basic_auth: typing.Optional[tuple[str, typing.Optional[str]]] = None,
+        query: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+        form: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+        json: typing.Optional[typing.Dict[str, typing.Any]] = None,
+        body: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+        multipart: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+    ) -> Response:
         r"""
         Sends a request with the given URL
 
-        # Arguments
-
-        * `url` - The URL to send the request to.
-        * `**kwds` - Additional request parameters.
-
-            proxy: typing.Optional[Proxy]
-            local_address: typing.Optional[typing.Optional[typing.Union[str, ipaddress.IPv4Address, ipaddress.IPv6Address]]]
-            interface: typing.Optional[builtins.str]
-            timeout: typing.Optional[builtins.int]
-            read_timeout: typing.Optional[builtins.int]
-            version: typing.Optional[Version]
-            headers: typing.Optional[typing.Dict[str, bytes]]
-            cookies: typing.Optional[typing.Dict[str, str]]
-            allow_redirects: typing.Optional[builtins.bool]
-            max_redirects: typing.Optional[builtins.int]
-            auth: typing.Optional[str]
-            bearer_auth: typing.Optional[str]
-            basic_auth: typing.Optional[tuple[str, typing.Optional[str]]]
-            query: typing.Optional[typing.List[typing.Tuple[str, str]]]
-            form: typing.Optional[typing.List[typing.Tuple[str, str]]]
-            json: typing.Optional[typing.Any]
-            body: typing.Optional[typing.Any]
-            multipart: typing.Optional[Multipart]
         # Examples
 
         ```python
@@ -1109,33 +1111,33 @@ class Client:
         ```
         """
 
-    def options(self, url: str, **kwds) -> typing.Any:
+    async def options(
+        self,
+        url: str,
+        proxy: typing.Optional[typing.Union[Proxy, str]] = None,
+        local_address: typing.Optional[
+            typing.Union[ipaddress.IPv4Address, ipaddress.IPv6Address]
+        ] = None,
+        interface: typing.Optional[builtins.str] = None,
+        timeout: typing.Optional[builtins.int] = None,
+        read_timeout: typing.Optional[builtins.int] = None,
+        version: typing.Optional[Version] = None,
+        headers: typing.Optional[typing.Union[typing.Dict[str, str], HeaderMap]] = None,
+        cookies: typing.Optional[typing.Dict[str, str]] = None,
+        allow_redirects: typing.Optional[builtins.bool] = None,
+        max_redirects: typing.Optional[builtins.int] = None,
+        auth: typing.Optional[str] = None,
+        bearer_auth: typing.Optional[str] = None,
+        basic_auth: typing.Optional[tuple[str, typing.Optional[str]]] = None,
+        query: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+        form: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+        json: typing.Optional[typing.Dict[str, typing.Any]] = None,
+        body: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+        multipart: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+    ) -> Response:
         r"""
         Sends a request with the given URL
 
-        # Arguments
-
-        * `url` - The URL to send the request to.
-        * `**kwds` - Additional request parameters.
-
-            proxy: typing.Optional[Proxy]
-            local_address: typing.Optional[typing.Optional[typing.Union[str, ipaddress.IPv4Address, ipaddress.IPv6Address]]]
-            interface: typing.Optional[builtins.str]
-            timeout: typing.Optional[builtins.int]
-            read_timeout: typing.Optional[builtins.int]
-            version: typing.Optional[Version]
-            headers: typing.Optional[typing.Dict[str, bytes]]
-            cookies: typing.Optional[typing.Dict[str, str]]
-            allow_redirects: typing.Optional[builtins.bool]
-            max_redirects: typing.Optional[builtins.int]
-            auth: typing.Optional[str]
-            bearer_auth: typing.Optional[str]
-            basic_auth: typing.Optional[tuple[str, typing.Optional[str]]]
-            query: typing.Optional[typing.List[typing.Tuple[str, str]]]
-            form: typing.Optional[typing.List[typing.Tuple[str, str]]]
-            json: typing.Optional[typing.Any]
-            body: typing.Optional[typing.Any]
-            multipart: typing.Optional[Multipart]
         # Examples
 
         ```python
@@ -1152,33 +1154,33 @@ class Client:
         ```
         """
 
-    def patch(self, url: str, **kwds) -> typing.Any:
+    async def patch(
+        self,
+        url: str,
+        proxy: typing.Optional[typing.Union[Proxy, str]] = None,
+        local_address: typing.Optional[
+            typing.Union[ipaddress.IPv4Address, ipaddress.IPv6Address]
+        ] = None,
+        interface: typing.Optional[builtins.str] = None,
+        timeout: typing.Optional[builtins.int] = None,
+        read_timeout: typing.Optional[builtins.int] = None,
+        version: typing.Optional[Version] = None,
+        headers: typing.Optional[typing.Union[typing.Dict[str, str], HeaderMap]] = None,
+        cookies: typing.Optional[typing.Dict[str, str]] = None,
+        allow_redirects: typing.Optional[builtins.bool] = None,
+        max_redirects: typing.Optional[builtins.int] = None,
+        auth: typing.Optional[str] = None,
+        bearer_auth: typing.Optional[str] = None,
+        basic_auth: typing.Optional[tuple[str, typing.Optional[str]]] = None,
+        query: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+        form: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+        json: typing.Optional[typing.Dict[str, typing.Any]] = None,
+        body: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+        multipart: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+    ) -> Response:
         r"""
         Sends a request with the given URL
 
-        # Arguments
-
-        * `url` - The URL to send the request to.
-        * `**kwds` - Additional request parameters.
-
-            proxy: typing.Optional[Proxy]
-            local_address: typing.Optional[typing.Optional[typing.Union[str, ipaddress.IPv4Address, ipaddress.IPv6Address]]]
-            interface: typing.Optional[builtins.str]
-            timeout: typing.Optional[builtins.int]
-            read_timeout: typing.Optional[builtins.int]
-            version: typing.Optional[Version]
-            headers: typing.Optional[typing.Dict[str, bytes]]
-            cookies: typing.Optional[typing.Dict[str, str]]
-            allow_redirects: typing.Optional[builtins.bool]
-            max_redirects: typing.Optional[builtins.int]
-            auth: typing.Optional[str]
-            bearer_auth: typing.Optional[str]
-            basic_auth: typing.Optional[tuple[str, typing.Optional[str]]]
-            query: typing.Optional[typing.List[typing.Tuple[str, str]]]
-            form: typing.Optional[typing.List[typing.Tuple[str, str]]]
-            json: typing.Optional[typing.Any]
-            body: typing.Optional[typing.Any]
-            multipart: typing.Optional[Multipart]
         # Examples
 
         ```python
@@ -1195,33 +1197,33 @@ class Client:
         ```
         """
 
-    def delete(self, url: str, **kwds) -> typing.Any:
+    async def delete(
+        self,
+        url: str,
+        proxy: typing.Optional[typing.Union[Proxy, str]] = None,
+        local_address: typing.Optional[
+            typing.Union[ipaddress.IPv4Address, ipaddress.IPv6Address]
+        ] = None,
+        interface: typing.Optional[builtins.str] = None,
+        timeout: typing.Optional[builtins.int] = None,
+        read_timeout: typing.Optional[builtins.int] = None,
+        version: typing.Optional[Version] = None,
+        headers: typing.Optional[typing.Union[typing.Dict[str, str], HeaderMap]] = None,
+        cookies: typing.Optional[typing.Dict[str, str]] = None,
+        allow_redirects: typing.Optional[builtins.bool] = None,
+        max_redirects: typing.Optional[builtins.int] = None,
+        auth: typing.Optional[str] = None,
+        bearer_auth: typing.Optional[str] = None,
+        basic_auth: typing.Optional[tuple[str, typing.Optional[str]]] = None,
+        query: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+        form: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+        json: typing.Optional[typing.Dict[str, typing.Any]] = None,
+        body: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+        multipart: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+    ) -> Response:
         r"""
         Sends a request with the given URL
 
-        # Arguments
-
-        * `url` - The URL to send the request to.
-        * `**kwds` - Additional request parameters.
-
-            proxy: typing.Optional[Proxy]
-            local_address: typing.Optional[typing.Optional[typing.Union[str, ipaddress.IPv4Address, ipaddress.IPv6Address]]]
-            interface: typing.Optional[builtins.str]
-            timeout: typing.Optional[builtins.int]
-            read_timeout: typing.Optional[builtins.int]
-            version: typing.Optional[Version]
-            headers: typing.Optional[typing.Dict[str, bytes]]
-            cookies: typing.Optional[typing.Dict[str, str]]
-            allow_redirects: typing.Optional[builtins.bool]
-            max_redirects: typing.Optional[builtins.int]
-            auth: typing.Optional[str]
-            bearer_auth: typing.Optional[str]
-            basic_auth: typing.Optional[tuple[str, typing.Optional[str]]]
-            query: typing.Optional[typing.List[typing.Tuple[str, str]]]
-            form: typing.Optional[typing.List[typing.Tuple[str, str]]]
-            json: typing.Optional[typing.Any]
-            body: typing.Optional[typing.Any]
-            multipart: typing.Optional[Multipart]
         # Examples
 
         ```python
@@ -1238,33 +1240,33 @@ class Client:
         ```
         """
 
-    def put(self, url: str, **kwds) -> typing.Any:
+    async def put(
+        self,
+        url: str,
+        proxy: typing.Optional[typing.Union[Proxy, str]] = None,
+        local_address: typing.Optional[
+            typing.Union[ipaddress.IPv4Address, ipaddress.IPv6Address]
+        ] = None,
+        interface: typing.Optional[builtins.str] = None,
+        timeout: typing.Optional[builtins.int] = None,
+        read_timeout: typing.Optional[builtins.int] = None,
+        version: typing.Optional[Version] = None,
+        headers: typing.Optional[typing.Union[typing.Dict[str, str], HeaderMap]] = None,
+        cookies: typing.Optional[typing.Dict[str, str]] = None,
+        allow_redirects: typing.Optional[builtins.bool] = None,
+        max_redirects: typing.Optional[builtins.int] = None,
+        auth: typing.Optional[str] = None,
+        bearer_auth: typing.Optional[str] = None,
+        basic_auth: typing.Optional[tuple[str, typing.Optional[str]]] = None,
+        query: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+        form: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+        json: typing.Optional[typing.Dict[str, typing.Any]] = None,
+        body: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+        multipart: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+    ) -> Response:
         r"""
         Sends a request with the given URL
 
-        # Arguments
-
-        * `url` - The URL to send the request to.
-        * `**kwds` - Additional request parameters.
-
-            proxy: typing.Optional[Proxy]
-            local_address: typing.Optional[typing.Optional[typing.Union[str, ipaddress.IPv4Address, ipaddress.IPv6Address]]]
-            interface: typing.Optional[builtins.str]
-            timeout: typing.Optional[builtins.int]
-            read_timeout: typing.Optional[builtins.int]
-            version: typing.Optional[Version]
-            headers: typing.Optional[typing.Dict[str, bytes]]
-            cookies: typing.Optional[typing.Dict[str, str]]
-            allow_redirects: typing.Optional[builtins.bool]
-            max_redirects: typing.Optional[builtins.int]
-            auth: typing.Optional[str]
-            bearer_auth: typing.Optional[str]
-            basic_auth: typing.Optional[tuple[str, typing.Optional[str]]]
-            query: typing.Optional[typing.List[typing.Tuple[str, str]]]
-            form: typing.Optional[typing.List[typing.Tuple[str, str]]]
-            json: typing.Optional[typing.Any]
-            body: typing.Optional[typing.Any]
-            multipart: typing.Optional[Multipart]
         # Examples
 
         ```python
@@ -1281,33 +1283,33 @@ class Client:
         ```
         """
 
-    def post(self, url: str, **kwds) -> typing.Any:
+    async def post(
+        self,
+        url: str,
+        proxy: typing.Optional[typing.Union[Proxy, str]] = None,
+        local_address: typing.Optional[
+            typing.Union[ipaddress.IPv4Address, ipaddress.IPv6Address]
+        ] = None,
+        interface: typing.Optional[builtins.str] = None,
+        timeout: typing.Optional[builtins.int] = None,
+        read_timeout: typing.Optional[builtins.int] = None,
+        version: typing.Optional[Version] = None,
+        headers: typing.Optional[typing.Union[typing.Dict[str, str], HeaderMap]] = None,
+        cookies: typing.Optional[typing.Dict[str, str]] = None,
+        allow_redirects: typing.Optional[builtins.bool] = None,
+        max_redirects: typing.Optional[builtins.int] = None,
+        auth: typing.Optional[str] = None,
+        bearer_auth: typing.Optional[str] = None,
+        basic_auth: typing.Optional[tuple[str, typing.Optional[str]]] = None,
+        query: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+        form: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+        json: typing.Optional[typing.Dict[str, typing.Any]] = None,
+        body: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+        multipart: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+    ) -> Response:
         r"""
         Sends a request with the given URL
 
-        # Arguments
-
-        * `url` - The URL to send the request to.
-        * `**kwds` - Additional request parameters.
-
-            proxy: typing.Optional[Proxy]
-            local_address: typing.Optional[typing.Optional[typing.Union[str, ipaddress.IPv4Address, ipaddress.IPv6Address]]]
-            interface: typing.Optional[builtins.str]
-            timeout: typing.Optional[builtins.int]
-            read_timeout: typing.Optional[builtins.int]
-            version: typing.Optional[Version]
-            headers: typing.Optional[typing.Dict[str, bytes]]
-            cookies: typing.Optional[typing.Dict[str, str]]
-            allow_redirects: typing.Optional[builtins.bool]
-            max_redirects: typing.Optional[builtins.int]
-            auth: typing.Optional[str]
-            bearer_auth: typing.Optional[str]
-            basic_auth: typing.Optional[tuple[str, typing.Optional[str]]]
-            query: typing.Optional[typing.List[typing.Tuple[str, str]]]
-            form: typing.Optional[typing.List[typing.Tuple[str, str]]]
-            json: typing.Optional[typing.Any]
-            body: typing.Optional[typing.Any]
-            multipart: typing.Optional[Multipart]
         # Examples
 
         ```python
@@ -1324,33 +1326,33 @@ class Client:
         ```
         """
 
-    def head(self, url: str, **kwds) -> typing.Any:
+    async def head(
+        self,
+        url: str,
+        proxy: typing.Optional[typing.Union[Proxy, str]] = None,
+        local_address: typing.Optional[
+            typing.Union[ipaddress.IPv4Address, ipaddress.IPv6Address]
+        ] = None,
+        interface: typing.Optional[builtins.str] = None,
+        timeout: typing.Optional[builtins.int] = None,
+        read_timeout: typing.Optional[builtins.int] = None,
+        version: typing.Optional[Version] = None,
+        headers: typing.Optional[typing.Union[typing.Dict[str, str], HeaderMap]] = None,
+        cookies: typing.Optional[typing.Dict[str, str]] = None,
+        allow_redirects: typing.Optional[builtins.bool] = None,
+        max_redirects: typing.Optional[builtins.int] = None,
+        auth: typing.Optional[str] = None,
+        bearer_auth: typing.Optional[str] = None,
+        basic_auth: typing.Optional[tuple[str, typing.Optional[str]]] = None,
+        query: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+        form: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+        json: typing.Optional[typing.Dict[str, typing.Any]] = None,
+        body: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+        multipart: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+    ) -> Response:
         r"""
         Sends a request with the given URL
 
-        # Arguments
-
-        * `url` - The URL to send the request to.
-        * `**kwds` - Additional request parameters.
-
-            proxy: typing.Optional[Proxy]
-            local_address: typing.Optional[typing.Optional[typing.Union[str, ipaddress.IPv4Address, ipaddress.IPv6Address]]]
-            interface: typing.Optional[builtins.str]
-            timeout: typing.Optional[builtins.int]
-            read_timeout: typing.Optional[builtins.int]
-            version: typing.Optional[Version]
-            headers: typing.Optional[typing.Dict[str, bytes]]
-            cookies: typing.Optional[typing.Dict[str, str]]
-            allow_redirects: typing.Optional[builtins.bool]
-            max_redirects: typing.Optional[builtins.int]
-            auth: typing.Optional[str]
-            bearer_auth: typing.Optional[str]
-            basic_auth: typing.Optional[tuple[str, typing.Optional[str]]]
-            query: typing.Optional[typing.List[typing.Tuple[str, str]]]
-            form: typing.Optional[typing.List[typing.Tuple[str, str]]]
-            json: typing.Optional[typing.Any]
-            body: typing.Optional[typing.Any]
-            multipart: typing.Optional[Multipart]
         # Examples
 
         ```python
@@ -1367,33 +1369,33 @@ class Client:
         ```
         """
 
-    def get(self, url: str, **kwds) -> typing.Any:
+    async def get(
+        self,
+        url: str,
+        proxy: typing.Optional[typing.Union[Proxy, str]] = None,
+        local_address: typing.Optional[
+            typing.Union[ipaddress.IPv4Address, ipaddress.IPv6Address]
+        ] = None,
+        interface: typing.Optional[builtins.str] = None,
+        timeout: typing.Optional[builtins.int] = None,
+        read_timeout: typing.Optional[builtins.int] = None,
+        version: typing.Optional[Version] = None,
+        headers: typing.Optional[typing.Union[typing.Dict[str, str], HeaderMap]] = None,
+        cookies: typing.Optional[typing.Dict[str, str]] = None,
+        allow_redirects: typing.Optional[builtins.bool] = None,
+        max_redirects: typing.Optional[builtins.int] = None,
+        auth: typing.Optional[str] = None,
+        bearer_auth: typing.Optional[str] = None,
+        basic_auth: typing.Optional[tuple[str, typing.Optional[str]]] = None,
+        query: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+        form: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+        json: typing.Optional[typing.Dict[str, typing.Any]] = None,
+        body: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+        multipart: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+    ) -> Response:
         r"""
         Sends a request with the given URL
 
-        # Arguments
-
-        * `url` - The URL to send the request to.
-        * `**kwds` - Additional request parameters.
-
-            proxy: typing.Optional[Proxy]
-            local_address: typing.Optional[typing.Optional[typing.Union[str, ipaddress.IPv4Address, ipaddress.IPv6Address]]]
-            interface: typing.Optional[builtins.str]
-            timeout: typing.Optional[builtins.int]
-            read_timeout: typing.Optional[builtins.int]
-            version: typing.Optional[Version]
-            headers: typing.Optional[typing.Dict[str, bytes]]
-            cookies: typing.Optional[typing.Dict[str, str]]
-            allow_redirects: typing.Optional[builtins.bool]
-            max_redirects: typing.Optional[builtins.int]
-            auth: typing.Optional[str]
-            bearer_auth: typing.Optional[str]
-            basic_auth: typing.Optional[tuple[str, typing.Optional[str]]]
-            query: typing.Optional[typing.List[typing.Tuple[str, str]]]
-            form: typing.Optional[typing.List[typing.Tuple[str, str]]]
-            json: typing.Optional[typing.Any]
-            body: typing.Optional[typing.Any]
-            multipart: typing.Optional[Multipart]
         # Examples
 
         ```python
@@ -1885,17 +1887,17 @@ class Response:
     def __aexit__(
         self, _exc_type: typing.Any, _exc_value: typing.Any, _traceback: typing.Any
     ) -> typing.Any: ...
-    def peer_certificate(self) -> typing.Optional[typing.Any]:
+    def peer_certificate(self) -> typing.Optional[bytes]:
         r"""
         Returns the TLS peer certificate of the response.
         """
 
-    def text(self) -> typing.Any:
+    async def text(self) -> builtins.str:
         r"""
         Returns the text content of the response.
         """
 
-    def text_with_charset(self, encoding: builtins.str) -> typing.Any:
+    async def text_with_charset(self, encoding: builtins.str) -> builtins.str:
         r"""
         Returns the text content of the response with a specific charset.
 
@@ -1904,12 +1906,12 @@ class Response:
         * `encoding` - The default encoding to use if the charset is not specified.
         """
 
-    def json(self) -> typing.Any:
+    async def json(self) -> typing.Dict[str, typing.Any]:
         r"""
         Returns the JSON content of the response.
         """
 
-    def bytes(self) -> typing.Any:
+    async def bytes(self) -> bytes:
         r"""
         Returns the bytes content of the response.
         """
@@ -1930,7 +1932,7 @@ class SocketAddr:
     """
 
     def __str__(self) -> builtins.str: ...
-    def ip(self) -> typing.Any:
+    def ip(self) -> typing.Union[ipaddress.IPv4Address, ipaddress.IPv6Address]:
         r"""
         Returns the IP address of the socket address.
         """
@@ -2052,23 +2054,22 @@ class WebSocket:
     r"""
     Returns the remote address of the response.
     """
+    protocol: typing.Optional[builtins.str]
+    r"""
+    Returns the WebSocket protocol.
+    """
     def __aiter__(self) -> WebSocket: ...
     def __anext__(self) -> typing.Any: ...
     def __aenter__(self) -> typing.Any: ...
     def __aexit__(
         self, _exc_type: typing.Any, _exc_value: typing.Any, _traceback: typing.Any
     ) -> typing.Any: ...
-    def protocol(self) -> typing.Optional[builtins.str]:
-        r"""
-        Returns the WebSocket protocol.
-        """
-
-    def recv(self) -> typing.Any:
+    async def recv(self) -> typing.Optional[Message]:
         r"""
         Receives a message from the WebSocket.
         """
 
-    def send(self, message: Message) -> typing.Any:
+    async def send(self, message: Message) -> None:
         r"""
         Sends a message to the WebSocket.
 
@@ -2077,11 +2078,11 @@ class WebSocket:
         * `message` - The message to send.
         """
 
-    def close(
+    async def close(
         self,
         code: typing.Optional[builtins.int] = None,
         reason: typing.Optional[str] = None,
-    ) -> typing.Any:
+    ) -> None:
         r"""
         Closes the WebSocket connection.
 
@@ -2228,33 +2229,31 @@ class Version(Enum):
     HTTP_2 = auto()
     HTTP_3 = auto()
 
-def delete(url: str, **kwds) -> typing.Any:
+async def delete(
+    url: str,
+    proxy: typing.Optional[typing.Union[Proxy, str]] = None,
+    local_address: typing.Optional[
+        typing.Union[ipaddress.IPv4Address, ipaddress.IPv6Address]
+    ] = None,
+    interface: typing.Optional[builtins.str] = None,
+    timeout: typing.Optional[builtins.int] = None,
+    read_timeout: typing.Optional[builtins.int] = None,
+    version: typing.Optional[Version] = None,
+    headers: typing.Optional[typing.Union[typing.Dict[str, str], HeaderMap]] = None,
+    cookies: typing.Optional[typing.Dict[str, str]] = None,
+    allow_redirects: typing.Optional[builtins.bool] = None,
+    max_redirects: typing.Optional[builtins.int] = None,
+    auth: typing.Optional[str] = None,
+    bearer_auth: typing.Optional[str] = None,
+    basic_auth: typing.Optional[tuple[str, typing.Optional[str]]] = None,
+    query: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+    form: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+    json: typing.Optional[typing.Dict[str, typing.Any]] = None,
+    body: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+    multipart: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+) -> Response:
     r"""
     Shortcut method to quickly make a request.
-
-    # Arguments
-
-    * `url` - The URL to send the request to.
-    * `**kwds` - Additional request parameters.
-
-        proxy: typing.Optional[Proxy]
-        local_address: typing.Optional[typing.Optional[typing.Union[str, ipaddress.IPv4Address, ipaddress.IPv6Address]]]
-        interface: typing.Optional[builtins.str]
-        timeout: typing.Optional[builtins.int]
-        read_timeout: typing.Optional[builtins.int]
-        version: typing.Optional[Version]
-        headers: typing.Optional[typing.Dict[str, bytes]]
-        cookies: typing.Optional[typing.Dict[str, str]]
-        allow_redirects: typing.Optional[builtins.bool]
-        max_redirects: typing.Optional[builtins.int]
-        auth: typing.Optional[str]
-        bearer_auth: typing.Optional[str]
-        basic_auth: typing.Optional[tuple[str, typing.Optional[str]]]
-        query: typing.Optional[typing.List[typing.Tuple[str, str]]]
-        form: typing.Optional[typing.List[typing.Tuple[str, str]]]
-        json: typing.Optional[typing.Any]
-        body: typing.Optional[typing.Any]
-        multipart: typing.Optional[Multipart]
 
     # Examples
 
@@ -2271,33 +2270,31 @@ def delete(url: str, **kwds) -> typing.Any:
     ```
     """
 
-def get(url: str, **kwds) -> typing.Any:
+async def get(
+    url: str,
+    proxy: typing.Optional[typing.Union[Proxy, str]] = None,
+    local_address: typing.Optional[
+        typing.Union[ipaddress.IPv4Address, ipaddress.IPv6Address]
+    ] = None,
+    interface: typing.Optional[builtins.str] = None,
+    timeout: typing.Optional[builtins.int] = None,
+    read_timeout: typing.Optional[builtins.int] = None,
+    version: typing.Optional[Version] = None,
+    headers: typing.Optional[typing.Union[typing.Dict[str, str], HeaderMap]] = None,
+    cookies: typing.Optional[typing.Dict[str, str]] = None,
+    allow_redirects: typing.Optional[builtins.bool] = None,
+    max_redirects: typing.Optional[builtins.int] = None,
+    auth: typing.Optional[str] = None,
+    bearer_auth: typing.Optional[str] = None,
+    basic_auth: typing.Optional[tuple[str, typing.Optional[str]]] = None,
+    query: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+    form: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+    json: typing.Optional[typing.Dict[str, typing.Any]] = None,
+    body: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+    multipart: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+) -> Response:
     r"""
     Shortcut method to quickly make a request.
-
-    # Arguments
-
-    * `url` - The URL to send the request to.
-    * `**kwds` - Additional request parameters.
-
-        proxy: typing.Optional[Proxy]
-        local_address: typing.Optional[typing.Optional[typing.Union[str, ipaddress.IPv4Address, ipaddress.IPv6Address]]]
-        interface: typing.Optional[builtins.str]
-        timeout: typing.Optional[builtins.int]
-        read_timeout: typing.Optional[builtins.int]
-        version: typing.Optional[Version]
-        headers: typing.Optional[typing.Dict[str, bytes]]
-        cookies: typing.Optional[typing.Dict[str, str]]
-        allow_redirects: typing.Optional[builtins.bool]
-        max_redirects: typing.Optional[builtins.int]
-        auth: typing.Optional[str]
-        bearer_auth: typing.Optional[str]
-        basic_auth: typing.Optional[tuple[str, typing.Optional[str]]]
-        query: typing.Optional[typing.List[typing.Tuple[str, str]]]
-        form: typing.Optional[typing.List[typing.Tuple[str, str]]]
-        json: typing.Optional[typing.Any]
-        body: typing.Optional[typing.Any]
-        multipart: typing.Optional[Multipart]
 
     # Examples
 
@@ -2314,33 +2311,31 @@ def get(url: str, **kwds) -> typing.Any:
     ```
     """
 
-def head(url: str, **kwds) -> typing.Any:
+async def head(
+    url: str,
+    proxy: typing.Optional[typing.Union[Proxy, str]] = None,
+    local_address: typing.Optional[
+        typing.Union[ipaddress.IPv4Address, ipaddress.IPv6Address]
+    ] = None,
+    interface: typing.Optional[builtins.str] = None,
+    timeout: typing.Optional[builtins.int] = None,
+    read_timeout: typing.Optional[builtins.int] = None,
+    version: typing.Optional[Version] = None,
+    headers: typing.Optional[typing.Union[typing.Dict[str, str], HeaderMap]] = None,
+    cookies: typing.Optional[typing.Dict[str, str]] = None,
+    allow_redirects: typing.Optional[builtins.bool] = None,
+    max_redirects: typing.Optional[builtins.int] = None,
+    auth: typing.Optional[str] = None,
+    bearer_auth: typing.Optional[str] = None,
+    basic_auth: typing.Optional[tuple[str, typing.Optional[str]]] = None,
+    query: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+    form: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+    json: typing.Optional[typing.Dict[str, typing.Any]] = None,
+    body: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+    multipart: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+) -> Response:
     r"""
     Shortcut method to quickly make a request.
-
-    # Arguments
-
-    * `url` - The URL to send the request to.
-    * `**kwds` - Additional request parameters.
-
-        proxy: typing.Optional[Proxy]
-        local_address: typing.Optional[typing.Optional[typing.Union[str, ipaddress.IPv4Address, ipaddress.IPv6Address]]]
-        interface: typing.Optional[builtins.str]
-        timeout: typing.Optional[builtins.int]
-        read_timeout: typing.Optional[builtins.int]
-        version: typing.Optional[Version]
-        headers: typing.Optional[typing.Dict[str, bytes]]
-        cookies: typing.Optional[typing.Dict[str, str]]
-        allow_redirects: typing.Optional[builtins.bool]
-        max_redirects: typing.Optional[builtins.int]
-        auth: typing.Optional[str]
-        bearer_auth: typing.Optional[str]
-        basic_auth: typing.Optional[tuple[str, typing.Optional[str]]]
-        query: typing.Optional[typing.List[typing.Tuple[str, str]]]
-        form: typing.Optional[typing.List[typing.Tuple[str, str]]]
-        json: typing.Optional[typing.Any]
-        body: typing.Optional[typing.Any]
-        multipart: typing.Optional[Multipart]
 
     # Examples
 
@@ -2356,33 +2351,31 @@ def head(url: str, **kwds) -> typing.Any:
     ```
     """
 
-def options(url: str, **kwds) -> typing.Any:
+async def options(
+    url: str,
+    proxy: typing.Optional[typing.Union[Proxy, str]] = None,
+    local_address: typing.Optional[
+        typing.Union[ipaddress.IPv4Address, ipaddress.IPv6Address]
+    ] = None,
+    interface: typing.Optional[builtins.str] = None,
+    timeout: typing.Optional[builtins.int] = None,
+    read_timeout: typing.Optional[builtins.int] = None,
+    version: typing.Optional[Version] = None,
+    headers: typing.Optional[typing.Union[typing.Dict[str, str], HeaderMap]] = None,
+    cookies: typing.Optional[typing.Dict[str, str]] = None,
+    allow_redirects: typing.Optional[builtins.bool] = None,
+    max_redirects: typing.Optional[builtins.int] = None,
+    auth: typing.Optional[str] = None,
+    bearer_auth: typing.Optional[str] = None,
+    basic_auth: typing.Optional[tuple[str, typing.Optional[str]]] = None,
+    query: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+    form: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+    json: typing.Optional[typing.Dict[str, typing.Any]] = None,
+    body: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+    multipart: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+) -> Response:
     r"""
     Shortcut method to quickly make a request.
-
-    # Arguments
-
-    * `url` - The URL to send the request to.
-    * `**kwds` - Additional request parameters.
-
-        proxy: typing.Optional[Proxy]
-        local_address: typing.Optional[typing.Optional[typing.Union[str, ipaddress.IPv4Address, ipaddress.IPv6Address]]]
-        interface: typing.Optional[builtins.str]
-        timeout: typing.Optional[builtins.int]
-        read_timeout: typing.Optional[builtins.int]
-        version: typing.Optional[Version]
-        headers: typing.Optional[typing.Dict[str, bytes]]
-        cookies: typing.Optional[typing.Dict[str, str]]
-        allow_redirects: typing.Optional[builtins.bool]
-        max_redirects: typing.Optional[builtins.int]
-        auth: typing.Optional[str]
-        bearer_auth: typing.Optional[str]
-        basic_auth: typing.Optional[tuple[str, typing.Optional[str]]]
-        query: typing.Optional[typing.List[typing.Tuple[str, str]]]
-        form: typing.Optional[typing.List[typing.Tuple[str, str]]]
-        json: typing.Optional[typing.Any]
-        body: typing.Optional[typing.Any]
-        multipart: typing.Optional[Multipart]
 
     # Examples
 
@@ -2398,33 +2391,31 @@ def options(url: str, **kwds) -> typing.Any:
     ```
     """
 
-def patch(url: str, **kwds) -> typing.Any:
+async def patch(
+    url: str,
+    proxy: typing.Optional[typing.Union[Proxy, str]] = None,
+    local_address: typing.Optional[
+        typing.Union[ipaddress.IPv4Address, ipaddress.IPv6Address]
+    ] = None,
+    interface: typing.Optional[builtins.str] = None,
+    timeout: typing.Optional[builtins.int] = None,
+    read_timeout: typing.Optional[builtins.int] = None,
+    version: typing.Optional[Version] = None,
+    headers: typing.Optional[typing.Union[typing.Dict[str, str], HeaderMap]] = None,
+    cookies: typing.Optional[typing.Dict[str, str]] = None,
+    allow_redirects: typing.Optional[builtins.bool] = None,
+    max_redirects: typing.Optional[builtins.int] = None,
+    auth: typing.Optional[str] = None,
+    bearer_auth: typing.Optional[str] = None,
+    basic_auth: typing.Optional[tuple[str, typing.Optional[str]]] = None,
+    query: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+    form: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+    json: typing.Optional[typing.Dict[str, typing.Any]] = None,
+    body: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+    multipart: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+) -> Response:
     r"""
     Shortcut method to quickly make a request.
-
-    # Arguments
-
-    * `url` - The URL to send the request to.
-    * `**kwds` - Additional request parameters.
-
-        proxy: typing.Optional[Proxy]
-        local_address: typing.Optional[typing.Optional[typing.Union[str, ipaddress.IPv4Address, ipaddress.IPv6Address]]]
-        interface: typing.Optional[builtins.str]
-        timeout: typing.Optional[builtins.int]
-        read_timeout: typing.Optional[builtins.int]
-        version: typing.Optional[Version]
-        headers: typing.Optional[typing.Dict[str, bytes]]
-        cookies: typing.Optional[typing.Dict[str, str]]
-        allow_redirects: typing.Optional[builtins.bool]
-        max_redirects: typing.Optional[builtins.int]
-        auth: typing.Optional[str]
-        bearer_auth: typing.Optional[str]
-        basic_auth: typing.Optional[tuple[str, typing.Optional[str]]]
-        query: typing.Optional[typing.List[typing.Tuple[str, str]]]
-        form: typing.Optional[typing.List[typing.Tuple[str, str]]]
-        json: typing.Optional[typing.Any]
-        body: typing.Optional[typing.Any]
-        multipart: typing.Optional[Multipart]
 
     # Examples
 
@@ -2441,33 +2432,31 @@ def patch(url: str, **kwds) -> typing.Any:
     ```
     """
 
-def post(url: str, **kwds) -> typing.Any:
+async def post(
+    url: str,
+    proxy: typing.Optional[typing.Union[Proxy, str]] = None,
+    local_address: typing.Optional[
+        typing.Union[ipaddress.IPv4Address, ipaddress.IPv6Address]
+    ] = None,
+    interface: typing.Optional[builtins.str] = None,
+    timeout: typing.Optional[builtins.int] = None,
+    read_timeout: typing.Optional[builtins.int] = None,
+    version: typing.Optional[Version] = None,
+    headers: typing.Optional[typing.Union[typing.Dict[str, str], HeaderMap]] = None,
+    cookies: typing.Optional[typing.Dict[str, str]] = None,
+    allow_redirects: typing.Optional[builtins.bool] = None,
+    max_redirects: typing.Optional[builtins.int] = None,
+    auth: typing.Optional[str] = None,
+    bearer_auth: typing.Optional[str] = None,
+    basic_auth: typing.Optional[tuple[str, typing.Optional[str]]] = None,
+    query: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+    form: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+    json: typing.Optional[typing.Dict[str, typing.Any]] = None,
+    body: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+    multipart: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+) -> Response:
     r"""
     Shortcut method to quickly make a request.
-
-    # Arguments
-
-    * `url` - The URL to send the request to.
-    * `**kwds` - Additional request parameters.
-
-        proxy: typing.Optional[Proxy]
-        local_address: typing.Optional[typing.Optional[typing.Union[str, ipaddress.IPv4Address, ipaddress.IPv6Address]]]
-        interface: typing.Optional[builtins.str]
-        timeout: typing.Optional[builtins.int]
-        read_timeout: typing.Optional[builtins.int]
-        version: typing.Optional[Version]
-        headers: typing.Optional[typing.Dict[str, bytes]]
-        cookies: typing.Optional[typing.Dict[str, str]]
-        allow_redirects: typing.Optional[builtins.bool]
-        max_redirects: typing.Optional[builtins.int]
-        auth: typing.Optional[str]
-        bearer_auth: typing.Optional[str]
-        basic_auth: typing.Optional[tuple[str, typing.Optional[str]]]
-        query: typing.Optional[typing.List[typing.Tuple[str, str]]]
-        form: typing.Optional[typing.List[typing.Tuple[str, str]]]
-        json: typing.Optional[typing.Any]
-        body: typing.Optional[typing.Any]
-        multipart: typing.Optional[Multipart]
 
     # Examples
 
@@ -2484,33 +2473,31 @@ def post(url: str, **kwds) -> typing.Any:
     ```
     """
 
-def put(url: str, **kwds) -> typing.Any:
+async def put(
+    url: str,
+    proxy: typing.Optional[typing.Union[Proxy, str]] = None,
+    local_address: typing.Optional[
+        typing.Union[ipaddress.IPv4Address, ipaddress.IPv6Address]
+    ] = None,
+    interface: typing.Optional[builtins.str] = None,
+    timeout: typing.Optional[builtins.int] = None,
+    read_timeout: typing.Optional[builtins.int] = None,
+    version: typing.Optional[Version] = None,
+    headers: typing.Optional[typing.Union[typing.Dict[str, str], HeaderMap]] = None,
+    cookies: typing.Optional[typing.Dict[str, str]] = None,
+    allow_redirects: typing.Optional[builtins.bool] = None,
+    max_redirects: typing.Optional[builtins.int] = None,
+    auth: typing.Optional[str] = None,
+    bearer_auth: typing.Optional[str] = None,
+    basic_auth: typing.Optional[tuple[str, typing.Optional[str]]] = None,
+    query: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+    form: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+    json: typing.Optional[typing.Dict[str, typing.Any]] = None,
+    body: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+    multipart: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+) -> Response:
     r"""
     Shortcut method to quickly make a request.
-
-    # Arguments
-
-    * `url` - The URL to send the request to.
-    * `**kwds` - Additional request parameters.
-
-        proxy: typing.Optional[Proxy]
-        local_address: typing.Optional[typing.Optional[typing.Union[str, ipaddress.IPv4Address, ipaddress.IPv6Address]]]
-        interface: typing.Optional[builtins.str]
-        timeout: typing.Optional[builtins.int]
-        read_timeout: typing.Optional[builtins.int]
-        version: typing.Optional[Version]
-        headers: typing.Optional[typing.Dict[str, bytes]]
-        cookies: typing.Optional[typing.Dict[str, str]]
-        allow_redirects: typing.Optional[builtins.bool]
-        max_redirects: typing.Optional[builtins.int]
-        auth: typing.Optional[str]
-        bearer_auth: typing.Optional[str]
-        basic_auth: typing.Optional[tuple[str, typing.Optional[str]]]
-        query: typing.Optional[typing.List[typing.Tuple[str, str]]]
-        form: typing.Optional[typing.List[typing.Tuple[str, str]]]
-        json: typing.Optional[typing.Any]
-        body: typing.Optional[typing.Any]
-        multipart: typing.Optional[Multipart]
 
     # Examples
 
@@ -2527,7 +2514,30 @@ def put(url: str, **kwds) -> typing.Any:
     ```
     """
 
-def request(method: Method, url: str, **kwds) -> typing.Any:
+async def request(
+    method: Method,
+    url: str,
+    proxy: typing.Optional[typing.Union[Proxy, str]] = None,
+    local_address: typing.Optional[
+        typing.Union[ipaddress.IPv4Address, ipaddress.IPv6Address]
+    ] = None,
+    interface: typing.Optional[builtins.str] = None,
+    timeout: typing.Optional[builtins.int] = None,
+    read_timeout: typing.Optional[builtins.int] = None,
+    version: typing.Optional[Version] = None,
+    headers: typing.Optional[typing.Union[typing.Dict[str, str], HeaderMap]] = None,
+    cookies: typing.Optional[typing.Dict[str, str]] = None,
+    allow_redirects: typing.Optional[builtins.bool] = None,
+    max_redirects: typing.Optional[builtins.int] = None,
+    auth: typing.Optional[str] = None,
+    bearer_auth: typing.Optional[str] = None,
+    basic_auth: typing.Optional[tuple[str, typing.Optional[str]]] = None,
+    query: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+    form: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+    json: typing.Optional[typing.Dict[str, typing.Any]] = None,
+    body: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+    multipart: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+) -> Response:
     r"""
     Make a request with the given parameters.
 
@@ -2536,25 +2546,6 @@ def request(method: Method, url: str, **kwds) -> typing.Any:
     * `method` - The method to use for the request.
     * `url` - The URL to send the request to.
     * `**kwds` - Additional request parameters.
-
-        proxy: typing.Optional[Proxy]
-        local_address: typing.Optional[typing.Optional[typing.Union[str, ipaddress.IPv4Address, ipaddress.IPv6Address]]]
-        interface: typing.Optional[builtins.str]
-        timeout: typing.Optional[builtins.int]
-        read_timeout: typing.Optional[builtins.int]
-        version: typing.Optional[Version]
-        headers: typing.Optional[typing.Dict[str, bytes]]
-        cookies: typing.Optional[typing.Dict[str, str]]
-        allow_redirects: typing.Optional[builtins.bool]
-        max_redirects: typing.Optional[builtins.int]
-        auth: typing.Optional[str]
-        bearer_auth: typing.Optional[str]
-        basic_auth: typing.Optional[tuple[str, typing.Optional[str]]]
-        query: typing.Optional[typing.List[typing.Tuple[str, str]]]
-        form: typing.Optional[typing.List[typing.Tuple[str, str]]]
-        json: typing.Optional[typing.Any]
-        body: typing.Optional[typing.Any]
-        multipart: typing.Optional[Multipart]
 
     # Examples
 
@@ -2572,33 +2563,31 @@ def request(method: Method, url: str, **kwds) -> typing.Any:
     ```
     """
 
-def trace(url: str, **kwds) -> typing.Any:
+async def trace(
+    url: str,
+    proxy: typing.Optional[typing.Union[Proxy, str]] = None,
+    local_address: typing.Optional[
+        typing.Union[ipaddress.IPv4Address, ipaddress.IPv6Address]
+    ] = None,
+    interface: typing.Optional[builtins.str] = None,
+    timeout: typing.Optional[builtins.int] = None,
+    read_timeout: typing.Optional[builtins.int] = None,
+    version: typing.Optional[Version] = None,
+    headers: typing.Optional[typing.Union[typing.Dict[str, str], HeaderMap]] = None,
+    cookies: typing.Optional[typing.Dict[str, str]] = None,
+    allow_redirects: typing.Optional[builtins.bool] = None,
+    max_redirects: typing.Optional[builtins.int] = None,
+    auth: typing.Optional[str] = None,
+    bearer_auth: typing.Optional[str] = None,
+    basic_auth: typing.Optional[tuple[str, typing.Optional[str]]] = None,
+    query: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+    form: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+    json: typing.Optional[typing.Dict[str, typing.Any]] = None,
+    body: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+    multipart: typing.Optional[typing.List[typing.Tuple[str, str]]] = None,
+) -> Response:
     r"""
     Shortcut method to quickly make a request.
-
-    # Arguments
-
-    * `url` - The URL to send the request to.
-    * `**kwds` - Additional request parameters.
-
-        proxy: typing.Optional[Proxy]
-        local_address: typing.Optional[typing.Optional[typing.Union[str, ipaddress.IPv4Address, ipaddress.IPv6Address]]]
-        interface: typing.Optional[builtins.str]
-        timeout: typing.Optional[builtins.int]
-        read_timeout: typing.Optional[builtins.int]
-        version: typing.Optional[Version]
-        headers: typing.Optional[typing.Dict[str, bytes]]
-        cookies: typing.Optional[typing.Dict[str, str]]
-        allow_redirects: typing.Optional[builtins.bool]
-        max_redirects: typing.Optional[builtins.int]
-        auth: typing.Optional[str]
-        bearer_auth: typing.Optional[str]
-        basic_auth: typing.Optional[tuple[str, typing.Optional[str]]]
-        query: typing.Optional[typing.List[typing.Tuple[str, str]]]
-        form: typing.Optional[typing.List[typing.Tuple[str, str]]]
-        json: typing.Optional[typing.Any]
-        body: typing.Optional[typing.Any]
-        multipart: typing.Optional[Multipart]
 
     # Examples
 
@@ -2614,32 +2603,30 @@ def trace(url: str, **kwds) -> typing.Any:
     ```
     """
 
-def websocket(url: str, **kwds) -> typing.Any:
+async def websocket(
+    url: str,
+    proxy: typing.Optional[Proxy],
+    local_address: typing.Optional[
+        typing.Optional[typing.Union[str, ipaddress.IPv4Address, ipaddress.IPv6Address]]
+    ],
+    interface: typing.Optional[builtins.str],
+    headers: typing.Optional[typing.Dict[str, bytes]],
+    cookies: typing.Optional[typing.Dict[str, str]],
+    protocols: typing.Optional[builtins.list[builtins.str]],
+    use_http2: typing.Optional[builtins.bool],
+    auth: typing.Optional[builtins.str],
+    bearer_auth: typing.Optional[builtins.str],
+    basic_auth: typing.Optional[tuple[builtins.str, typing.Optional[builtins.str]]],
+    query: typing.Optional[builtins.list[tuple[builtins.str, builtins.str]]],
+    read_buffer_size: typing.Optional[builtins.int],
+    write_buffer_size: typing.Optional[builtins.int],
+    max_write_buffer_size: typing.Optional[builtins.int],
+    max_message_size: typing.Optional[builtins.int],
+    max_frame_size: typing.Optional[builtins.int],
+    accept_unmasked_frames: typing.Optional[builtins.bool],
+) -> WebSocket:
     r"""
     Make a WebSocket connection with the given parameters.
-
-    # Arguments
-
-    * `url` - The URL to send the WebSocket request to.
-    * `**kwds` - Additional WebSocket request parameters.
-
-        proxy: typing.Optional[Proxy]
-        local_address: typing.Optional[typing.Optional[typing.Union[str, ipaddress.IPv4Address, ipaddress.IPv6Address]]]
-        interface: typing.Optional[builtins.str]
-        headers: typing.Optional[typing.Dict[str, bytes]]
-        cookies: typing.Optional[typing.Dict[str, str]]
-        protocols: typing.Optional[builtins.list[builtins.str]]
-        use_http2: typing.Optional[builtins.bool]
-        auth: typing.Optional[builtins.str]
-        bearer_auth: typing.Optional[builtins.str]
-        basic_auth: typing.Optional[tuple[builtins.str, typing.Optional[builtins.str]]]
-        query: typing.Optional[builtins.list[tuple[builtins.str, builtins.str]]]
-        read_buffer_size: typing.Optional[builtins.int]
-        write_buffer_size: typing.Optional[builtins.int]
-        max_write_buffer_size: typing.Optional[builtins.int]
-        max_message_size: typing.Optional[builtins.int]
-        max_frame_size: typing.Optional[builtins.int]
-        accept_unmasked_frames: typing.Optional[builtins.bool]
 
     # Examples
 
