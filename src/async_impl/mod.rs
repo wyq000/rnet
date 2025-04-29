@@ -24,6 +24,9 @@ static DEFAULT_CLIENT: LazyLock<rquest::Client> = LazyLock::new(|| {
     builder
         .no_hickory_dns()
         .no_keepalive()
+        .http1(|mut http| {
+            http.title_case_headers(true);
+        })
         .build()
         .expect("Failed to build the default client.")
 });
