@@ -1,3 +1,6 @@
+#[macro_use]
+mod macros;
+
 mod async_impl;
 mod blocking;
 mod buffer;

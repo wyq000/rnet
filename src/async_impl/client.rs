@@ -1,6 +1,5 @@
 use super::request::{execute_request, execute_websocket_request};
 use crate::{
-    apply_option,
     buffer::{HeaderValueBuffer, PyBufferProtocol},
     dns,
     error::Error,

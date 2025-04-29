@@ -1,5 +1,4 @@
 mod client;
-mod macros;
 mod request;
 mod response;
 
@@ -7,9 +6,9 @@ pub use self::{
     client::Client,
     response::{Message, Response, Streamer, WebSocket},
 };
+use crate::dns;
 use crate::typing::param::{RequestParams, WebSocketParams};
 use crate::typing::{LookupIpStrategy, Method};
-use crate::{apply_option, dns};
 use pyo3::PyResult;
 pub use request::{execute_request, execute_websocket_request};
 use std::sync::LazyLock;
