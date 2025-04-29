@@ -12,6 +12,7 @@ on:
   pull_request:
     paths-ignore:
       - 'docs/**'
+      - '*.pyi'
       - '*.md'
       - '.github/**'
       - 'README.md'
