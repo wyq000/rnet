@@ -90,7 +90,7 @@ fn head(
     future_into_py(py, async_impl::shortcut_request(url, Method::HEAD, kwds))
 }
 
-/// Make an OPTIONS request with the given parameters.
+/// Make a OPTIONS request with the given parameters.
 #[pyfunction]
 #[pyo3(signature = (url, **kwds))]
 fn options(
