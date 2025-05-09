@@ -63,6 +63,7 @@ Additional learning resources include:
 - [API Documentation](https://github.com/0x676e67/rnet/blob/main/rnet.pyi)
 - [Repository Examples](https://github.com/0x676e67/rnet/tree/main/examples)
 - [Repository Tests](https://github.com/0x676e67/rnet/tree/main/tests)
+- [DeepWiki](https://deepwiki.com/0x676e67/rnet)
 
 ## Platforms
 
