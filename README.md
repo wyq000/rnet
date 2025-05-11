@@ -60,10 +60,10 @@ if __name__ == "__main__":
 
 Additional learning resources include:
 
-- [API Documentation](https://github.com/0x676e67/rnet/blob/main/rnet.pyi)
-- [Repository Examples](https://github.com/0x676e67/rnet/tree/main/examples)
-- [Repository Tests](https://github.com/0x676e67/rnet/tree/main/tests)
 - [DeepWiki](https://deepwiki.com/0x676e67/rnet)
+- [API Documentation](https://github.com/0x676e67/rnet/blob/main/rnet.pyi)
+- [Repository Tests](https://github.com/0x676e67/rnet/tree/main/tests)
+- [Repository Examples](https://github.com/0x676e67/rnet/tree/main/examples)
 
 ## Platforms
 
@@ -108,7 +108,7 @@ maturin build --release
 
 - Musllinux
 
-Also install the Docker environment. The image might be outdated, so if building the image yourself is required, refer to [rust-cross-musl](https://github.com/0x676e67/toolchain/blob/master/rust-musl-cross/Dockerfile) and the upstream [rust-cross-musl](https://github.com/rust-cross/rust-musl-cross). The upstream [rust-cross-musl](https://github.com/rust-cross/rust-musl-cross) lacks the relevant platform linker environment variables, which must be added manually.
+Make sure the Docker environment is installed. The provided image may be outdated, so you might need to build it yourself. Refer to [rust-cross-musl](https://github.com/0x676e67/toolchain/blob/master/rust-musl-cross/Dockerfile) and the upstream [rust-cross/rust-musl-cross](https://github.com/rust-cross/rust-musl-cross). Note that the upstream image lacks certain platform-specific linker environment variables, which you’ll need to add manually.
   
 ```bash
 bash .github/musl_build.sh x86_64-unknown-linux-musl
