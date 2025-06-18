@@ -9,68 +9,73 @@ import datetime
 import ipaddress
 import typing
 from enum import Enum, auto
-from typing import Optional, Tuple, Union, Any, Dict, List, TypedDict, Unpack
+from typing import (
+    Optional,
+    Tuple,
+    Union,
+    Any,
+    Dict,
+    List,
+    TypedDict,
+    Unpack,
+    NotRequired,
+)
 from pathlib import Path
 
-class WebSocketParams(TypedDict, closed=True):
-    url: str
-    proxy: Optional[Union[str, Proxy]] = (None,)
-    local_address: Optional[
-        Union[str, ipaddress.IPv4Address, ipaddress.IPv6Address]
-    ] = (None,)
-    interface: Optional[str] = (None,)
-    headers: Optional[Dict[str, bytes]] = (None,)
-    cookies: Optional[Dict[str, str]] = (None,)
-    protocols: Optional[List[str]] = (None,)
-    use_http2: Optional[bool] = (None,)
-    auth: Optional[str] = (None,)
-    bearer_auth: Optional[str] = (None,)
-    basic_auth: Optional[Tuple[str, Optional[str]]] = (None,)
-    query: Optional[List[Tuple[str, str]]] = (None,)
-    read_buffer_size: Optional[int] = (None,)
-    write_buffer_size: Optional[int] = (None,)
-    max_write_buffer_size: Optional[int] = (None,)
-    max_message_size: Optional[int] = (None,)
-    max_frame_size: Optional[int] = (None,)
-    accept_unmasked_frames: Optional[bool] = (None,)
-
 class RequestParams(TypedDict, closed=True):
-    url: str
-    proxy: Optional[Union[str, Proxy]] = (None,)
-    local_address: Optional[Union[ipaddress.IPv4Address, ipaddress.IPv6Address]] = (
-        None,
-    )
-    interface: Optional[str] = (None,)
-    timeout: Optional[int] = (None,)
-    read_timeout: Optional[int] = (None,)
-    version: Optional[Version] = (None,)
-    headers: Optional[Union[Dict[str, str], HeaderMap]] = (None,)
-    cookies: Optional[Dict[str, str]] = (None,)
-    allow_redirects: Optional[bool] = (None,)
-    max_redirects: Optional[int] = (None,)
-    auth: Optional[str] = (None,)
-    bearer_auth: Optional[str] = (None,)
-    basic_auth: Optional[Tuple[str, Optional[str]]] = (None,)
-    query: Optional[List[Tuple[str, str]]] = (None,)
-    form: Optional[List[Tuple[str, str]]] = (None,)
-    json: Optional[Dict[str, Any]] = (None,)
-    body: Optional[
+    proxy: NotRequired[Union[str, Proxy]]
+    local_address: NotRequired[Union[ipaddress.IPv4Address, ipaddress.IPv6Address]]
+    interface: NotRequired[str]
+    timeout: NotRequired[int]
+    read_timeout: NotRequired[int]
+    version: NotRequired[Version]
+    headers: NotRequired[Union[Dict[str, str], HeaderMap]]
+    cookies: NotRequired[Dict[str, str]]
+    allow_redirects: NotRequired[bool]
+    max_redirects: NotRequired[int]
+    auth: NotRequired[str]
+    bearer_auth: NotRequired[str]
+    basic_auth: NotRequired[Tuple[str, Optional[str]]]
+    query: NotRequired[List[Tuple[str, str]]]
+    form: NotRequired[List[Tuple[str, str]]]
+    json: NotRequired[Dict[str, Any]]
+    body: NotRequired[
         Union[
             str,
             bytes,
             typing.AsyncGenerator[bytes, str],
             typing.Generator[bytes, str],
         ]
-    ] = (None,)
-    multipart: Optional[Multipart] = (None,)
+    ]
+    multipart: NotRequired[Multipart]
 
-class ProxyParams(TypedDict, closed=True):
-    url: str
-    username: Optional[str] = (None,)
-    password: Optional[str] = (None,)
-    custom_http_auth: Optional[str] = (None,)
-    custom_http_headers: Optional[Union[Dict[str, str], HeaderMap]] = (None,)
-    exclusion: Optional[str] = (None,)
+class WebSocketParams(TypedDict, closed=True):
+    proxy: NotRequired[Union[str, Proxy]]
+    local_address: NotRequired[Union[str, ipaddress.IPv4Address, ipaddress.IPv6Address]]
+    interface: NotRequired[str]
+    headers: NotRequired[Dict[str, bytes]]
+    cookies: NotRequired[Dict[str, str]]
+    protocols: NotRequired[List[str]]
+    use_http2: NotRequired[bool]
+    auth: NotRequired[str]
+    bearer_auth: NotRequired[str]
+    basic_auth: NotRequired[Tuple[str, Optional[str]]]
+    query: NotRequired[List[Tuple[str, str]]]
+    read_buffer_size: NotRequired[int]
+    write_buffer_size: NotRequired[int]
+    max_write_buffer_size: NotRequired[int]
+    max_message_size: NotRequired[int]
+    max_frame_size: NotRequired[int]
+    accept_unmasked_frames: NotRequired[bool]
+
+class ProxyParams(TypedDict, total=False, closed=True):
+    scheme: NotRequired[str]
+    host: NotRequired[str]
+    port: NotRequired[int]
+    username: NotRequired[str]
+    password: NotRequired[str]
+    rdns: NotRequired[bool]
+    headers: NotRequired[Dict[str, str]]
 
 class BlockingClient:
     r"""
@@ -228,6 +233,7 @@ class BlockingClient:
     def request(
         self,
         method: Method,
+        url: str,
         **kwargs: Unpack[RequestParams],
     ) -> BlockingResponse:
         r"""
@@ -249,7 +255,9 @@ class BlockingClient:
         ```
         """
 
-    def websocket(self, **kwargs: Unpack[WebSocketParams]) -> BlockingWebSocket:
+    def websocket(
+        self, url: str, **kwargs: Unpack[WebSocketParams]
+    ) -> BlockingWebSocket:
         r"""
         Sends a WebSocket request.
 
@@ -273,6 +281,7 @@ class BlockingClient:
 
     def trace(
         self,
+        url: str,
         **kwargs: Unpack[RequestParams],
     ) -> BlockingResponse:
         r"""
@@ -296,6 +305,7 @@ class BlockingClient:
 
     def options(
         self,
+        url: str,
         **kwargs: Unpack[RequestParams],
     ) -> BlockingResponse:
         r"""
@@ -319,6 +329,7 @@ class BlockingClient:
 
     def head(
         self,
+        url: str,
         **kwargs: Unpack[RequestParams],
     ) -> BlockingResponse:
         r"""
@@ -342,6 +353,7 @@ class BlockingClient:
 
     def delete(
         self,
+        url: str,
         **kwargs: Unpack[RequestParams],
     ) -> BlockingResponse:
         r"""
@@ -365,6 +377,7 @@ class BlockingClient:
 
     def patch(
         self,
+        url: str,
         **kwargs: Unpack[RequestParams],
     ) -> BlockingResponse:
         r"""
@@ -388,6 +401,7 @@ class BlockingClient:
 
     def put(
         self,
+        url: str,
         **kwargs: Unpack[RequestParams],
     ) -> BlockingResponse:
         r"""
@@ -411,6 +425,7 @@ class BlockingClient:
 
     def post(
         self,
+        url: str,
         **kwargs: Unpack[RequestParams],
     ) -> BlockingResponse:
         r"""
@@ -434,6 +449,7 @@ class BlockingClient:
 
     def get(
         self,
+        url: str,
         **kwargs: Unpack[RequestParams],
     ) -> BlockingResponse:
         r"""
@@ -817,6 +833,7 @@ class Client:
     async def request(
         self,
         method: Method,
+        url: str,
         **kwargs: Unpack[RequestParams],
     ) -> Response:
         r"""
@@ -840,6 +857,7 @@ class Client:
 
     async def websocket(
         self,
+        url: str,
         **kwargs: Unpack[WebSocketParams],
     ) -> WebSocket:
         r"""
@@ -865,6 +883,7 @@ class Client:
 
     async def trace(
         self,
+        url: str,
         **kwargs: Unpack[RequestParams],
     ) -> Response:
         r"""
@@ -888,6 +907,7 @@ class Client:
 
     async def options(
         self,
+        url: str,
         **kwargs: Unpack[RequestParams],
     ) -> Response:
         r"""
@@ -911,6 +931,7 @@ class Client:
 
     async def patch(
         self,
+        url: str,
         **kwargs: Unpack[RequestParams],
     ) -> Response:
         r"""
@@ -934,6 +955,7 @@ class Client:
 
     async def delete(
         self,
+        url: str,
         **kwargs: Unpack[RequestParams],
     ) -> Response:
         r"""
@@ -957,6 +979,7 @@ class Client:
 
     async def put(
         self,
+        url: str,
         **kwargs: Unpack[RequestParams],
     ) -> Response:
         r"""
@@ -980,6 +1003,7 @@ class Client:
 
     async def post(
         self,
+        url: str,
         **kwargs: Unpack[RequestParams],
     ) -> Response:
         r"""
@@ -1003,6 +1027,7 @@ class Client:
 
     async def head(
         self,
+        url: str,
         **kwargs: Unpack[RequestParams],
     ) -> Response:
         r"""
@@ -1026,6 +1051,7 @@ class Client:
 
     async def get(
         self,
+        url: str,
         **kwargs: Unpack[RequestParams],
     ) -> Response:
         r"""
@@ -1880,6 +1906,7 @@ class Version(Enum):
     HTTP_3 = auto()
 
 async def delete(
+    url: str,
     **kwargs: Unpack[RequestParams],
 ) -> Response:
     r"""
@@ -1901,6 +1928,7 @@ async def delete(
     """
 
 async def get(
+    url: str,
     **kwargs: Unpack[RequestParams],
 ) -> Response:
     r"""
@@ -1922,6 +1950,7 @@ async def get(
     """
 
 async def head(
+    url: str,
     **kwargs: Unpack[RequestParams],
 ) -> Response:
     r"""
@@ -1942,6 +1971,7 @@ async def head(
     """
 
 async def options(
+    url: str,
     **kwargs: Unpack[RequestParams],
 ) -> Response:
     r"""
@@ -1962,6 +1992,7 @@ async def options(
     """
 
 async def patch(
+    url: str,
     **kwargs: Unpack[RequestParams],
 ) -> Response:
     r"""
@@ -1983,6 +2014,7 @@ async def patch(
     """
 
 async def post(
+    url: str,
     **kwargs: Unpack[RequestParams],
 ) -> Response:
     r"""
@@ -2004,6 +2036,7 @@ async def post(
     """
 
 async def put(
+    url: str,
     **kwargs: Unpack[RequestParams],
 ) -> Response:
     r"""
@@ -2026,6 +2059,7 @@ async def put(
 
 async def request(
     method: Method,
+    url: str,
     **kwargs: Unpack[RequestParams],
 ) -> Response:
     r"""
@@ -2054,6 +2088,7 @@ async def request(
     """
 
 async def trace(
+    url: str,
     **kwargs: Unpack[RequestParams],
 ) -> Response:
     r"""
@@ -2074,6 +2109,7 @@ async def trace(
     """
 
 async def websocket(
+    url: str,
     **kwargs: Unpack[WebSocketParams],
 ) -> WebSocket:
     r"""
