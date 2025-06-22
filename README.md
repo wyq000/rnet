@@ -65,10 +65,6 @@ Additional learning resources include:
 - [Repository Tests](https://github.com/0x676e67/rnet/tree/main/tests)
 - [Repository Examples](https://github.com/0x676e67/rnet/tree/main/examples)
 
-## Benchmark
-
- Faster than requests, httpx, and curl_cffi in most cases — see [benchmark](https://github.com/0x676e67/rnet/tree/main/bench) for details.
-
 ## Platforms
 
 1. Linux
@@ -137,6 +133,10 @@ In fact, most device models share the same `TLS`/`HTTP2` configuration, with the
 | **OkHttp**    | `OkHttp3_9`, `OkHttp3_11`, `OkHttp3_13`, `OkHttp3_14`, `OkHttp4_9`, `OkHttp4_10`, `OkHttp4_12`, `OkHttp5`         |
 | **Firefox**   | `Firefox109`, `Firefox117`, `Firefox128`, `Firefox133`, `Firefox135`, `FirefoxPrivate135`, `FirefoxAndroid135`, `Firefox136`, `FirefoxPrivate136`|
 | **Opera**    | `Opera116`, `Opera117`, `Opera118`, `Opera119`                                                                 |
+
+## Benchmark
+
+ Faster than `requests`, `httpx`, and `curl_cffi` in most cases — see [benchmark](https://github.com/0x676e67/rnet/tree/main/bench) for details.
 
 ## Documentation
 
