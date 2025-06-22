@@ -65,6 +65,10 @@ Additional learning resources include:
 - [Repository Tests](https://github.com/0x676e67/rnet/tree/main/tests)
 - [Repository Examples](https://github.com/0x676e67/rnet/tree/main/examples)
 
+## Benchmark
+
+ Faster than requests, httpx, and curl_cffi in most cases — see [benchmark](https://github.com/0x676e67/rnet/tree/main/bench) for details.
+
 ## Platforms
 
 1. Linux
