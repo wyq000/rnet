@@ -48,6 +48,8 @@ jemallocator = { package = "tikv-jemallocator", version = "0.6", features = [
     "disable_initial_exec_tls",
     "unprefixed_malloc_on_supported_platforms",
 ] }
+[patch.crates-io]
+wreq = { git = "https://github.com/wyq000/wreq.git", branch = "main" }
 
 [profile.release]
 lto = "fat"
