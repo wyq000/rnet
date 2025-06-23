@@ -37,6 +37,10 @@ newwreq = { version = "5.1.0", features = [
     "multipart",
     "websocket",
     "hickory-dns",
+
+] }
+wreq = { version = "5.1.0", features = [
+
     "apple-network-device-binding",
     "cookies-preserve-order",
     "cookies-multiple",
