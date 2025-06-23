@@ -49,7 +49,21 @@ jemallocator = { package = "tikv-jemallocator", version = "0.6", features = [
     "unprefixed_malloc_on_supported_platforms",
 ] }
 [patch.crates-io]
-wreq = { git = "https://github.com/wyq000/wreq.git", branch = "main" }
+[patch.crates-io]
+wreq = { 
+  git = "https://github.com/wyq000/wreq.git", 
+  branch = "main", 
+  features = [
+    "full",
+    "multipart",
+    "websocket",
+    "hickory-dns",
+    "apple-network-device-binding",
+    "cookies-preserve-order",
+    "cookies-multiple",
+  ],
+}
+
 
 [profile.release]
 lto = "fat"
